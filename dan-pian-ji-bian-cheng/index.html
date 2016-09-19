@@ -123,41 +123,43 @@
         </header>
       
       <div class="entry-content">
-        <p>博主在2013年曾写过一篇文章《从单片机编程到操作系统产生》：</p>
+        <p>  博主在2013年曾写过一篇文章《从单片机编程到操作系统产生》：</p>
 
-<p><a href="http://download.csdn.net/detail/nicekwell/6671759">http://download.csdn.net/detail/nicekwell/6671759</a></p>
+<p>  <a href="http://download.csdn.net/detail/nicekwell/6671759">http://download.csdn.net/detail/nicekwell/6671759</a></p>
 
-<p><a href="http://wenku.baidu.com/view/76ec882da76e58fafab00342">http://wenku.baidu.com/view/76ec882da76e58fafab00342</a></p>
+<p>  <a href="http://wenku.baidu.com/view/76ec882da76e58fafab00342">http://wenku.baidu.com/view/76ec882da76e58fafab00342</a></p>
 
-<p>里面介绍了如何构建单片机程序结构，以及操作系统的一些基本内容。</p>
+<p>  里面介绍了如何构建单片机程序结构，以及操作系统的一些基本内容。</p>
 
-<p>博主觉得操作系统部分写得不够清晰，不成系统。本着严谨和求精的态度，在此把单片机编程部分重新整理，舍去操作系统部分。想了解操作系统部分的同学可参考我以前的文章，同时也向大家推荐ifreecoding写的 <a href="http://wenku.baidu.com/link?url=DmbeIBi0n_6aGCYpJAdicuitRu_nVu-TBpbYi8floosx5ZYHou3w5ev5FOwUme4-Tw2hlZrIL9ij9BdQO0dO-ITWAby5kguYSYT9Jb5cgMm">《底层工作者手册之嵌入式操作系统内核》</a>。</p>
+<p>  博主觉得操作系统部分写得不够清晰，不成系统。本着严谨和求精的态度，在此把单片机编程部分重新整理，舍去操作系统部分。想了解操作系统部分的同学可参考我以前的文章，同时也向大家推荐ifreecoding写的 <a href="http://wenku.baidu.com/link?url=DmbeIBi0n_6aGCYpJAdicuitRu_nVu-TBpbYi8floosx5ZYHou3w5ev5FOwUme4-Tw2hlZrIL9ij9BdQO0dO-ITWAby5kguYSYT9Jb5cgMm">《底层工作者手册之嵌入式操作系统内核》</a>。</p>
 
-<p>本文主要介绍单片机的各种编程结构，及其实现方法。是在假设已经可以驱动单片机和各个模块的前提下，讨论如何整合和使用各种资源，以实现功能。</p>
+<p>  本文主要介绍单片机的各种编程结构，及其实现方法。是在假设已经可以驱动单片机和各个模块的前提下，讨论如何整合和使用各种资源，以实现功能。</p>
+
+<p>  <strong>文章目录：</strong></p>
 
 <ul>
   <li>
-    <p>第1章 主函数顺序调用<br />
+    <p><a href="/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html">第1章 主函数顺序调用</a><br />
 介绍了最简单的结构——main函数顺序调用各个函数，组合完成特定的功能。并且对这种结构的特点进行了分析，让大家大概体会到这种结构的缺点。</p>
   </li>
   <li>
-    <p>第2章 界面函数结构<br />
+    <p><a href="/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html">第2章 界面函数结构</a><br />
 介绍如何构建复杂的单进程结构，从系统构建角度了解程序中的各个函数、变量的分类和作用。</p>
   </li>
   <li>
-    <p>第3章 定时器分配任务<br />
+    <p><a href="/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html">第3章 定时器分配任务</a><br />
 介绍主进程如何与定时器配合构建系统，初步了解定时器任务的特点。</p>
   </li>
   <li>
-    <p>第4章 占用式与非占用式程序结构分析<br />
+    <p><a href="/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html">第4章 占用式与非占用式程序结构分析</a><br />
 深入分析非占用式结构，体会它的优势。</p>
   </li>
   <li>
-    <p>第5章 定时器执行任务<br />
+    <p><a href="/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html">第5章 定时器执行任务</a><br />
 结合第4章的理论，讨论如何把所有任务都放到定时器里执行，同时体会这种结构的巨大优势。</p>
   </li>
   <li>
-    <p>第6章 面向对象思想+事件驱动结构<br />
+    <p><a href="/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html">第6章 面向对象思想+事件驱动结构</a><br />
 介绍如何用用面向对象的思想构建系统。</p>
   </li>
 </ul>
