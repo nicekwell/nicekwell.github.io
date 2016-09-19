@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[平衡的世界]]></title>
-  <link href="http://nicekwell.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: 单片机编程 | 平衡的世界]]></title>
+  <link href="http://nicekwell.github.io/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
   <link href="http://nicekwell.github.io/"/>
   <updated>2016-09-19T18:05:59+08:00</updated>
   <id>http://nicekwell.github.io/</id>
@@ -33,59 +33,39 @@
 
 <p>  这种结构基本上都是在main函数开始完成一些初始化,然后在主循环里周期性地调用一些函数:</p>
 
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">void main()
-</span><span class="line">{
-</span><span class="line">    /*模块初始化*/
-</span><span class="line">    while(1)
-</span><span class="line">    {
-</span><span class="line">        Fun1();
-</span><span class="line">        Fun2();
-</span><span class="line">        ......
-</span><span class="line">    }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-<p>  在初学单片机时，大部分精力都放在单片机和各个模块的驱动上，所以在开始相当长的一段时间里采用的都是这种程序结构。<br />
+<p><code>
+void main()
+{
+    /*模块初始化*/
+    while(1)
+    {
+        Fun1();
+        Fun2();
+        ......
+    }
+}
+</code>
+  在初学单片机时，大部分精力都放在单片机和各个模块的驱动上，所以在开始相当长的一段时间里采用的都是这种程序结构。<br />
   而Fun1、Fun2……这些函数完成的功能也都是比较简单的，每个函数完成一个简单的小功能，然后顺序执行就可以组合完成某个功能。<br />
   这些函数虽然功能简单，但是占用CPU资源不一定少，比如最简单的一个独立按键扫描程序：</p>
 
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sbit key=P1^0;
-</span><span class="line">unsigned char keyscan()	//返回0代表按下，1代表没按下
-</span><span class="line">{
-</span><span class="line">    if(key==0)	//说明按键按下
-</span><span class="line">    {
-</span><span class="line">	delay5(1);	//延时5ms去抖
-</span><span class="line">	if(key==0)	//确认按键按下
-</span><span class="line">	{
-</span><span class="line">            while(key==0);//等待按键释放
-</span><span class="line">            return 0;
-</span><span class="line">        }
-</span><span class="line">    }
-</span><span class="line">    return 1;
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-<p>  这是一个功能很简单的函数，主函数调用它进行按键扫描。注意到：<br />
+<p><code>
+sbit key=P1^0;
+unsigned char keyscan()	//返回0代表按下，1代表没按下
+{
+    if(key==0)	//说明按键按下
+    {
+	delay5(1);	//延时5ms去抖
+	if(key==0)	//确认按键按下
+	{
+            while(key==0);//等待按键释放
+            return 0;
+        }
+    }
+    return 1;
+}
+</code>
+  这是一个功能很简单的函数，主函数调用它进行按键扫描。注意到：<br />
   1、这个程序里有一个5ms延时函数，在延时的这段时间里单片机运行一些无意义的指令消耗时间。在此期间其他任务得不到运行，整个进程阻塞在延时函数这个地方。<br />
   2、如果按键一直按下没有释放的话，程序将停留在while(key==0); 处，此时主进程里的其他函数都得不到执行。</p>
 
