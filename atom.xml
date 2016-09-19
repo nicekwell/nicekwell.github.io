@@ -4,7 +4,7 @@
   <title><![CDATA[平衡的世界]]></title>
   <link href="http://nicekwell.github.io/atom.xml" rel="self"/>
   <link href="http://nicekwell.github.io/"/>
-  <updated>2016-09-19T18:36:33+08:00</updated>
+  <updated>2016-09-19T18:40:12+08:00</updated>
   <id>http://nicekwell.github.io/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[第一章 主函数顺序调用]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html"/>
-    <updated>2016-09-19T18:17:04+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-[?]-zhang-zhu-han-shu-shun-xu-diao-yong</id>
+    <title type="html"><![CDATA[第1章 主函数顺序调用]]></title>
+    <link href="http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html"/>
+    <updated>2016-09-19T18:38:40+08:00</updated>
+    <id>http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 主函数顺序调用的一般结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 主函数顺序调用结构的特点</a></li>
@@ -109,6 +109,7 @@
 
 <p>  第2章将介绍如何构建复杂的后台系统结构，并将程序框架和任务函数分立，明确系统的构建和任务函数的实现在整个单片机编程系统中的区别。而不要混为一谈盲目的构建系统。<br />
   在接下来的第3章到第6章将会发现程序的主体逐渐从后台转移到了前台，在转移的过程中会对任务函数进行改造，并明确这些改造的目的和优势。</p>
+
 ]]></content>
   </entry>
   
