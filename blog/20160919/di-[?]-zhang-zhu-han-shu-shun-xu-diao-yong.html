@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>第一章 主函数顺序调用 - 平衡的世界</title>
+  <meta name="author" content="nicekwell">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicekwell.github.io/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="平衡的世界" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://nicekwell.github.io/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html">
+  <meta property="og:title" content="第一章 主函数顺序调用 - 平衡的世界">
+  
+
+  <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">平衡的世界</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+		<li >
+                    <a href="/dan-pian-ji-bian-cheng">单片机编程</a>
+                </li>
+		<li >
+                    <a href="/about">About</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="nicekwell.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="平衡的世界" />
+    
+    <meta itemprop="url" content="http://nicekwell.github.io" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T18:17:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        第一章 主函数顺序调用
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1. 主函数顺序调用的一般结构</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2. 主函数顺序调用结构的特点</a></li>
+</ul>
+
+<p>  写过单片机程序都知道，在main函数的结尾会有个 while(1) 循环，它就是单片机的归宿。</p>
+
+<p>  在不考虑中断的情况下，整个单片机的最根本任务就是这个循环，由于在主函数里，在此我们称它为“主循环”，认为main函数及其调用的所有子函数（以及子函数调用的子函数）都在“主进程”里。</p>
+
+<!-- more -->
+
+<h1 id="section">1. 主函数顺序调用的一般结构</h1>
+
+<p>  这种结构基本上都是在main函数开始完成一些初始化,然后在主循环里周期性地调用一些函数:</p>
+
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">void main()
+</span><span class="line">{
+</span><span class="line">    /*模块初始化*/
+</span><span class="line">    while(1)
+</span><span class="line">    {
+</span><span class="line">        Fun1();
+</span><span class="line">        Fun2();
+</span><span class="line">        ......
+</span><span class="line">    }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
+
+<p>  在初学单片机时，大部分精力都放在单片机和各个模块的驱动上，所以在开始相当长的一段时间里采用的都是这种程序结构。</p>
+
+<p>  而Fun1、Fun2……这些函数完成的功能也都是比较简单的，每个函数完成一个简单的小功能，然后顺序执行就可以组合完成某个功能。</p>
+
+<p>  这些函数虽然功能简单，但是占用CPU资源不一定少，比如最简单的一个独立按键扫描程序：</p>
+
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sbit key=P1^0;
+</span><span class="line">unsigned char keyscan()	//返回0代表按下，1代表没按下
+</span><span class="line">{
+</span><span class="line">    if(key==0)	//说明按键按下
+</span><span class="line">    {
+</span><span class="line">	delay5(1);	//延时5ms去抖
+</span><span class="line">	if(key==0)	//确认按键按下
+</span><span class="line">	{
+</span><span class="line">            while(key==0);//等待按键释放
+</span><span class="line">            return 0;
+</span><span class="line">        }
+</span><span class="line">    }
+</span><span class="line">    return 1;
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
+<p>  这是一个功能很简单的函数，主函数调用它进行按键扫描。注意到：<br />
+  1、这个程序里有一个5ms延时函数，在延时的这段时间里单片机运行一些无意义的指令消耗时间。在此期间其他任务得不到运行，整个进程阻塞在延时函数这个地方。<br />
+  2、如果按键一直按下没有释放的话，程序将停留在while(key==0); 处，此时主进程里的其他函数都得不到执行。</p>
+
+<h1 id="section-1">2. 主函数顺序调用结构的特点</h1>
+<p>  第一点，正如这种结构的名称是“顺序调用”，任务之间的运行顺序是固定不变的，各个任务之间没有优先级的区别，它只适合完成周期性循环的工作。<br />
+  第二点，一个任务运行时，其他任务得不到执行。如果其中某个任务由于某种原因卡住了，它将阻塞整个进程的运行。<br />
+  第二点能否接受呢，要看具体情况。比如每个任务需要5ms的执行时间（内部可能有一些必要的延时函数），总共四个任务。如果整个单片机系统完成的只是简单的人机交互之类的功能，这是完全可以接受的，因为我们根本察觉不到每个任务在分开运行，在我们看来它们就是并行的。但是如果完成的是像通信协议之类的驱动的话，这是接受不了的，某个任务在执行的过程中可能其他任务有更迫切的需求。</p>
+
+<p>  任务执行的并行与否是相对而言的，要根据具体的情况。如果我们的要求不高，用这种简单的结构当然是最方便的，但是这种简单的结构也确实存在很多不足，有很多可以改进的地方。这是接下来几章要讨论的问题。</p>
+
+<p>  在此我们明确一下这种结构的特点：<br />
+<strong>  1、由主循环调用的任务的执行顺序是固定的。<br />
+  2、由主循环调用的任务都只能单独地运行，进入一个任务，就不能处理其他任务。<br />
+  3、这些任务执行时间一般会比较长（相对后面几章改造过的任务函数而言），某一个任务里面的延时函数会造成整个进程被延时。</strong></p>
+
+<p>  在操作系统的书籍中把这种结构也叫做“前后台系统”，他们把主循环称作后台，中断称作前台。用操作系统的语言来说“应用程序是一个无限的循环，循环中调用相应的函数完成相应的功能”。由于函数是循环调用的，所以“在最坏情况下的任务级响应时间取决于整个循环的执行时间”。<br />
+  本文在这里没有考虑中断，也就纯粹讨论的是后台系统。</p>
+
+<p>  第2章将介绍如何构建复杂的后台系统结构，并将程序框架和任务函数分立，明确系统的构建和任务函数的实现在整个单片机编程系统中的区别。而不要混为一谈盲目的构建系统。<br />
+  在接下来的第3章到第6章将会发现程序的主体逐渐从后台转移到了前台，在转移的过程中会对任务函数进行改造，并明确这些改造的目的和优势。</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">nicekwell</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T18:17:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dan-pian-ji-bian-cheng/'>单片机编程</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  
+  
+</div>
+
+        
+        
+      </footer>
+    </article>
+    
+      <section>
+        <h2>Comments</h2>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item active" href="/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html">第一章 主函数顺序调用</a>
+    
+  </div>
+</section>
+
+
+
+
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2016 - nicekwell<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicekwell';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicekwell.github.io/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html';
+        var disqus_url = 'http://nicekwell.github.io/blog/20160919/di-%5B%3F%5D-zhang-zhu-han-shu-shun-xu-diao-yong.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr.js"></script>
+
+
+  </body>
+</html>
