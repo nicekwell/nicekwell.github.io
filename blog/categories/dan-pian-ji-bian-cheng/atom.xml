@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 单片机编程 | 平衡的世界]]></title>
   <link href="http://nicekwell.github.io/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
   <link href="http://nicekwell.github.io/"/>
-  <updated>2016-09-19T21:36:22+08:00</updated>
+  <updated>2016-09-19T21:51:52+08:00</updated>
   <id>http://nicekwell.github.io/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,244 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[第4章 占用式与非占用式程序结构]]></title>
+    <link href="http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html"/>
+    <updated>2016-09-19T21:39:56+08:00</updated>
+    <id>http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1. 什么是占用式程序</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2. 占用式程序的缺点</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">3. 对占用式程序的改造</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">4. 改造的本质</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">5. 非占用式程序结构的优势</a></li>
+  <li><a href="#section-5" id="markdown-toc-section-5">6. 非占用式程序的一般结构</a></li>
+</ul>
+
+<h1 id="section">1. 什么是占用式程序</h1>
+<p>一个进程在一个时刻只能处理一个任务。</p>
+
+<p>每个任务是为了完成一个功能，如果这个功能的实现过程是一直占用进程处理资源的话，就称这个任务函数是占用式程序结构。</p>
+
+<p>最常见的占用式程序结构就是延时函数了，比如最常用的5ms延时函数</p>
+
+<!-- more -->
+
+<p><code>
+void delay5(unsigned char n)
+{
+    unsigned int i;
+    for(;n&gt;0;n--)
+        for(i=4700;i&gt;0;i--);	//12MHz，1T
+}
+</code></p>
+
+<p>在完成5ms功能过程中是一直占用调用它的进程处理资源的，在此期间不能进行其他任务。<br />
+还有一个很常见的占用式程序——数码管扫描，不过在这里我不举数码管扫描的例子，而举更为复杂一点的8*8彩色点阵屏的扫描程序：</p>
+
+<p><code>
+void refresh7()
+{
+    unsigned char r;
+    for(r=0;r&lt;8;r++)
+    {
+        //扫描红色
+        DPw = ~(0x01&lt;&lt;r);    //导通指定的行
+        DPr = ~vm7r[r];    //输出r行8个灯中红色led
+        DELAY7 (light7);    //亮灯时间长度，时间越长亮度越高
+        DPw=0xff;
+        DPr=0xff;
+        DPg=0xff;
+        DPb=0xff;
+        DELAY7 (32-light7);//灭灯时间长度
+        //为了简洁，这里把绿色和蓝色的扫描程序省略，它们的结构和红色扫描是一样的 
+    }
+}
+</code></p>
+
+<p>这个函数是7色模式下的屏幕扫描程序，调用一次此函数会把整个屏幕扫描一遍。<br />
+r代表行数，r循环8次代表屏幕的8个行；在每次循环里，先导通对应的行和需点亮的灯，然后延时light7个单位，再关闭所有显示，再延时32-light7个单位。</p>
+
+<h1 id="section-1">2. 占用式程序的缺点</h1>
+
+<p>占用式程序最大的缺点就是执行时间太长，耽误对其他任务的响应。另外就是资源浪费，很多时间浪费在执行中的延时上。<br />
+当然，可以在这些占用式程序中嵌入其他代码以及时处理其他任务，但是这样会造成程序结构混乱，嵌入的其他代码还会影响本程序的执行。如果嵌入的代码功能简单还好，如果功能复杂，尤其是当嵌入的代码也是占用式的，就会严重影响程序执行速度。</p>
+
+<h1 id="section-2">3. 对占用式程序的改造</h1>
+
+<p>在此还以上面的扫描程序为例，对其进行改造。<br />
+首先，每次调用就扫描8行，耗时太长，现将其改成每次扫描一行：</p>
+
+<p>```
+void refresh7()
+{
+    static unsigned char r=0;
+    //扫描红色
+    DPw = ~(0x01«r);	//修改完了再导通指定行
+    DPr = ~vm7r[r];//送入R灯IO接口显示
+    DELAY7 (light7);//显示时间长度
+    DPw=0xff;
+    DPr=0xff;
+    DPg=0xff;
+    DPb=0xff;
+    DELAY7 (32-light7);//灭灯时间长度
+    //为了简洁，这里把绿色和蓝色的扫描程序省略，它们的结构和红色扫描是一样的</p>
+
+<pre><code>r++;
+if(r==8)
+    r=0;    } } ```
+</code></pre>
+
+<p>用一个静态变量r来记忆行数，这样每次调用此函数只需扫描一行，执行速度是原来的8倍，可以比较快地响应其他任务了。<br />
+但是这样还不够，每次扫描都会扫描三种颜色，时间还是有点长，下面再次改造，改为每次只扫描一种颜色：</p>
+
+<p>```
+void refresh7()
+{
+	static unsigned char r=0;
+	static unsigned char flagrgb=0;	//当前需要点亮的颜色，0-R,1-G,2-B
+	flagrgb++;
+	if(flagrgb==3)	//说明三种颜色都扫描完了
+	{
+		flagrgb=0;	//从红色开始扫描
+		r++;		//开始扫描下一行
+		if(r==8)	//如果发现行都扫描结束则从第行开始扫描
+			r=0;
+	}</p>
+
+<pre><code>switch(flagrgb)
+{
+case 0:	//扫描红色
+	DPw = ~(0x01&lt;&lt;r);	//修改完了再导通指定行
+	DPr = ~vm7r[r];//送入R灯IO接口显示
+	DELAY7 (light7);//显示时间长度
+	DPw=0xff;
+	DPr=0xff;
+	DPg=0xff;
+	DPb=0xff;
+	DELAY7 (32-light7);//灭灯时间长度
+	break;
+case 1:	//扫描绿色	
+	/*省略代码*/
+	break;
+case 2:	//扫描蓝色
+	/*省略代码*/
+	break;
+} } ```
+</code></pre>
+
+<p>改造完成之后，执行时间再次缩短，变成了刚才的1/3。<br />
+这下还没完，我们发现每次扫描中都有延时，延时过程中什么也不做，这是极大的浪费，我们需要再此改造，把延时去掉：</p>
+
+<p>```
+void refresh7()
+{
+	static unsigned char r=0;
+	static unsigned char flagrgb=0;	//当前需要点亮的颜色，0-R,1-G,2-B
+	static unsigned char num=0;
+	num++;
+	if(num==32)
+	{
+		num=0;
+		flagrgb++;
+		if(flagrgb==3)	//说明三种颜色都扫描完了
+		{
+			flagrgb=0;	//从红色开始扫描
+			r++;		//开始扫描下一行
+			if(r==8)	//如果发现行都扫描结束则从第行开始扫描
+				r=0;
+		}
+	}</p>
+
+<pre><code>if(num&lt;light7)	//说明需要点亮
+{
+	switch(flagrgb)
+	{
+	case 0:	//扫描红色
+		DPw = ~(0x01&lt;&lt;r);
+		DPr = ~vm7r[r];//送入R灯IO接口显示
+		break;
+	case 1:	//扫描绿色	
+		DPw = ~(0x01&lt;&lt;r);
+		DPg = ~vm7g[r];
+		break;
+	case 2:	//扫描蓝色
+		DPw = ~(0x01&lt;&lt;r);
+		DPb = ~vm7b[r];
+		break;
+	}
+}
+else	//说明不需要点亮
+{
+	DPw=0xff;
+	DPr=0xff;
+	DPg=0xff;
+	DPb=0xff;
+} } ```
+</code></pre>
+
+<p>现在，这个函数中没有任何延时和循环，执行所消耗的时间是非常少的，可以很快地响应响应其他任务。</p>
+
+<h1 id="section-3">4. 改造的本质</h1>
+
+<p>上面我们对这个项目的扫描程序进行了“三大改造”，分别是：1、各个行扫描的分离；2、各个颜色扫描的分离；3、延时函数的消除。<br />
+这些改造的本质都是对原程序的分割，把一大坨程序分成多个步骤分别执行，以减小耗时，提高对外部的响应速度。<br />
+还记得在第一章说的主函数顺序调用吗？最后说过这样一句话：“在最坏情况下的任务级响应时间取决于整个循环的执行时间”，而通过这样的改造之后，其实就是在缩短这个循环的时间。<br />
+<strong>但就整个进程的执行来看，有效代码的比例是降低的</strong>，包括上面“三大改造”的第三点 延时函数的消除，看上去是消除了延时函数，提高了执行效率，但从“扫描一次整屏”这个任务来看，其执行的代码量反而是增加的。（但并不是所有的改造都一定会使效率降低，有些改造确实可以达到“消除延时函数”的目的）<br />
+那为什么还要对其进行改造呢，见下节分析。</p>
+
+<h1 id="section-4">5. 非占用式程序结构的优势</h1>
+
+<p>1、非占用式程序相比于占用式程序，增加了一定的代码，虽然会使整体效率降低，但是提高了各个任务之间的切换速度，可以对各个任务都能很快地响应。这点类似于操作系统，虽然降低了效率，但是各个任务间的快速切换可以达到各个任务“并行处理”的效果，光是这点的好处就已经很大了。</p>
+
+<p>2、非占用式程序结构可以放进定时器<br />
+第3章已经发现用定时器分配任务的好处，有些简短的代码可以直接放进定时器里。<br />
+在改造之前的扫描程序是不适合放在定时器中断处理程序里执行的，因为太长，可能还没执行完就来了下一个中断。就算勉强执行完了，留给主进程处理其他事情的时间也不多了。<br />
+而改为非占用式之后，可以在中断处理程序里直接调用扫描程序，它会很快地执行完，然后有充足的时间留给其他任务。</p>
+
+<p>3、非占用式程序并不是一定会降低效率。<br />
+就拿“三大改造”的第三点说明，它虽然形式上消除了延时函数，但是每次调用此函数时对num变量的处理，以及有其产生的相关判断语句，总的代码量比原来的要多。<br />
+但是，这真的就仅仅是这样了吗？改造之前的函数，执行完退出之后所有的led全是熄灭的，只有在此函数执行过程中（延时阶段）才会点亮（传统数码管扫描亦是如此）。<br />
+而改造之后的函数，它的功能就是指定一下每个灯的亮灭，然后立马退出，在执行其他任务的过程中该点亮的灯是在点亮的状态。这样就提高了整体的亮度，在执行其他任务的过程中，从某种意义上说也是在执行当前任务。</p>
+
+<p>这可能还不能太清楚地说明问题，下面再举一例，传统的按键扫描一般是这样：
+<code>
+if(key==0)	//key是某个引脚
+{
+    delay5(1);
+    if(key==0)	//确认按键已按下
+    {
+        /*do something*/
+    }
+}
+</code></p>
+
+<p>这段代码也是很浪费时间的，中间有个5ms延时白白浪费。<br />
+通过对它改造之后，结合定时器，可以几乎完全地把这5ms时间省出来，把如下代码放进定时器中断处理程序：</p>
+
+<p><code>
+static unsigned char keylast;	//保存上次的按键值
+if(key==0 &amp;&amp; keylast==1)	//检测到一个下降沿
+{
+    /*do something*/
+}
+keylast=key;
+</code></p>
+
+<p>这段代码每5ms执行一次，而执行的时间是非常短的，剩下有大量的时间可留给其他任务。<br />
+<strong>结合定时器进行改造，是真的可以把占用式函数的延时时间节省出来的。</strong></p>
+
+<h1 id="section-5">6. 非占用式程序的一般结构</h1>
+<p>非占用式程序将占用式程序分割执行，需要用到静态变量对当前步骤进行记忆，其一般结构如下：</p>
+
+<p><img src="/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /></p>
+
+<p>逻辑变量计算就是根据任务功能构建出一个合理的逻辑结构。<br />
+对逻辑变量的响应就是对构建好的逻辑结构的结果的响应和执行。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[第3章 定时器分配任务]]></title>
