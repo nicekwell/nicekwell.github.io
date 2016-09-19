@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 单片机编程 | 平衡的世界]]></title>
   <link href="http://nicekwell.github.io/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
   <link href="http://nicekwell.github.io/"/>
-  <updated>2016-09-19T23:35:18+08:00</updated>
+  <updated>2016-09-20T00:15:47+08:00</updated>
   <id>http://nicekwell.github.io/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,361 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[第6章 面向对象思想+事件驱动结构]]></title>
+    <link href="http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html"/>
+    <updated>2016-09-19T23:52:32+08:00</updated>
+    <id>http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1. 对象和事件</a></li>
+  <li><a href="#c" id="markdown-toc-c">2. C语言对一个对象的封装</a></li>
+  <li><a href="#define-list1listcount-3" id="markdown-toc-define-list1listcount-3">define List1_ListCount 3	//列表长度为固定</a></li>
+  <li><a href="#endif" id="markdown-toc-endif">endif</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">3. 事件分配机制</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">4. 系统层构建</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">5. 库函数</a></li>
+</ul>
+
+<p>  先来看一下这个东西吧：<a href="http://v.youku.com/v_show/id_XNTk2NzExMjg4.html">http://v.youku.com/v_show/id_XNTk2NzExMjg4.html</a>。</p>
+
+<p>  看完之后应该会觉得这个东西的结构非常复杂，这是笔者做过的最复杂的项目之一。由于是给公司开发的，所以和上一章一样不能公开源代码，但是会举一些简单的例子说明。<br />
+  刚接到这个项目了解了大体功能后，第一反应是用“界面函数”的结构。确实，这个东西是非常适合用界面函数完成的，但是由于当时笔者正在自学C++，于是用C++的思路分析了一下这个项目：<br />
+  1、总共有4个界面，而且有两个和列表框好像啊。<br />
+  2、几乎所有的动作都是由旋转编码器触发的。<br />
+  经过一番思考之后，笔者决定做一次尝试，用面向对象的思想加上事件驱动的机制完成它。</p>
+
+<p>  下面就介绍一下这种结构，也希望能借此说明“对象”和“事件”的概念。</p>
+
+<!-- more -->
+
+<h1 id="section">1. 对象和事件</h1>
+
+<p>  基本上每个面向对象语言的书都会把对象的概念说一下。在这个项目里有4个界面，把这四个界面看作四个对象，这四个对象的所有动作都由事件驱动。<br />
+  什么又是“事件”呢？简单来说“一个对象发生了某个事情”就是这个对象的某种事件。事件一定是基于某个特定的对象而言的，不能简单地说“发生了某个事情”，应该说“某个对象发生了某个事情”。而我们要做的就是确定“每个对象有哪些事情会发生”，并完成“某个对象在发生某个事情时要做的事”。</p>
+
+<p>  所以对于一个对象而言，它应该有：</p>
+
+<ul>
+  <li>1、与它对应的事件函数，用于执行“某个事件发生时要做的事”，一个对象所拥有的这些函数的个数和它可能发生的事件数是相等的。</li>
+  <li>2、完成上述函数所需要的辅助函数。<br />
+这些函数有些可能是公共的，是由系统提供的API或者其他工具函数；<br />
+也可能是这个对象特有的，是对这个对象做的某种更改。</li>
+  <li>3、每个对象都有自己的属性，这些属性在程序中的体现就是变量。</li>
+</ul>
+
+<p>  这里面，1和2的函数本质上都是一样的，都是这个对象所包含的函数。不同的是：<br />
+  与事件相对应的函数称它为这个对象的“事件”，这些函数数量与这个对象的事件数是相等的；<br />
+  完成某种特定操作的函数称它为这个对象的“方法”，也就是“这个对象可以做的事”。并且这些方法中，有些是允许被外界调用的，有些只允许在本对象内使用，所以又分为“公共方法”和“私有方法”。</p>
+
+<p>  下面就以一张表来说明一个对象内部的组成，以及各个成员的含义：</p>
+
+<p><img src="/images/dan-pian-ji-bian-cheng/duixiang.png" alt="对象的组成" /></p>
+
+<p>  有了这些了解之后我们就可以开始构建整个系统了。</p>
+
+<h1 id="c">2. C语言对一个对象的封装</h1>
+
+<p>  在C++ 中有专门的对象结构，它可以把对象里的函数和变量分为公共、私有等类型。</p>
+
+<p>  而在C语言中没有这样的结构，我们通过使用上的约定也可以达到同样的效果。比如一个内部的函数，我们约定有些函数外部可以调用，它就是公共函数；约定有些函数外部不要调用，它就是私有函数。</p>
+
+<p>  下面是对象的各个部分在C语言中的形式及意义：</p>
+
+<p><img src="/images/dan-pian-ji-bian-cheng/duixiang1.png" alt="对象的各个部分在C语言中的形式及意义" /></p>
+
+<p>  公共方法和事件本质上都是对外公开的函数。公共方法完成对本对象的某一主动的操作，而事件是完成对外部被动的响应。<br />
+  甚至可以把事件从对象的组成中取出来，把事件归到系统范畴。</p>
+
+<hr />
+
+<p>  下面就以一个简单的列表框的例子说明如何封装一个对象，假设这个列表框（对象）的名字叫做List1，一共只有3个列表项，每个列表项都有一个自己的名称和内容（0~255），有一个光标指示当前选中列表项，分配的事件有“列表项+1”“列表项-1”“列表项内容+1”“列表项内容-1”，并且这些改变是可以循环的（255+1=0，0-1=255）。</p>
+
+<p>  假设屏幕显示的网格是4行16列，外部提供的绘图函数有：<br />
+  Disp(r,c,unsigned char *)       //往r行c列写入一个字符串<br />
+  Clear()        //清屏</p>
+
+<p>  有了这些条件后，对这个对象的封装如下：</p>
+
+<ul>
+  <li>List1.c</li>
+</ul>
+
+<p><code>
+/* List1 */
+void Clear();	//清屏函数
+void Disp(unsigned char r,unsigned char c,unsigned char *p);	//在r行c列显示字符串
+/**************公共变量*****************/
+#define List1_ListCount 3	//列表长度为固定
+unsigned char List1_ListIndex=0;	//当前选中的列表项，从0开始数
+#define List1_StartIndex 0	/*当前屏幕显示的第一个列表项序号，从开始数，
+				由于屏幕能一次性把所有的3个列表项都显示出来，所以这里是固定的值。*/
+unsigned char List1_ListData[3];	//三个列表项的数据
+/**************私有变量***************/
+unsigned char code List1_Name0[]="Power";	//第0号列表项的名称
+unsigned char code List1_Name1[]="Mode ";	//第1号列表项的名称
+unsigned char code List1_Name2[]="K    ";	//第2号列表项的名称
+/**************私有方法***************/
+void List1_DispName()	//在固定位置显示个列表项的名称
+{
+	Disp(0,1,ListName0);	//显示号列表项名称
+	Disp(1,1,ListName1);	//显示号列表项名称
+	Disp(2,1,ListName2);	//显示号列表项名称
+}
+void List1_DispCursor()	//在当前选中列表项前显示“&gt;”，没选中的显示空格
+{
+	unsigned char i;
+	for(i=0;i&lt;List1_ListCount;i++)
+	{
+		if(i==List1_ListIndex)
+			Disp(i,0,"&gt;");
+		else
+			Disp(i,0," ");
+	}
+}
+void List1_DispData(unsigned char n)	//显示n号列表项的数据
+{
+	unsigned char vm[4];	//现存，以十进制显示，总共三位数
+	//先计算现存
+	vm[0]=List1_ListData[n]/100+0x30;	//计算百位的现存
+	vm[1]=(List1_ListData[n]%100)/10+0x30;	//计算十位的现存
+	vm[2]=List1_ListData[n]%10+0x30;	//计算个位的现存
+	vm[3]='\0';	//字符串结尾
+	//下面开始显示
+	Disp(n,10,vm);	//从n行列开始写入数据
+}
+/***************公共方法************************/
+void List1_Show()
+{
+	//先清屏
+	Clear();
+	//再显示所有列表项的名称
+	List1_DispName();
+	//再显示所有列表项的数据
+	{
+		unsigned char i;
+		for(i=0;i&lt;List1_ListCount;i++)
+			List1_DispData(i);
+	}
+	//再显示光标
+	List1_DiapCursor();
+}
+void List1_Hide()
+{
+	Clear();
+}
+void List1_SelectedListP1()	//当前选中项内容+1
+{
+	List1_ListData[List1_ListIndex]++;
+	List1_DispData(List1_ListIndex);
+}
+void List1_SelectedListM1()	//当前选中项内容-1
+{
+	List1_ListData[List1_ListIndex]--;
+	List1_DispData(List1_ListIndex);
+}
+void List1_ListP1()	//选中项序号+1
+{
+	List1_ListIndex++;
+	if(List1_ListIndex==3)	//实现循环
+		List1_ListIndex=0;
+	List1_DispCursor();	//刷新光标
+}
+void List1_ListM1()	//选中项序号-1
+{
+	List_ListIndex--;
+	if(List_ListIndex==0xff)	//实现循环
+		List1_ListIndex=2;
+	List1_DispCursor();	//刷新光标
+}
+/**************事件******************/
+void List1_Key0Down()	//0号键按下，让选中项序号-1
+{
+	List1_ListM1();
+}
+void List1_Key1Down()	//1号键按下，让选中项序号+1
+{
+	List1_ListP1();
+}
+void List1_Key2Down()	//2号键按下，让选中项内容-1
+{
+	List1_SelectedListM1();
+}
+void List1_Key3Down()	//3号键按下，让选中项内容+1
+{
+	List1_SelectedListP1();
+}
+</code></p>
+
+<p>  在其他地方只要包含这个List1.c文件就可以调用该对象里的各种方法和事件函数了，里面的私有方法和私有变量虽然约定外部是不要使用的，但是外部确实是可以调用的。所以也可以为这个对象写一个List1.h文件，只把公开的部分进行声明：</p>
+
+<ul>
+  <li>List1.h</li>
+</ul>
+
+<p>```
+/* List1 */
+#ifndef LIST1_H
+#define LIST1_H</p>
+
+<h1 id="define-list1listcount-3">define List1_ListCount 3	//列表长度为固定</h1>
+<p>unsigned char List1_ListIndex=0;	//当前选中的列表项，从开始数
+#define List1_StartIndex 0	/<em>当前屏幕显示的第一个列表项序号，从开始数，
+					由于屏幕能一次性把个列表项都显示出来，所以这里是固定。</em>/
+unsigned char List1_ListData[3];	//三个列表项的数据
+/<strong>**</strong><strong>**</strong><strong><em>公共方法</em></strong><strong>**</strong><strong>**</strong><strong>**</strong><strong><em>/
+void List1_Show();
+void List1_Hide();
+void List1_SelectedListP1();	//当前选中项内容+1
+void List1_SelectedListM1();	//当前选中项内容-1
+void List1_ListP1();//选中项序号+1
+void List1_ListM1();//选中项序号-1
+/</em></strong><strong>**</strong><strong>**<em>事件</em></strong><strong>**</strong><strong>**</strong>***/
+void List1_Key0Down();	//0号键按下，让选中项序号-1
+void List1_Key1Down();	//1号键按下，让选中项序号+1
+void List1_Key2Down();	//2号键按下，让选中项内容-1
+void List1_Key3Down();	//3号键按下，让选中项内容+1</p>
+
+<h1 id="endif">endif</h1>
+<p>```</p>
+
+<p>  如果采用了List1.h的话，要把List1.c文件里重复定义的部分给去掉。<br />
+  每个对象有每个对象的特点，它们差别很大，构建方法也是大不相同的。但是每个对象构建好之后就是一个模板，它是非常独立的，在其他地方只要把代码直接复制过去做少量更改就可以使用了。</p>
+
+<h1 id="section-1">3. 事件分配机制</h1>
+
+<p>  一个工程中会有多个对象，每个对象都有一些可能会发生的事件，这些事件函数是由系统调用的，由系统来判断什么对象发生了什么事件。<br />
+  比如在这个项目中，基本的事件有：左编码器按下、右编码器按下、左编码器左旋、左编码器右旋、右编码器左旋、右编码器右旋、左编码器按下左编码器左旋、左编码器按下左编码器右旋、右编码器按下右编码器左旋、右编码器按下右编码器右旋、串口接收数据事件、IIC接收数据事件。<br />
+  由于旋转编码器的驱动本身用的就是外部中断，外部中断对单片机来说就是一种意外事件。所以只要在中断里判断当前进行的是什么操作，并记录当前哪个界面正在被使用，就可以调用相应对象的相应事件了。<br />
+  然而，并不是所有的对象都一定具有所有的这些事件，根据该对象功能的需要，选用一部分有用的事件进行响应。比如在IIC界面里不考虑串口，这个界面就只响应IIC接收数据事件，而忽略串口接收数据事件。<br />
+  事件并不一定非要由外部中断产生，也可能是系统虚拟的。<strong>总之事件分配有系统完成，系统利用各个资源抽象出事件概念，然后分配到相应对象上。</strong></p>
+
+<p>  下面是一个完成事件分配的例子：</p>
+
+<p><img src="/images/dan-pian-ji-bian-cheng/eint.png" alt="中断电路" /></p>
+
+<p>  有两个按键，任意一个按键按下都会触发int0中断。假设共有2个对象，下面是事件分配的代码：</p>
+
+<p>```
+unsigned char FocusNum=0;	//标志当前获焦的对象序号，在此只有两个对象，范围是0~1
+sbit kint0=P3^2;
+sbit k0=P0^0;
+sbit k1=P0^1;</p>
+
+<p>……</p>
+
+<p>void int0() interrupt 0
+{
+    EA=0;	//关中断</p>
+
+<pre><code>if(k0==0)	//说明是k0按下
+{
+    switch(FocusNum)
+    {
+    case 0:	//对象0
+        Form0_k0Down();
+        break;
+    case 1:	//对象1
+        Form1_k0Down();
+        break;
+    }
+}
+else if(k1==0)	//说明是k1按下
+{
+    switch(FocusNum)
+    {
+    case 0:	//对象0
+        Form0_k1Down();
+        break;
+    case 1:	//对象1
+        Form1_k1Down();
+        break;
+    }
+}
+
+while(kint0==0);	//等待两个按键都释放     IE0=0;	//清除中断标志，防止在中断处理程序执行过程中再次触发了中断     EA=1;	//开中断 } ```
+</code></pre>
+
+<p>  采用FocusNum来记录当前激活的对象。</p>
+
+<p>  在此想说明的是，k0和k1两个操作都是放在一个中断里的，具体产生什么事件则是再次通过代码判断的，这些代码属于系统层，是根据实际需要对事件的抽象。</p>
+
+<p>  比如如果需要产生“两个按键同时按下”事件，则可按如下方式分配：</p>
+
+<p>```
+void int0() interrupt 0
+{
+    unsigned char 
+    EA=0;	//关中断
+    mdelay(200);    //这个延时是为了等待两个按键的状态都稳定，虽然我们是把两个按键同时按下，
+                    //但肯定因为某个先按下触发中断，此时检测另一个按键不一定是按下的状态
+    if(k0==0 &amp;&amp; k1!=0)	//说明是k0按下
+    {
+        switch(FocusNum)
+        {
+        case 0:	//对象0
+            Form0_k0Down();
+            break;
+        case 1:	//对象1
+            Form1_k0Down();
+            break;
+        }
+    }
+    else if(k1==0 &amp;&amp; k0!=0)	//说明是k1按下
+    {
+        switch(FocusNum)
+        {
+        case 0:	//对象0
+            Form0_k1Down();
+            break;
+        case 1:	//对象1
+            Form1_k1Down();
+            break;
+        }
+    }
+    else if(k0==0 &amp;&amp; k0==0)	//两个按键都按下
+    {
+        switch(FocusNum)
+        {
+        case 0:	//对象0
+            Form0_BothDown();
+            break;
+        case 1:	//对象1
+            Form1_BothDown();
+            break;
+        }
+    }</p>
+
+<pre><code>while(kint0==0);	//等待两个按键都释放
+IE0=0;	//清除中断标志，防止在中断处理程序执行过程中再次触发了中断
+EA=1;	//开中断 } ```
+</code></pre>
+
+<p>  甚至可以继续改，实现“k0按下时k1按下”“k1按下时k0按下”“k0长按”“k0连按”等事件，这里就不一个个实现了。<br />
+  总之只要系统层能够识别的动作都可以抽象成事件。</p>
+
+<h1 id="section-2">4. 系统层构建</h1>
+
+<p>  在以前的编程中从来没把程序这么明确地分层，可能是因为这次项目比较复杂，并且用来面向对象的方法，所以这种结构自然就产生了。在各个对象中有一些公共方法，这些函数完成特定的功能，而他们都依赖于底层的支持。<br />
+  当然可以让对象直接操作驱动函数，从最底层开始。但是这样的话，一方面用起来会很麻烦，另一方面可能不是所有的底层功能都会用到。<br />
+  所以让系统层根据上层对象的需要把这些功能封装，并向上层提供使用接口。这是系统层做的事情之一。<br />
+  另外系统层也会构建一些控制逻辑，这些功能并不在底层有实体的驱动函数，它是系统在软件层面抽象出来的。比如当前系统的数据显示进制、背光灯时间等，它们不对应底层的操作，仅在系统层抽象。对于上层的对象来说，根本不需要考虑这些，只要调用系统层提供的API就行了。<br />
+  此外，系统层要做的当然还有事件分配，上一节介绍的事件分配系统是系统层核心的一部分，而系统层还有其他很多功能。事件分配系统是利用各个资源抽象出事件概念，并分配给各个对象。而本节讨论的系统层是利用各个资源，在底层驱动的支持下，根据需要构建出一些控制逻辑，并封装成系统API，供上层软件使用。</p>
+
+<p>  综上，系统层做的事情有：<br />
+  1、构建事件分配系统。<br />
+  2、对底层驱动封装，并向上层提供操作接口。<br />
+  3、根据需要再构建一些其他控制结构，并向上提供接口。</p>
+
+<h1 id="section-3">5. 库函数</h1>
+
+<p>  库函数也属于对系统对底层的封装。某些功能可能比较复杂，可以构成一整套体系，那么就可以把这些函数归位一类，作为完成某个功能的库函数。<br />
+  这点和类似于操作系统的GTK库或者QT库，它们提供了大量的绘图函数。<br />
+  在本项目中，使用了绘图库，它就是在底层对液晶屏操作的基础上建立的文字和图片显示函数，提供了在指定位置写入字符、汉字，以及反色写入、垂直镜像写入等功能。上层的对象调用这些函数会非常方便。<br />
+  总结一下库的作用：利用系统层的API，或者跳过系统层直接调用驱动函数，构建出自己的一套控制逻辑，并对外提供基于这个控制逻辑的函数库。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[第5章 定时器执行任务]]></title>
@@ -1064,86 +1419,6 @@ void Task2()
   所以，至少对于51单片机编程来说，在遇到多个进程编程时要注意这样一个原则：中断处理程序不要调用到可能被中断的函数。必要时可以为中断进程单独写一个服务函数，函数内容可能跟主进程中的某个函数一模一样，但这样可以避免上述问题。</p>
 
 <p>  以上就是对“界面函数”这个典型结构的介绍，也分析了整个系统的构成。但是，正如上面说过的，这些都是对一个进程的结构的讨论，并没有涉及到中断。后面的内容会引入中断，甚至到最后把所有的任务都放到中断处理函数里，你会发现把任务放到中断处理函数里有着巨大的优势。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[第1章 主函数顺序调用]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html"/>
-    <updated>2016-09-19T18:38:40+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 主函数顺序调用的一般结构</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 主函数顺序调用结构的特点</a></li>
-</ul>
-
-<p>  写过单片机程序都知道，在main函数的结尾会有个 while(1) 循环，它就是单片机的归宿。</p>
-
-<p>  在不考虑中断的情况下，整个单片机的最根本任务就是这个循环，由于在主函数里，在此我们称它为“主循环”，认为main函数及其调用的所有子函数（以及子函数调用的子函数）都在“主进程”里。</p>
-
-<!-- more -->
-
-<h1 id="section">1. 主函数顺序调用的一般结构</h1>
-
-<p>  这种结构基本上都是在main函数开始完成一些初始化,然后在主循环里周期性地调用一些函数:</p>
-
-<p><code>
-void main()
-{
-    /*模块初始化*/
-    while(1)
-    {
-        Fun1();
-        Fun2();
-        ......
-    }
-}
-</code></p>
-
-<p>  在初学单片机时，大部分精力都放在单片机和各个模块的驱动上，所以在开始相当长的一段时间里采用的都是这种程序结构。</p>
-
-<p>  而Fun1、Fun2……这些函数完成的功能也都是比较简单的，每个函数完成一个简单的小功能，然后顺序执行就可以组合完成某个功能。</p>
-
-<p>  这些函数虽然功能简单，但是占用CPU资源不一定少，比如最简单的一个独立按键扫描程序：</p>
-
-<p><code>
-sbit key=P1^0;
-unsigned char keyscan()	//返回0代表按下，1代表没按下
-{
-    if(key==0)	//说明按键按下
-    {
-	delay5(1);	//延时5ms去抖
-	if(key==0)	//确认按键按下
-	{
-            while(key==0);//等待按键释放
-            return 0;
-        }
-    }
-    return 1;
-}
-</code>
-  这是一个功能很简单的函数，主函数调用它进行按键扫描。注意到：<br />
-  1、这个程序里有一个5ms延时函数，在延时的这段时间里单片机运行一些无意义的指令消耗时间。在此期间其他任务得不到运行，整个进程阻塞在延时函数这个地方。<br />
-  2、如果按键一直按下没有释放的话，程序将停留在while(key==0); 处，此时主进程里的其他函数都得不到执行。</p>
-
-<h1 id="section-1">2. 主函数顺序调用结构的特点</h1>
-<p>  第一点，正如这种结构的名称是“顺序调用”，任务之间的运行顺序是固定不变的，各个任务之间没有优先级的区别，它只适合完成周期性循环的工作。<br />
-  第二点，一个任务运行时，其他任务得不到执行。如果其中某个任务由于某种原因卡住了，它将阻塞整个进程的运行。<br />
-  第二点能否接受呢，要看具体情况。比如每个任务需要5ms的执行时间（内部可能有一些必要的延时函数），总共四个任务。如果整个单片机系统完成的只是简单的人机交互之类的功能，这是完全可以接受的，因为我们根本察觉不到每个任务在分开运行，在我们看来它们就是并行的。但是如果完成的是像通信协议之类的驱动的话，这是接受不了的，某个任务在执行的过程中可能其他任务有更迫切的需求。</p>
-
-<p>  任务执行的并行与否是相对而言的，要根据具体的情况。如果我们的要求不高，用这种简单的结构当然是最方便的，但是这种简单的结构也确实存在很多不足，有很多可以改进的地方。这是接下来几章要讨论的问题。</p>
-
-<p>  在此我们明确一下这种结构的特点：<br />
-<strong>  1、由主循环调用的任务的执行顺序是固定的。<br />
-  2、由主循环调用的任务都只能单独地运行，进入一个任务，就不能处理其他任务。<br />
-  3、这些任务执行时间一般会比较长（相对后面几章改造过的任务函数而言），某一个任务里面的延时函数会造成整个进程被延时。</strong></p>
-
-<p>  在操作系统的书籍中把这种结构也叫做“前后台系统”，他们把主循环称作后台，中断称作前台。用操作系统的语言来说“应用程序是一个无限的循环，循环中调用相应的函数完成相应的功能”。由于函数是循环调用的，所以“在最坏情况下的任务级响应时间取决于整个循环的执行时间”。<br />
-  本文在这里没有考虑中断，也就纯粹讨论的是后台系统。</p>
-
-<p>  第2章将介绍如何构建复杂的后台系统结构，并将程序框架和任务函数分立，明确系统的构建和任务函数的实现在整个单片机编程系统中的区别。而不要混为一谈盲目的构建系统。<br />
-  在接下来的第3章到第6章将会发现程序的主体逐渐从后台转移到了前台，在转移的过程中会对任务函数进行改造，并明确这些改造的目的和优势。</p>
 
 ]]></content>
   </entry>
