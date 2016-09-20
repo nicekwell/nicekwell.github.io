@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 单片机编程 | 生命不息 折腾不止]]></title>
-  <link href="http://nicekwell.github.io/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
-  <link href="http://nicekwell.github.io/"/>
-  <updated>2016-09-20T10:22:52+08:00</updated>
-  <id>http://nicekwell.github.io/</id>
+  <link href="http://nicekwell.net/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
+  <link href="http://nicekwell.net/"/>
+  <updated>2016-09-20T10:47:16+08:00</updated>
+  <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[第6章 面向对象思想+事件驱动结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html"/>
     <updated>2016-09-19T23:52:32+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 对象和事件</a></li>
   <li><a href="#c" id="markdown-toc-c">2. C语言对一个对象的封装</a></li>
@@ -370,9 +370,9 @@ EA=1;	//开中断 } ```
   
   <entry>
     <title type="html"><![CDATA[第5章 定时器执行任务]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html"/>
     <updated>2016-09-19T22:52:11+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu</id>
+    <id>http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 定时器执行任务的程序结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 定时器里面任务函数的特点</a></li>
@@ -804,9 +804,9 @@ else	//说明有任务
   
   <entry>
     <title type="html"><![CDATA[第4章 占用式与非占用式程序结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html"/>
     <updated>2016-09-19T21:39:56+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 什么是占用式程序</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 占用式程序的缺点</a></li>
@@ -1042,9 +1042,9 @@ keylast=key;
   
   <entry>
     <title type="html"><![CDATA[第3章 定时器分配任务]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html"/>
     <updated>2016-09-19T21:08:13+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu</id>
+    <id>http://nicekwell.net/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 用界面函数构成的基础框架</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 结合定时器编程分析</a></li>
@@ -1305,9 +1305,9 @@ bit ds18b20_init()
   
   <entry>
     <title type="html"><![CDATA[第2章 “界面函数”结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html"/>
     <updated>2016-09-19T20:48:39+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 界面函数一般结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 更高的角度分析这种结构</a></li>

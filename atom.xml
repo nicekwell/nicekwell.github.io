@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[生命不息 折腾不止]]></title>
-  <link href="http://nicekwell.github.io/atom.xml" rel="self"/>
-  <link href="http://nicekwell.github.io/"/>
-  <updated>2016-09-20T10:22:52+08:00</updated>
-  <id>http://nicekwell.github.io/</id>
+  <link href="http://nicekwell.net/atom.xml" rel="self"/>
+  <link href="http://nicekwell.net/"/>
+  <updated>2016-09-20T10:47:16+08:00</updated>
+  <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[第6章 面向对象思想+事件驱动结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html"/>
     <updated>2016-09-19T23:52:32+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 对象和事件</a></li>
   <li><a href="#c" id="markdown-toc-c">2. C语言对一个对象的封装</a></li>
@@ -59,7 +59,7 @@
 
 <p>  下面就以一张表来说明一个对象内部的组成，以及各个成员的含义：</p>
 
-<p><img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/duixiang.png" alt="对象的组成" /></p>
+<p><img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/duixiang.png" alt="对象的组成" /></p>
 
 <p>  有了这些了解之后我们就可以开始构建整个系统了。</p>
 
@@ -71,7 +71,7 @@
 
 <p>  下面是对象的各个部分在C语言中的形式及意义：</p>
 
-<p><img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/duixiang1.png" alt="对象的各个部分在C语言中的形式及意义" /></p>
+<p><img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/duixiang1.png" alt="对象的各个部分在C语言中的形式及意义" /></p>
 
 <p>  公共方法和事件本质上都是对外公开的函数。公共方法完成对本对象的某一主动的操作，而事件是完成对外部被动的响应。<br />
   甚至可以把事件从对象的组成中取出来，把事件归到系统范畴。</p>
@@ -363,7 +363,7 @@
 
 <p>  下面是一个完成事件分配的例子：</p>
 
-<p><img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/eint.png" alt="中断电路" /></p>
+<p><img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/eint.png" alt="中断电路" /></p>
 
 <p>  有两个按键，任意一个按键按下都会触发int0中断。假设共有2个对象，下面是事件分配的代码：</p>
 
@@ -573,9 +573,9 @@
   
   <entry>
     <title type="html"><![CDATA[第5章 定时器执行任务]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html"/>
     <updated>2016-09-19T22:52:11+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu</id>
+    <id>http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 定时器执行任务的程序结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 定时器里面任务函数的特点</a></li>
@@ -735,7 +735,7 @@
   <li>2、由于这些函数是放在定时器里，所以<strong>这些函数必须简短，不能占用过长时间，必须可以在一个定时器中断周期内全部处理完。</strong></li>
   <li>3、与在主进程连续执行的任务函数相比，这种函数的调用是周期、间断的，这种周期间断性的调用，决定它自己<strong>必须具有记忆以前的状态的能力</strong>，只有这样才能在本次被调用时决定应该进行什么样的操作。<br />
 在上一章“占用式与非占用式程序结构分析”中已经明确了非占用式程序结构的优势，并且也明确了其内部结构：<br />
-<img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /><br />
+<img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /><br />
   有了上一章的基础就好理解这些在定时器里的任务函数了，实际上这些任务函数和在主进程连续执行的任务函数相比，就是把它们改为了非占用式程序放在定时器里执行。</li>
   <li>4、由于要保证每个任务都要在很短的时间内执行结束，所以就要求每个任务不能阻塞进程，不论这个任务当前处于什么情况，应当执行一次之后立马退出。<br />
 这样，<strong>不论某个进程的执行情况如何，其他进程绝对都会继续执行，也就把各个进程独立开了，保证每个进程都会得到及时的执行。</strong></li>
@@ -1226,9 +1226,9 @@
   
   <entry>
     <title type="html"><![CDATA[第4章 占用式与非占用式程序结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html"/>
     <updated>2016-09-19T21:39:56+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 什么是占用式程序</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 占用式程序的缺点</a></li>
@@ -1578,7 +1578,7 @@
 <h1 id="section-5">6. 非占用式程序的一般结构</h1>
 <p>  非占用式程序将占用式程序分割执行，需要用到静态变量对当前步骤进行记忆，其一般结构如下：</p>
 
-<p><img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /></p>
+<p><img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /></p>
 
 <p>  逻辑变量计算就是根据任务功能构建出一个合理的逻辑结构。<br />
   对逻辑变量的响应就是对构建好的逻辑结构的结果的响应和执行。</p>
@@ -1588,9 +1588,9 @@
   
   <entry>
     <title type="html"><![CDATA[第3章 定时器分配任务]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html"/>
     <updated>2016-09-19T21:08:13+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu</id>
+    <id>http://nicekwell.net/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 用界面函数构成的基础框架</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 结合定时器编程分析</a></li>
@@ -1602,7 +1602,7 @@
 
 <!-- more -->
 
-<p><img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/dianzizhong.jpeg" alt="电子钟" /></p>
+<p><img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/dianzizhong.jpeg" alt="电子钟" /></p>
 
 <p>  这是博主2012年的作品，本章将以这个电子钟为背景介绍用定时器分配任务的程序结构，源代码也会在<a href="http://download.csdn.net/detail/nicekwell/6668033" title="从单片机编程到操作系统产生》的附件">附件</a>中给出。</p>
 
@@ -1950,9 +1950,9 @@
   
   <entry>
     <title type="html"><![CDATA[第2章 “界面函数”结构]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html"/>
     <updated>2016-09-19T20:48:39+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou</id>
+    <id>http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 界面函数一般结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 更高的角度分析这种结构</a></li>
@@ -2083,7 +2083,7 @@
 <h1 id="section-1">2. 更高的角度分析这种结构</h1>
 
 <p>  在2.1节分析了一下界面函数这种典型结构，在此我想借这种结构分析一下整个系统的构成。把上述系统用下面这个图表示：
-<img src="http://nicekwell.github.io/images/dan-pian-ji-bian-cheng/chengxujiegou.jpg" alt="程序结构示意图" /></p>
+<img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/chengxujiegou.jpg" alt="程序结构示意图" /></p>
 
 <p>  这里面所有函数都是由主函数调用的，属于主进程，并且这些函数也都体现出了系统结构。<br />
   例如在函数1里面想进入函数2，不是直接调用函数2，而是先返回函数1，再由主循环分配到函数2。<br />
@@ -2116,9 +2116,9 @@
   
   <entry>
     <title type="html"><![CDATA[第1章 主函数顺序调用]]></title>
-    <link href="http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html"/>
+    <link href="http://nicekwell.net/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html"/>
     <updated>2016-09-19T18:38:40+08:00</updated>
-    <id>http://nicekwell.github.io/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong</id>
+    <id>http://nicekwell.net/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section" id="markdown-toc-section">1. 主函数顺序调用的一般结构</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">2. 主函数顺序调用结构的特点</a></li>
