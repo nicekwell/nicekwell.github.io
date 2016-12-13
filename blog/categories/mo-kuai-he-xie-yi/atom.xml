@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 模块和协议 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-13T23:02:33+08:00</updated>
+  <updated>2016-12-13T23:14:49+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -418,6 +418,10 @@ wiringPiI2CWriteReg16(fd, LED0_OFF_L+4*num, OFF); } ```
 3、连接两根i2c线。<br />
 4、连接v+引脚，给舵机供电电源。<br />
 5、把驱动合入到工程，即可使用。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
 
 ]]></content>
   </entry>
