@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 模块和协议 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-13T23:14:49+08:00</updated>
+  <updated>2016-12-14T00:00:57+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -58,7 +58,9 @@
 <h1 id="section">一、概述和硬件</h1>
 
 <h2 id="section-1">1、概述</h2>
-<p>很常见的模块板子是这个样子，这个板子也比较便宜，十几块钱一个。<br />
+<p>数据手册从网上找一下很容易找到（比如<a href="http://www2.ic37.com/pdf/pdf_download.asp?id=11155998_602380">http://www2.ic37.com/pdf/pdf_download.asp?id=11155998_602380</a>），但没有找到中文版，本文记录的是我使用中总结的内容和方法。</p>
+
+<p>很常见的模块板子如上图所示，这个板子也比较便宜，十几块钱一个。<br />
 i2c通信，只需要几根i2c线就可以控制16路pwm，周期和占空比都可控。<br />
 可以多个模块级联。<br />
 可控制16路通道的四种工作模式：关、开、pwm、可变pwm。<br />
@@ -106,7 +108,6 @@ i2c通信，只需要几根i2c线就可以控制16路pwm，周期和占空比都
 <p>模块有一个OE反使能脚，这个引脚低电平使能，不接的话模块内部默认已经接地使能了，所以正常使用可以不接。</p>
 
 <h1 id="section-5">二、寄存器功能</h1>
-<p>:-:|:-:|:-:</p>
 
 <table>
   <thead>
@@ -291,14 +292,18 @@ i2c通信，只需要几根i2c线就可以控制16路pwm，周期和占空比都
 当发现 ACK == LEDX_OFF_H[3:0]:LEDX_OFF_L 时，X通道输出低电平。</strong></p>
 
 <h2 id="prescale">PRE_SCALE寄存器</h2>
-<p>这个寄存器是用来设置周期的，具体原理可以不用管，只要记住这个公式：
-<img src="/images/module-and-agreement/prescale.png" alt="prescale" />
-其中osc_clock是时钟，根据上面的寄存器设置选择是内部25MHz时钟还是外部时钟；
-update_rate是频率，比如周期是20ms，那么频率就是50。
-注意：<strong>实际应用中发现有误差，需要加入校准，要把udpate_rate乘以0.915。</strong>
+<p>这个寄存器是用来设置周期的，具体原理可以不用管，只要记住这个公式：</p>
+
+<p><img src="/images/module-and-agreement/prescale.png" alt="prescale" /></p>
+
+<p>其中osc_clock是时钟，根据上面的寄存器设置选择是内部25MHz时钟还是外部时钟；<br />
+update_rate是频率，比如周期是20ms，那么频率就是50。<br />
+注意：<strong>实际应用中发现有误差，需要加入校准，要把udpate_rate乘以0.915。</strong><br />
 包括从网上下载的arduino驱动中也加入了此校准。</p>
 
 <h1 id="section-6">三、驱动</h1>
+
+<p>网上可以找到arduino平台的驱动，我在在这里是用树莓派驱动的，介绍一下基于树莓派wiringPi库的驱动。</p>
 
 <h2 id="wiringpi">树莓派wiringPi平台</h2>
 <p>这里是基于树莓派wiringPi提供的i2c通信接口基础上实现的驱动，在其他平台上的驱动方法类似，只要把这里的i2c接口换成其他平台的通信接口即可。<br />
