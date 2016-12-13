@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20161213/pca9685-16lu-12wei-pwmxin-hao-fa-sheng-qi.html</loc>
+<lastmod>2016-12-13T20:24:30+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20161008/bie-cai-bai-kuai-er-bot.html</loc>
 <lastmod>2016-10-08T14:12:06+08:00</lastmod>
 </url>
@@ -54,5 +58,8 @@
 </url>
 <url>
 <loc>http://nicekwell.net/blog/categories/diy/</loc>
+</url>
+<url>
+<loc>http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/</loc>
 </url>
 </urlset>
