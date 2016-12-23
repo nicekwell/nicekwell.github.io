@@ -138,6 +138,283 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:39:52+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html" itemprop="url">单片机提取WFR07接收机信号</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">硬件</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">输出格式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构介绍</a></li>
+</ul>
+
+<p>为什么要提取接收机信号？因为有时候航模那端想要按照自己的想法编程，同时又希望能够使用航模遥控器这个方便的工具。<br />
+总之如果能够把航模遥控器信号转换成数字信号，无论用它做什么也是极好的~</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:08:33+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html" itemprop="url">单片机提取GR3E接收机信号</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">硬件</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">输出格式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构介绍</a></li>
+</ul>
+
+<p>为什么要提取接收机信号？因为有时候航模那端想要按照自己的想法编程，同时又希望能够使用航模遥控器这个方便的工具。<br />
+总之如果能够把航模遥控器信号转换成数字信号，无论用它做什么也是极好的~</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:47:02+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html" itemprop="url">WFT07和WFR07的功能和使用</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1、特性</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2、基本设置</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">设置供电模式</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">设置遥控模式</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">对码</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">失控设置</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">3、遥控器功能</a></li>
+  <li><a href="#section-7" id="markdown-toc-section-7">4、接收机引脚</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">5、接收机输出PPM特性</a></li>
+</ul>
+<p>  </p>
+
+<h1 id="section">1、特性</h1>
+<p>我买的是美国手，油门在左边。<br />
+7通道。<br />
+自带4节5号电池盒，可以用5号电池供电，也可以换成锂电池供电。</p>
+
+<p>可设置固定翼和直升机两种遥控模式。<em>直升机模式下各个通道之间的调节会相互影响，比如调节油门一个通道，会有多个通道一起改变；而在固定翼模式下，各个通道是独立调节。</em><br />
+<strong>对我来说，我只想在接收端还原遥控器的操作，对操作进行何种响应由飞机上的程序决定，所以我用的是固定翼模式，下面的所有介绍都是在固定翼模式下。</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:26:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html" itemprop="url">GT2B和GR3E的功能和使用</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">特性</a></li>
+  <li><a href="#gt2b" id="markdown-toc-gt2b">1、GT2B遥控器功能</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">3、对码</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">4、输出PPM信号特性</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">周期</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">通道分配</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">关于遥控器的说明</a></li>
+      <li><a href="#section-6" id="markdown-toc-section-6">信号丢失后的输出</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-7" id="markdown-toc-section-7">5、其他说明</a></li>
+</ul>
+<p>  </p>
+
+<h1 id="section">特性</h1>
+<p>三通道：方向，电机，第三通道。<br />
+接收机输出的是PPM信号，PPM信号的详细介绍可参考PPM信号那一部分。</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:00:25+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161223/ppmxin-hao-jie-shao.html" itemprop="url">PPM信号介绍</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">电平</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">工作方式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">刷新率</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">脉宽和数值</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">多路PPM信号</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
+  <li><a href="#ppm-1" id="markdown-toc-ppm-1">PPM和舵机</a></li>
+  <li><a href="#ppm-2" id="markdown-toc-ppm-2">PPM和电调</a></li>
+  <li><a href="#ppm-3" id="markdown-toc-ppm-3">单片机提取PPM信号</a></li>
+</ul>
+<p>  </p>
+
+<p>PPM信号通过脉宽来表示数值，是航模遥控器接收机的标准输出信号。<br />
+在航模遥控器中，PPM用于反映遥控器的状态。</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161223/ppmxin-hao-jie-shao.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-13T20:24:30+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月13日</time>
         
       </p>
@@ -420,156 +697,11 @@
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T21:08:13+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html" itemprop="url">第3章 定时器分配任务</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 用界面函数构成的基础框架</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 结合定时器编程分析</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">3. 任务分割</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">4. 定时器分配任务程序结构总结</a></li>
-</ul>
-
-<p>  在前两章的内容里都没有考虑中断，本章将引入定时器。引入定时器的原因一些功能需要计时，最常见的就是电子钟了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/20160919/di-3zhang-ding-shi-qi-fen-pei-ren-wu.html">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T20:48:39+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html" itemprop="url">第2章 “界面函数”结构</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 界面函数一般结构</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 更高的角度分析这种结构</a></li>
-</ul>
-
-<p>  这一章将介绍的是主循环调用任务函数的一种非常常用的结构。到目前为止，在主进程的构建方面，除了顺序调用我只用到过这一种构建方式，并且用得非常多。在2011年的电子设计大赛上，笔者就用了这种程序结构获得了安徽省第一的成绩，可见这种结构的威力。之所以叫它“界面函数”结构，是因为它各个函数就像一个个界面一样，在每个界面（函数）中完成某些特定的功能，我没找到这种结构的通用叫法。</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T18:38:40+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html" itemprop="url">第1章 主函数顺序调用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 主函数顺序调用的一般结构</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 主函数顺序调用结构的特点</a></li>
-</ul>
-
-<p>  写过单片机程序都知道，在main函数的结尾会有个 while(1) 循环，它就是单片机的归宿。</p>
-
-<p>  在不考虑中断的情况下，整个单片机的最根本任务就是这个循环，由于在主函数里，在此我们称它为“主循环”，认为main函数及其调用的所有子函数（以及子函数调用的子函数）都在“主进程”里。</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/20160919/di-1zhang-zhu-han-shu-shun-xu-diao-yong.html">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
       
-        <li class="previous disabled"><a href="#">&larr;&nbsp;Older</a></li>
+        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
       
       <li><a href="/blog/archives">Blog Archives</a></li>
       
@@ -600,15 +732,15 @@
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/20161213/pca9685-16lu-12wei-pwmxin-hao-fa-sheng-qi.html">PCA9685 16路12位pwm信号发生器</a>
+    <a class="list-group-item " href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">单片机提取WFR07接收机信号</a>
     
-    <a class="list-group-item " href="/blog/20161008/bie-cai-bai-kuai-er-bot.html">别踩白块儿bot</a>
+    <a class="list-group-item " href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a>
     
-    <a class="list-group-item " href="/blog/20160919/di-6zhang-mian-xiang-dui-xiang-si-xiang-plus-shi-jian-qu-dong-jie-gou.html">第6章 面向对象思想+事件驱动结构</a>
+    <a class="list-group-item " href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html">WFT07和WFR07的功能和使用</a>
     
-    <a class="list-group-item " href="/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html">第5章 定时器执行任务</a>
+    <a class="list-group-item " href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html">GT2B和GR3E的功能和使用</a>
     
-    <a class="list-group-item " href="/blog/20160919/di-4zhang-zhan-yong-shi-yu-fei-zhan-yong-shi-cheng-xu-jie-gou.html">第4章 占用式与非占用式程序结构</a>
+    <a class="list-group-item " href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a>
     
   </div>
 </section>

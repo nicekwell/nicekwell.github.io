@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-21T00:48:23+08:00</updated>
+  <updated>2016-12-24T01:00:02+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,541 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[单片机提取WFR07接收机信号]]></title>
+    <link href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html"/>
+    <updated>2016-12-24T00:39:52+08:00</updated>
+    <id>http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">硬件</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">输出格式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构介绍</a></li>
+</ul>
+
+<p>为什么要提取接收机信号？因为有时候航模那端想要按照自己的想法编程，同时又希望能够使用航模遥控器这个方便的工具。<br />
+总之如果能够把航模遥控器信号转换成数字信号，无论用它做什么也是极好的~</p>
+
+<!-- more -->
+
+<p>工程放在github上：<a href="https://github.com/nicekwell/WFR07_decode">https://github.com/nicekwell/WFR07_decode</a><br />
+也可以直接<a href="https://github.com/nicekwell/WFR07_decode/archive/master.zip">下载</a>此工程。</p>
+
+<p>完成后的效果视频：</p>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg3OTU4ODYxNg?color=white&amp;theme=light"></iframe>
+
+<p>  </p>
+
+<p>  </p>
+
+<p>以下是一些重要的说明，在工程的README中有更详细的介绍。</p>
+
+<p>  </p>
+
+<h1 id="section">硬件</h1>
+<p>【单片机】STC12C5A60S2<br />
+【晶振】24MHz<br />
+注：此晶振可产生精确地定时器中断，方便监测各个通道，但串口波特率会有0.16%的误差，不会影响使用。<br />
+【引脚连接】<br />
+CH1：P1.6<br />
+CH2：P1.5<br />
+CH3：P1.4<br />
+CH4：P1.3<br />
+CH5：P1.2<br />
+CH6：P1.1<br />
+CH7：P1.0<br />
+TXD：P3.1</p>
+
+<h1 id="section-1">输出格式</h1>
+<p>【波特率】115200<br />
+实测发送一个字节大约需要13us，这样算的话一帧发送8字节大约需要104us。<br />
+【数据格式】<br />
+每个周期内，当采集完7个通道的高电平后（最长约14ms）会立刻通过串口发送7个通道的数据信息。<br />
+每个周期的数据为一帧，一帧数据有8个字节：<br />
+第一字节固定为0x01，标志一帧数据开始。（后面7个字节不可能为这个值）<br />
+后面7个字节依次表示CH1到CH7的脉宽，单位是10us。如输出150表示脉宽为1500us。<br />
+注：<br />
+1、接收机输出的脉宽范围大约在1000us~2000us之间，所以7个脉宽的数据范围大约在100~200之间。<br />
+2、解码后输出的数据单位是10us，但实际接收机输出的精度是20us，单片机程序也是按照20us的精度采样的。</p>
+
+<p>对于此接收机，不会出现信号丢失的情况，当遇到遥控器信号丢失时，接收机会输出预先设定好的信号，对于解码器来说不能区分当前遥控器信号是否丢失。</p>
+
+<h1 id="section-2">程序结构介绍</h1>
+<p>两个进程：定时器中断和主循环。</p>
+
+<p>定时器20us一次中断，有两个状态：<br />
+1、信号采集中：<br />
+  1、采集各个通道高电平时间。<br />
+  2、判断当前所有通道是否采集完成（所有通道信号结束后，所有通道都会输出低电平。<br />
+    如果连续100us（5个周期）检测到所有通道都是低电平，则认为一帧信号结束，此时对采集到的信号进行判断：<br />
+      如果所有通道脉宽大于500us，则认为数据有效，通知主进程发送数据，并进入状态2。<br />
+2、本周期信号已结束，等待下一周期：<br />
+  任意通道采集到高电平则进入状态1。</p>
+
+<p>主循环进程只干一件事，等待定时器进程发送指令，接收到指令后发送数据。<br />
+但主循环会忽略第一帧数据，因为第一帧数据可能采集不完整。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[单片机提取GR3E接收机信号]]></title>
+    <link href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html"/>
+    <updated>2016-12-24T00:08:33+08:00</updated>
+    <id>http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">硬件</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">输出格式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构介绍</a></li>
+</ul>
+
+<p>为什么要提取接收机信号？因为有时候航模那端想要按照自己的想法编程，同时又希望能够使用航模遥控器这个方便的工具。<br />
+总之如果能够把航模遥控器信号转换成数字信号，无论用它做什么也是极好的~</p>
+
+<!-- more -->
+
+<p>工程放在github上：<a href="https://github.com/nicekwell/GR3E_decode">https://github.com/nicekwell/GR3E_decode</a><br />
+也可以直接<a href="https://github.com/nicekwell/GR3E_decode/archive/master.zip">下载</a>此工程。</p>
+
+<p>完成后的效果视频：</p>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg3ODIxODc2MA?color=white&amp;theme=light"></iframe>
+
+<p>  </p>
+
+<p>  </p>
+
+<p>以下是一些重要的说明，在工程的README中有更详细的介绍。</p>
+
+<p>  </p>
+
+<h1 id="section">硬件</h1>
+<p>【单片机】STC12C5A60S2<br />
+【晶振】24MHz<br />
+注：此晶振可产生精确地定时器中断，方便监测各个通道，但串口波特率会有0.16%的误差，不会影响使用。<br />
+【引脚连接】<br />
+CH1：P1.2<br />
+CH2：P1.1<br />
+CH3：P1.0<br />
+TXD：P3.1</p>
+
+<h1 id="section-1">输出格式</h1>
+<p>【波特率】115200<br />
+实测发送一个字节大约需要13us，这样算的话一帧发送4字节大约需要50us。<br />
+【数据格式】<br />
+每个周期内，当采集完三个通道的高电平后（最长约6ms）会立刻通过串口发送3个通道的数据信息。<br />
+每个周期的数据为一帧，一帧数据有4个字节：<br />
+第一字节固定为0x01，标志一帧数据开始。（后面三个字节不可能为这个值）<br />
+后面三个字节依次表示CH1、CH2、CH3的脉宽，单位是10us。如输出150表示脉宽为1500us。<br />
+注：<br />
+1、接收机输出的脉宽范围大约在1000us~2000us之间，所以三个脉宽的数据范围大约在100~200之间。<br />
+2、解码后输出的数据单位是10us，但实际接收机输出的精度是20us，单片机程序也是按照20us的精度采样的。</p>
+
+<p>以上是接收机正常工作的数据输出格式，当接收机接收不到信号时，模块持续输出0x02。</p>
+
+<h1 id="section-2">程序结构介绍</h1>
+<p>两个进程：定时器中断和主循环。</p>
+
+<p>定时器20us一次中断，有两个状态：<br />
+1、信号采集中：<br />
+  1、采集各个通道高电平时间。<br />
+  2、判断当前所有通道是否采集完成（所有通道信号结束后，所有通道都会输出低电平。<br />
+    如果连续100us（5个周期）检测到所有通道都是低电平，则认为一帧信号结束，此时对采集到的信号进行判断：<br />
+      如果所有通道脉宽大于500us，则认为数据有效，通知主进程发送数据，并进入状态2。<br />
+      否则认为数据有问题，通知主循环发送“信号丢失”信号，并进入状2。<br />
+2、本周期信号已结束，等待下一周期：<br />
+  任意通道采集到高电平则进入状态1。</p>
+
+<p>主循环进程只干一件事，等待定时器进程发送指令，接收到指令后发送数据。<br />
+但主循环会忽略第一帧数据，因为第一帧数据可能采集不完整。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WFT07和WFR07的功能和使用]]></title>
+    <link href="http://nicekwell.net/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html"/>
+    <updated>2016-12-23T23:47:02+08:00</updated>
+    <id>http://nicekwell.net/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1、特性</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2、基本设置</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">设置供电模式</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">设置遥控模式</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">对码</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">失控设置</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">3、遥控器功能</a></li>
+  <li><a href="#section-7" id="markdown-toc-section-7">4、接收机引脚</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">5、接收机输出PPM特性</a></li>
+</ul>
+<p>  </p>
+
+<h1 id="section">1、特性</h1>
+<p>我买的是美国手，油门在左边。<br />
+7通道。<br />
+自带4节5号电池盒，可以用5号电池供电，也可以换成锂电池供电。</p>
+
+<p>可设置固定翼和直升机两种遥控模式。<em>直升机模式下各个通道之间的调节会相互影响，比如调节油门一个通道，会有多个通道一起改变；而在固定翼模式下，各个通道是独立调节。</em><br />
+<strong>对我来说，我只想在接收端还原遥控器的操作，对操作进行何种响应由飞机上的程序决定，所以我用的是固定翼模式，下面的所有介绍都是在固定翼模式下。</strong></p>
+
+<!-- more -->
+
+<h1 id="section-1">2、基本设置</h1>
+
+<h2 id="section-2">设置供电模式</h2>
+
+<p>遥控器虽然不能直接给电池充电，但是可以设置电池的供电方式，根据不同的电池类型判断当前电量。<br />
+设置方法：<br />
+<strong>按住menu键开机–&gt;供电方式–&gt;选择对应的供电方式–&gt;关机重开机生效</strong><br />
+我买了充电锂电池，所以选择锂电池供电。</p>
+
+<h2 id="section-3">设置遥控模式</h2>
+<p>如上面所说，这里所有的介绍都是在“固定翼”模式下，需要把模式设置成“固定：<br />
+按menu键开机–&gt;机型设置–&gt;固定翼。</p>
+
+<h2 id="section-4">对码</h2>
+<p>1、接收机上电<br />
+2、接收机长按SET键，接收机指示灯编程橙色，进入对码状态。<br />
+3、遥控器开机–&gt;menu–&gt;高级设置–&gt;对码。对码成功后接收机指示灯会熄灭。</p>
+
+<h2 id="section-5">失控设置</h2>
+<p>枪型3通道遥控器，接收机在接收不到遥控器信号时所有通道的信号会立马停止。而7通道遥控器可以设置当接收机接收不到信号时应该保持什么样的信号输出。<br />
+menu–&gt;高级设置–&gt;失控设置，在这个页面按一下ok键就会把当前遥控器的状态作为失控时的状态。</p>
+
+<h1 id="section-6">3、遥控器功能</h1>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/WFT07.jpg" alt="WFT07jpg" /></p>
+
+<h1 id="section-7">4、接收机引脚</h1>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/WFR07.jpg" alt="WFR07jpg" /></p>
+
+<p>电源正负极在接收机上有标识。</p>
+
+<h1 id="ppm">5、接收机输出PPM特性</h1>
+<p>PPM的详细文档跳转到：<a href="http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a><br />
+周期：21.2ms，不是标准的20ms。<br />
+脉宽：中间值±500us，和标准PPM相同。<br />
+精度：通道1、2、3、4、6是连续变化的，分辨率是20us。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">时间精度</th>
+      <th style="text-align: center">调节范围1000us，分成份数</th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">20us</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：1.8。占空比从 -100%到+100%，对应占空比分辨率：4%。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>此接收机可设置遥控器信号丢失时的输出，所以遥控器信号丢失时的输出不确定，接近正常操作信号，单片机提取其信号时也无法判断当前是否信号丢失。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GT2B和GR3E的功能和使用]]></title>
+    <link href="http://nicekwell.net/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html"/>
+    <updated>2016-12-23T23:26:04+08:00</updated>
+    <id>http://nicekwell.net/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">特性</a></li>
+  <li><a href="#gt2b" id="markdown-toc-gt2b">1、GT2B遥控器功能</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">3、对码</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">4、输出PPM信号特性</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">周期</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">通道分配</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">关于遥控器的说明</a></li>
+      <li><a href="#section-6" id="markdown-toc-section-6">信号丢失后的输出</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-7" id="markdown-toc-section-7">5、其他说明</a></li>
+</ul>
+<p>  </p>
+
+<h1 id="section">特性</h1>
+<p>三通道：方向，电机，第三通道。<br />
+接收机输出的是PPM信号，PPM信号的详细介绍可参考PPM信号那一部分。</p>
+
+<!-- more -->
+
+<h1 id="gt2b">1、GT2B遥控器功能</h1>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/GT2B_1.jpg" alt="GT2B_1.jpg" /></p>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/GT2B_2.jpg" alt="GT2B_2.jpg" /></p>
+
+<p>控制面板相关设置的功能会在第4节“输出PPM信号特性”中结合输出信号说明。</p>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/GR3E.jpg" alt="GR3E.jpg" /></p>
+
+<p>在左边都写得很清楚，总共4排，每排3个脚，用表格列出来引脚就是：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>悬空</td>
+      <td>VCC</td>
+      <td>GND</td>
+    </tr>
+    <tr>
+      <td>BINO/CH3</td>
+      <td>VCC</td>
+      <td>GND</td>
+    </tr>
+    <tr>
+      <td>CH2</td>
+      <td>VCC</td>
+      <td>GND</td>
+    </tr>
+    <tr>
+      <td>CH1</td>
+      <td>VCC</td>
+      <td>GND</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>所有通道的VCC相连，所有通道的GND相连。<br />
+VCC电压标准是5V。</p>
+
+<h1 id="section-1">3、对码</h1>
+<p>1、遥控器和接收机都断电。<br />
+2、接收机第三通（BINO）道插入对码线。所谓对码线的功能其实就是把PWM输出脚和地相连。<br />
+3、接收机任意通道接通电源。此时接收机灯闪烁，表示等待对码。<br />
+4、遥控器按住对码键（BINO）开机。对码成功的话接收机停止闪烁，遥控器的电量指示灯（G/F）闪烁。<br />
+5、重启遥控器。<br />
+此时接收机就可以用遥控器控制了，信号特性见下面。</p>
+
+<h1 id="ppm">4、输出PPM信号特性</h1>
+<p>PPM的详细文档跳转到：<a href="http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
+
+<h2 id="section-2">周期</h2>
+<p>GR3E 三个通道的PPM信号周期都是16ms，频率大约是60Hz。</p>
+
+<h2 id="section-3">通道分配</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">通道</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: left">信号特性</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">CH1</td>
+      <td style="text-align: center">方向</td>
+      <td style="text-align: left">1、脉宽<em>中间值</em>可以通过控制面板<strong>最上面的旋钮</strong>调节，默认中间值是<strong>1500us</strong>。2、脉宽<em>变化方向</em>可以通过控制面板<strong>左上角的开关</strong>设置。3、脉宽<em>变化范围</em>是1000us，也就是 <strong>中间值±500us</strong>的范围。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">CH2</td>
+      <td style="text-align: center">油门</td>
+      <td style="text-align: left">1、脉宽<em>中间值</em>可以通过控制面板<strong>最上面的旋钮</strong>调节，默认中间值是<strong>1500us</strong>。2、脉宽<em>变化方向</em>可以通过控制面板<strong>左上角的开关</strong>设置。3、脉宽<em>变化范围</em>是1000us，也就是 <strong>中间值±500us</strong>的范围。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">CH3</td>
+      <td style="text-align: center">第三通道</td>
+      <td style="text-align: left">这个通道的PPM脉宽不是连续可变的。遥控器启动时默认设置的脉宽是1000us，按第三通道键可在 1000us 和 2000us 间切换。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-4">精度</h2>
+<p>通道1和通道2是连续变化，分辨率是20us。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">通道</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">时间精度</th>
+      <th style="text-align: center">调节范围1000us，分成份数</th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">CH1</td>
+      <td style="text-align: center">方向</td>
+      <td style="text-align: center">20us</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：1.8°</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">CH2</td>
+      <td style="text-align: center">油门</td>
+      <td style="text-align: center">20us</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">占空比从 -100%到+100%，对应占空比分辨率：4%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-5">关于遥控器的说明</h2>
+<p>1、接收机的信号是由遥控器实时刷新的，如果遥控器关闭的话，接收机信号立马停止。信号丢失后的信号特性是由接收机决定的，有些甚至可以自定义。<br />
+2、正如上面所说接收机信号是由遥控器实时刷新，第三通道在1ms和2ms间的状态也是由遥控器决定，接收机不会记忆。而事实上遥控器也不会记忆，重启遥控器后第三通道默认是1000us。</p>
+
+<h2 id="section-6">信号丢失后的输出</h2>
+<p>当遥控器关闭后，GR3E的信号特性如下：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>CH1</td>
+      <td>一直低电平</td>
+    </tr>
+    <tr>
+      <td>CH2</td>
+      <td>脉宽1500us，周期16ms。相当于油门在中间位置。</td>
+    </tr>
+    <tr>
+      <td>CH3</td>
+      <td>一直低电平</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section-7">5、其他说明</h1>
+<p>关于刹车功能（把电机的两根电源线短接，超再生刹车），不是遥控器和接收机来识别刹车操作的，遥控器和接收机的组合只是单纯地把方向和油门调制成PPM信号反映出来。<br />
+刹车功能是由电调完成的，电调识别PPM信号来分析是否需要刹车。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PPM信号介绍]]></title>
+    <link href="http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao.html"/>
+    <updated>2016-12-23T23:00:25+08:00</updated>
+    <id>http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">电平</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">工作方式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">刷新率</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">脉宽和数值</a></li>
+  <li><a href="#ppm" id="markdown-toc-ppm">多路PPM信号</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
+  <li><a href="#ppm-1" id="markdown-toc-ppm-1">PPM和舵机</a></li>
+  <li><a href="#ppm-2" id="markdown-toc-ppm-2">PPM和电调</a></li>
+  <li><a href="#ppm-3" id="markdown-toc-ppm-3">单片机提取PPM信号</a></li>
+</ul>
+<p>  </p>
+
+<p>PPM信号通过脉宽来表示数值，是航模遥控器接收机的标准输出信号。<br />
+在航模遥控器中，PPM用于反映遥控器的状态。</p>
+
+<!-- more -->
+
+<h1 id="section">电平</h1>
+<p>PPM信号的标准电平是5V（航模遥控器的接收机工作电压是5v）。</p>
+
+<h1 id="section-1">工作方式</h1>
+<p>信息以高电平脉冲宽度表示，以固定的频率不断地刷新信号；<br />
+在每个周期内，携带信息的是<strong>高电平</strong>脉冲，高电平信息结束后是持续的低电平。</p>
+
+<h1 id="section-2">刷新率</h1>
+<p>标准PPM刷新率是50Hz（周期20ms），但也遇到过60Hz（周期约16ms）的接收机，如GR3E 3通道接收机。7通道接收机WFR07的周期是21.2ms。</p>
+
+<h1 id="section-3">脉宽和数值</h1>
+<p>PPM信号规定的脉宽变化范围是<strong>1000us~2000us</strong>。<br />
+一般航模遥控器中：<br />
+方向、油门之类的双向控制，中间值是1500us，两个方向的极值分别是1000us和2000us；<br />
+模式切换按钮，分别在1000us和2000us之间切换。<br />
+<em>注：<br />
+1、航模遥控器中，双向控制项目一般都会有个中间值调节旋钮，如果调节了中间值不是1500us，那么另外两个方向的极值也会随着变化。总之输出范围是围绕着中间值±500的范围。<br />
+2、PPM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PPM直接控制的舵机，旋转角度范围在45°~135°。</em></p>
+
+<h1 id="ppm">多路PPM信号</h1>
+<p>航模遥控器中常说的“几路通道”代表接收机能输出几路PPM信号。
+<strong>注意各个通道的PPM高电平不是同时输出的，一路通道在前一路通道高电平输出结束后才会开始</strong>，类似于这样：</p>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/ppm.jpg" alt="ppm.jpg" /></p>
+
+<p>这是因为航模遥控器不能同时传输多路通道，只能单路传输，然后分给各个通道。遥控器的无线信号类似于上面信号的第一行，解调后变成了下面各路通道信号。<br />
+注意，各个通道的高电平信号是一个紧挨着一个的，而不是每个通道固定分配2ms的时间。<br />
+<strong>在对接收机解码时发现，实际各个通道的正脉冲并不是一个紧挨着一个出现。</strong>有的接收机各个通道输出的高电平连接比较近，而有的接收机在上一个通道正脉冲结束后要等较长的时间下一个通道的高电平才出现，在此期间所有的通道都是低电平。</p>
+
+<p>由于单路信号最长是2000us，周期20ms，所以理论上可以容纳10路。而由于需要进行同步，<strong>实际上遥控器最多只能容纳9路信号</strong>。<br />
+记住：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平</em>，单片机解码时就是利用这一点来判断一帧信号结束的。</p>
+
+<h1 id="section-4">精度</h1>
+<p>PPM标准协议中不知道有没有精度规定 ，实际 GT2B/GR3E 枪型遥控器 和 WFT07/WFR07飞机遥控器 的精度都是20us，</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">时间精度</th>
+      <th style="text-align: center">调节范围1000us，分成份数</th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">20us</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：1.。占空比从 -100%到+100%，对应占空比分辨率：4%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="ppm-1">PPM和舵机</h1>
+<p>PPM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PPM直接控制的舵机，旋转角度范围在45°~1。</p>
+
+<h1 id="ppm-2">PPM和电调</h1>
+<p>PPM信号可直接输出给舵机，而在航模中经常会用PPM信号控制电机（有刷和无刷），它们是不能直接用PPM信号控制的，此时需要电调。<br />
+电调具有接收PPM信号和驱动电机的功能，不同的电机驱动方式不同（有刷和无刷，有感也无感）。简单地说，<strong>电调的作用是接收PPM信号，转换成我们希望的电机驱动信号，并通过内部的电机驱动电路实现对电机的控制。</strong></p>
+
+<h1 id="ppm-3">单片机提取PPM信号</h1>
+<p>根据PPM信号的特性：</p>
+
+<p><img src="http://nicekwell.net/images/module-and-agreement/ppm.jpg" alt="ppm.jpg" /></p>
+
+<p>我们想要用单片机提取并解释PPM信号可以有两种方法：<br />
+1、获取上图最上面一行的信号，并解释。<br />
+2、获取接收机输出的各路通道的信号，并解释。<br />
+对于成品的接收机，获取各路的输出信号要容易得多，所以采用第二种方法，直接把各路通道的输出信号接到单片机。</p>
+
+<p>另外在前面的PPM信号介绍里有说过：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平。</em>我们可以利用这一点来判断一帧信号的结束。</p>
+
+<p>具体的提取方法请看遥控器接收机信号提取的具体工程：<br />
+<a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a><br />
+<a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">单片机提取WFR07接收机信号</a></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PCA9685 16路12位pwm信号发生器]]></title>
