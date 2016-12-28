@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>通用舵机控制器（pwm信号发生器） - 生命不息 折腾不止</title>
+  <meta name="author" content="nicekwell">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html">
+  <meta property="og:title" content="通用舵机控制器（pwm信号发生器） - 生命不息 折腾不止">
+  
+
+  <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  
+
+  
+   <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86729138-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">生命不息 折腾不止</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+		<li >
+                    <a href="/pages/ping-heng-de-shi-jie.html">平衡的世界</a>
+                </li>
+		<li >
+                    <a href="/pages/dan-pian-ji-bian-cheng.html">单片机编程</a>
+                </li>
+		<!-- <li > -->
+                <!--     <a href="/pages/diy.html">DIY</a> -->
+                <!-- </li> -->
+		<li >
+                    <a href="/pages/about.html">About</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="nicekwell.net">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="生命不息 折腾不止" />
+    
+    <meta itemprop="url" content="http://nicekwell.net" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-28T14:49:53+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月28日</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        通用舵机控制器（pwm信号发生器）
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">功能</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">硬件</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构</a></li>
+</ul>
+<p>  </p>
+
+<p>拿到一个机械臂时你会怎么办？搭电路，写程序，控制这个机械臂，然后这套电路一直放在机械臂上。<br />
+拿到一个电调呢？找航模遥控器来测试电调？也是一个不错的办法~然而有没有更方便的办法呢？</p>
+
+<p>博主最近很空虚，冥冥之中感觉生命中缺少一个美妙的通用舵机控制器，能够让我把舵机和电调快速地撸起来~</p>
+
+<!-- more -->
+
+<p>工程放在github上：<a href="https://github.com/nicekwell/servo_controller">https://github.com/nicekwell/servo_controller</a><br />
+可以直接下载此工程：<a href="https://github.com/nicekwell/servo_controller/archive/master.zip">https://github.com/nicekwell/servo_controller/archive/master.zip</a></p>
+
+<p>有关PPM信号相关的知识可参考：<a href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
+
+<p>演示视频：</p>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg4NzQ0MDA5Mg?color=white&amp;theme=light"></iframe>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg4NzUyNDA0OA?color=white&amp;theme=light"></iframe>
+
+<p>  </p>
+
+<p>  </p>
+
+<p>以下内容从工程README复制：</p>
+
+<h1 id="section">功能</h1>
+<p>可以产生7路PWM信号。<br />
+周期固定为20ms，脉宽可调，精度为10us。<br />
+上方7路输出通道，最上面为信号脚，中间是VCC，下面是GND。<br />
+下方7个按钮选择当天调节哪路信号，按下按钮后，上方对应通道的led灯点亮，同时显示屏相应通道也会有闪烁。<br />
+右边5个按钮调节当前通道的脉宽，从上到下功能依次为：加100，加10，复位（设置为1500us），减10，减100。<br />
+<strong>脉宽调节没有范围限制！！</strong>所以调节时一定要注意。<br />
+开机后默认所有路通道脉宽为1500us。</p>
+
+<h1 id="section-1">硬件</h1>
+<p>【单片机】12C5A32S2<br />
+【晶振】24MHz<br />
+【引脚连接】</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">引脚</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">舵机控制脚1</td>
+      <td style="text-align: center">P1.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚2</td>
+      <td style="text-align: center">P1.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚3</td>
+      <td style="text-align: center">P1.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚4</td>
+      <td style="text-align: center">P1.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚5</td>
+      <td style="text-align: center">P1.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚6</td>
+      <td style="text-align: center">P1.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚7</td>
+      <td style="text-align: center">P1.0</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led1</td>
+      <td style="text-align: center">P0.6</td>
+      <td style="text-align: center">推挽输出，高电平点亮，所有负极接在一起串联了电阻，一次只能点亮一个灯</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led2</td>
+      <td style="text-align: center">P0.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led3</td>
+      <td style="text-align: center">P0.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led4</td>
+      <td style="text-align: center">P0.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led5</td>
+      <td style="text-align: center">P0.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led6</td>
+      <td style="text-align: center">P0.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led7</td>
+      <td style="text-align: center">P0.0</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关1</td>
+      <td style="text-align: center">P2.0</td>
+      <td style="text-align: center">所有开关按下是低电平</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关2</td>
+      <td style="text-align: center">P2.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关3</td>
+      <td style="text-align: center">P2.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关4</td>
+      <td style="text-align: center">P2.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关5</td>
+      <td style="text-align: center">P2.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关6</td>
+      <td style="text-align: center">P2.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关7</td>
+      <td style="text-align: center">P2.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关-100</td>
+      <td style="text-align: center">P3.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关-10</td>
+      <td style="text-align: center">P3.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关复位</td>
+      <td style="text-align: center">P3.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关+10</td>
+      <td style="text-align: center">P3.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关+100</td>
+      <td style="text-align: center">P3.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">显示屏SCL</td>
+      <td style="text-align: center">P0.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">显示屏SDA</td>
+      <td style="text-align: center">P1.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section-2">程序结构</h1>
+<p>定时器10us一次中断，在定时器中断中完成 7路pwm通道脉宽控制 和 按键扫描 任务，其中按键扫描分成了三个函数分别进行。（广告：想了解这样做的原因，以及更多单片机编程结构相关的内容请访问<a href="http://nicekwell.net/pages/dan-pian-ji-bian-cheng.html">http://nicekwell.net/pages/dan-pian-ji-bian-cheng.html</a>）
+主进程完成显示屏显示任务。</p>
+
+<p>定时器进程检测到按键操作后，会发送标志给主进程刷新显示。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">nicekwell</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-28T14:49:53+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月28日</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/diy/'>diy</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html" title="Previous Post: 单片机提取WFR07接收机信号">&laquo; 单片机提取WFR07接收机信号</a></li>
+            
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+      <section>
+        <h2>Comments</h2>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">文章目录</h3>
+  </div>
+  
+  <div id="posts_menu" class="list-group">
+    <a class="list-group-item " href="/pages/ping-heng-de-shi-jie.html">平衡的世界</a>
+    <a class="list-group-item " href="/pages/dan-pian-ji-bian-cheng.html">单片机编程</a>
+    <a class="list-group-item " href="/pages/module-and-agreement.html">模块和协议</a>
+    <a class="list-group-item " href="/pages/diy.html">DIY</a>
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">近期文章</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item active" href="/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html">通用舵机控制器（pwm信号发生器）</a>
+    
+    <a class="list-group-item " href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">单片机提取WFR07接收机信号</a>
+    
+    <a class="list-group-item " href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a>
+    
+    <a class="list-group-item " href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html">WFT07和WFR07的功能和使用</a>
+    
+    <a class="list-group-item " href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html">GT2B和GR3E的功能和使用</a>
+    
+  </div>
+</section>
+
+
+
+
+
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">友情链接</h3>
+  </div>
+  
+  <div id="link" class="list-group">
+    <a class="list-group-item " href="http://www.diy-robots.com/">动力老男孩</a>
+    <a class="list-group-item " href="http://blog.sina.com.cn/u/1907350525">老薛</a>
+    <a class="list-group-item " href="http://www.muwenyidao.com/">木文一刀</a>
+    <a class="list-group-item " href="http://blog.leafsoar.com/">无间落叶</a>
+    <a class="list-group-item " href="http://www.chuangkoo.com/">创库</a>
+    <a class="list-group-item " href="http://www.guokr.com/group/27/">果壳DIY</a>
+  </div>
+</section>
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2016 - nicekwell<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicekwell';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html';
+        var disqus_url = 'http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr.js"></script>
+
+
+  </body>
+</html>

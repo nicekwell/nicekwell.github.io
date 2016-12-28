@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-28T13:22:25+08:00</updated>
+  <updated>2016-12-28T16:05:56+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,222 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[通用舵机控制器（pwm信号发生器）]]></title>
+    <link href="http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html"/>
+    <updated>2016-12-28T14:49:53+08:00</updated>
+    <id>http://nicekwell.net/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-)</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">功能</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">硬件</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">程序结构</a></li>
+</ul>
+<p>  </p>
+
+<p>拿到一个机械臂时你会怎么办？搭电路，写程序，控制这个机械臂，然后这套电路一直放在机械臂上。<br />
+拿到一个电调呢？找航模遥控器来测试电调？也是一个不错的办法~然而有没有更方便的办法呢？</p>
+
+<p>博主最近很空虚，冥冥之中感觉生命中缺少一个美妙的通用舵机控制器，能够让我把舵机和电调快速地撸起来~</p>
+
+<!-- more -->
+
+<p>工程放在github上：<a href="https://github.com/nicekwell/servo_controller">https://github.com/nicekwell/servo_controller</a><br />
+可以直接下载此工程：<a href="https://github.com/nicekwell/servo_controller/archive/master.zip">https://github.com/nicekwell/servo_controller/archive/master.zip</a></p>
+
+<p>有关PPM信号相关的知识可参考：<a href="http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
+
+<p>演示视频：</p>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg4NzQ0MDA5Mg?color=white&amp;theme=light"></iframe>
+
+<p><br /></p>
+<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg4NzUyNDA0OA?color=white&amp;theme=light"></iframe>
+
+<p>  </p>
+
+<p>  </p>
+
+<p>以下内容从工程README复制：</p>
+
+<h1 id="section">功能</h1>
+<p>可以产生7路PWM信号。<br />
+周期固定为20ms，脉宽可调，精度为10us。<br />
+上方7路输出通道，最上面为信号脚，中间是VCC，下面是GND。<br />
+下方7个按钮选择当天调节哪路信号，按下按钮后，上方对应通道的led灯点亮，同时显示屏相应通道也会有闪烁。<br />
+右边5个按钮调节当前通道的脉宽，从上到下功能依次为：加100，加10，复位（设置为1500us），减10，减100。<br />
+<strong>脉宽调节没有范围限制！！</strong>所以调节时一定要注意。<br />
+开机后默认所有路通道脉宽为1500us。</p>
+
+<h1 id="section-1">硬件</h1>
+<p>【单片机】12C5A32S2<br />
+【晶振】24MHz<br />
+【引脚连接】</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">引脚</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">舵机控制脚1</td>
+      <td style="text-align: center">P1.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚2</td>
+      <td style="text-align: center">P1.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚3</td>
+      <td style="text-align: center">P1.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚4</td>
+      <td style="text-align: center">P1.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚5</td>
+      <td style="text-align: center">P1.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚6</td>
+      <td style="text-align: center">P1.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机控制脚7</td>
+      <td style="text-align: center">P1.0</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led1</td>
+      <td style="text-align: center">P0.6</td>
+      <td style="text-align: center">推挽输出，高电平点亮，所有负极接在一起串联了电阻，一次只能点亮一个灯</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led2</td>
+      <td style="text-align: center">P0.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led3</td>
+      <td style="text-align: center">P0.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led4</td>
+      <td style="text-align: center">P0.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led5</td>
+      <td style="text-align: center">P0.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led6</td>
+      <td style="text-align: center">P0.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led7</td>
+      <td style="text-align: center">P0.0</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关1</td>
+      <td style="text-align: center">P2.0</td>
+      <td style="text-align: center">所有开关按下是低电平</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关2</td>
+      <td style="text-align: center">P2.1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关3</td>
+      <td style="text-align: center">P2.2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关4</td>
+      <td style="text-align: center">P2.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关5</td>
+      <td style="text-align: center">P2.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关6</td>
+      <td style="text-align: center">P2.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">通道开关7</td>
+      <td style="text-align: center">P2.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关-100</td>
+      <td style="text-align: center">P3.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关-10</td>
+      <td style="text-align: center">P3.6</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关复位</td>
+      <td style="text-align: center">P3.5</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关+10</td>
+      <td style="text-align: center">P3.4</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">开关+100</td>
+      <td style="text-align: center">P3.3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">显示屏SCL</td>
+      <td style="text-align: center">P0.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">显示屏SDA</td>
+      <td style="text-align: center">P1.7</td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section-2">程序结构</h1>
+<p>定时器10us一次中断，在定时器中断中完成 7路pwm通道脉宽控制 和 按键扫描 任务，其中按键扫描分成了三个函数分别进行。（广告：想了解这样做的原因，以及更多单片机编程结构相关的内容请访问<a href="http://nicekwell.net/pages/dan-pian-ji-bian-cheng.html">http://nicekwell.net/pages/dan-pian-ji-bian-cheng.html</a>）
+主进程完成显示屏显示任务。</p>
+
+<p>定时器进程检测到按键操作后，会发送标志给主进程刷新显示。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[单片机提取WFR07接收机信号]]></title>
@@ -455,53 +671,63 @@ VCC电压标准是5V。</p>
   <li><a href="#section-1" id="markdown-toc-section-1">工作方式</a></li>
   <li><a href="#section-2" id="markdown-toc-section-2">刷新率</a></li>
   <li><a href="#section-3" id="markdown-toc-section-3">脉宽和数值</a></li>
-  <li><a href="#ppm" id="markdown-toc-ppm">多路PPM信号</a></li>
+  <li><a href="#pwm" id="markdown-toc-pwm">多路PWM信号</a></li>
   <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
-  <li><a href="#ppm-1" id="markdown-toc-ppm-1">PPM和舵机</a></li>
-  <li><a href="#ppm-2" id="markdown-toc-ppm-2">PPM和电调</a></li>
-  <li><a href="#ppm-3" id="markdown-toc-ppm-3">单片机提取PPM信号</a></li>
+  <li><a href="#pwm-1" id="markdown-toc-pwm-1">PWM信号和舵机</a></li>
+  <li><a href="#pwm-2" id="markdown-toc-pwm-2">PWM信号和电调</a></li>
+  <li><a href="#pwm-3" id="markdown-toc-pwm-3">单片机提取接收机输出的PWM信号</a></li>
 </ul>
 <p>  </p>
 
-<p>PPM信号通过脉宽来表示数值，是航模遥控器接收机的标准输出信号。<br />
-在航模遥控器中，PPM用于反映遥控器的状态。</p>
+<p>  我们知道PWM信号可以控制舵机，一般信号周期是20ms，脉宽在500us~2500us之间。<br />
+  实际上这种pwm信号不仅可以控制舵机，航模中使用的电调（有刷和无刷）也是用这种信号控制，只不过它们的脉宽范围一般限制在1000us~2000us。<br />
+  而航模接收机输出的正是上述 周期20ms，脉宽1000us~2000us之间的pwm信号。可以理解为，接收机通过pwm信号来反映遥控器的操作。<br />
+  航模遥控器有多路通道，可以传输多个操作（油门、方向等），而无线信道只有一路，怎么把多路通道的pwm信息传输到接收机呢？这就是所谓的PPM调制。<br />
+  PPM信号把多路PWM信号调制到一路通道上，发送到接收机后再由接收机还原成多路PWM从各个通道输出。</p>
 
 <!-- more -->
 
+<p>  注意上面说的PWM信号和控制电机的PWM信号不同。<br />
+  控制电机的PWM信号对周期没有严格要求，占空比变化范围0~100%；<br />
+  而航模遥控器接收机输出的PWM信号（也是控制舵机、电调的PWM信号），周期一般是20ms，也有16ms的，正脉宽范围一般是1000us~2000us。</p>
+
+<p>  以上是PPM信号的介绍，我不关心PPM是如何调制的，更关心如何利用航模接收机输出的PWM信号，<strong>以下介绍的是航模接收机输出PWM信号</strong>。</p>
+
 <h1 id="section">电平</h1>
-<p>PPM信号的标准电平是5V（航模遥控器的接收机工作电压是5v）。</p>
+<p>  标准电平是5V（航模遥控器的接收机工作电压是5v）。</p>
 
 <h1 id="section-1">工作方式</h1>
-<p>信息以高电平脉冲宽度表示，以固定的频率不断地刷新信号；<br />
-在每个周期内，携带信息的是<strong>高电平</strong>脉冲，高电平信息结束后是持续的低电平。</p>
+<p>  信息以高电平脉冲宽度表示，以固定的频率不断地刷新信号；<br />
+  在每个周期内，携带信息的是<strong>高电平</strong>脉冲，高电平信息结束后是持续的低电平。</p>
 
 <h1 id="section-2">刷新率</h1>
-<p>标准PPM刷新率是50Hz（周期20ms），但也遇到过60Hz（周期约16ms）的接收机，如GR3E 3通道接收机。7通道接收机WFR07的周期是21.2ms。</p>
+<p>  标准刷新率是50Hz（周期20ms），但也遇到过60Hz（周期约16ms）的接收机，如GR3E 3通道接收机。7通道接收机WFR07的周期是21.2ms。</p>
 
 <h1 id="section-3">脉宽和数值</h1>
-<p>PPM信号规定的脉宽变化范围是<strong>1000us~2000us</strong>。<br />
-一般航模遥控器中：<br />
-方向、油门之类的双向控制，中间值是1500us，两个方向的极值分别是1000us和2000us；<br />
-模式切换按钮，分别在1000us和2000us之间切换。<br />
-<em>注：<br />
-1、航模遥控器中，双向控制项目一般都会有个中间值调节旋钮，如果调节了中间值不是1500us，那么另外两个方向的极值也会随着变化。总之输出范围是围绕着中间值±500的范围。<br />
-2、PPM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PPM直接控制的舵机，旋转角度范围在45°~135°。</em></p>
+<p>  脉宽变化范围是<strong>1000us~2000us</strong>。<br />
+  一般航模遥控器中：<br />
+  方向、油门之类的双向控制，中间值是1500us，两个方向的极值分别是1000us和2000us；<br />
+  模式切换按钮，分别在1000us和2000us之间切换。<br />
+  无刷电调没有方向，在1000us时油门为0，2000us时油门最大。<br />
+  <em>注：<br />
+  1、航模遥控器中，双向控制项目一般都会有个中间值调节旋钮，如果调节了中间值不是1500us，那么另外两个方向的极值也会随着变化。总之输出范围是围绕着中间值±500的范围。<br />
+  2、PPM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PPM直接控制的舵机，旋转角度范围在45°~135°。</em></p>
 
-<h1 id="ppm">多路PPM信号</h1>
-<p>航模遥控器中常说的“几路通道”代表接收机能输出几路PPM信号。
-<strong>注意各个通道的PPM高电平不是同时输出的，一路通道在前一路通道高电平输出结束后才会开始</strong>，类似于这样：</p>
+<h1 id="pwm">多路PWM信号</h1>
+<p>  航模遥控器中常说的“几路通道”代表接收机能输出几路PWM信号。<br />
+  <strong>注意各个通道的PWM高电平不是同时输出的，一路通道在前一路通道高电平输出结束后才会开始</strong>，类似于这样：</p>
 
-<p><img src="http://nicekwell.net/images/module-and-agreement/ppm.jpg" alt="ppm.jpg" /></p>
+<p>  <img src="http://nicekwell.net/images/module-and-agreement/ppm.jpg" alt="ppm.jpg" /></p>
 
-<p>这是因为航模遥控器不能同时传输多路通道，只能单路传输，然后分给各个通道。遥控器的无线信号类似于上面信号的第一行，解调后变成了下面各路通道信号。<br />
-注意，各个通道的高电平信号是一个紧挨着一个的，而不是每个通道固定分配2ms的时间。<br />
-<strong>在对接收机解码时发现，实际各个通道的正脉冲并不是一个紧挨着一个出现。</strong>有的接收机各个通道输出的高电平连接比较近，而有的接收机在上一个通道正脉冲结束后要等较长的时间下一个通道的高电平才出现，在此期间所有的通道都是低电平。</p>
+<p>  这是因为航模遥控器不能同时传输多路通道，只能单路传输，然后分给各个通道。遥控器的无线信号类似于上面信号的第一行，解调后变成了下面各路通道信号。<br />
+  注意，各个通道的高电平信号是一个紧挨着一个的，而不是每个通道固定分配2ms的时间。<br />
+  <strong>在对接收机解码时发现，实际各个通道的正脉冲并不是一个紧挨着一个出现。</strong>有的接收机各个通道输出的高电平连接比较近，而有的接收机在上一个通道正脉冲结束后要等较长的时间下一个通道的高电平才出现，在此期间所有的通道都是低电平。</p>
 
-<p>由于单路信号最长是2000us，周期20ms，所以理论上可以容纳10路。而由于需要进行同步，<strong>实际上遥控器最多只能容纳9路信号</strong>。<br />
-记住：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平</em>，单片机解码时就是利用这一点来判断一帧信号结束的。</p>
+<p>  由于单路信号最长是2000us，周期20ms，所以理论上可以容纳10路。而由于需要进行同步，<strong>实际上遥控器最多只能容纳9路信号</strong>。<br />
+  记住：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平</em>，单片机解码时就是利用这一点来判断一帧信号结束的。</p>
 
 <h1 id="section-4">精度</h1>
-<p>PPM标准协议中不知道有没有精度规定 ，实际 GT2B/GR3E 枪型遥控器 和 WFT07/WFR07飞机遥控器 的精度都是20us，</p>
+<p>  PPM标准协议中不知道有没有精度规定 ，实际 GT2B/GR3E 枪型遥控器 和 WFT07/WFR07飞机遥控器 的精度都是20us，</p>
 
 <table>
   <thead>
@@ -520,28 +746,28 @@ VCC电压标准是5V。</p>
   </tbody>
 </table>
 
-<h1 id="ppm-1">PPM和舵机</h1>
-<p>PPM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PPM直接控制的舵机，旋转角度范围在45135°。</p>
+<h1 id="pwm-1">PWM信号和舵机</h1>
+<p>  接收机输出的PWM信号可直接接到舵机，而一般舵机的脉宽范围是500us~2500us，对应角度0°~180°。所以一般由PWM直接控制的舵机，旋转角度范围在45°~135°。</p>
 
-<h1 id="ppm-2">PPM和电调</h1>
-<p>PPM信号可直接输出给舵机，而在航模中经常会用PPM信号控制电机（有刷和无刷），它们是不能直接用PPM信号控制的，此时需要电调。<br />
-电调具有接收PPM信号和驱动电机的功能，不同的电机驱动方式不同（有刷和无刷，有感和无感）。简单地说，<strong>电调的作用是接收PPM信号，转换成我们希望的电机驱动信号，并通过内部的电机驱动电路实现对电机的控制。</strong></p>
+<h1 id="pwm-2">PWM信号和电调</h1>
+<p>  接收机输出的PWM信号可直接输出给舵机，而在航模中经常会用这种PWM信号控制电机（有刷和无刷），它们是不能直接用这种PWM信号控制的，虽然最终控制电机的信号也叫PWM，但两种信号是不同的，本文开头有介绍。此时需要电调。<br />
+  电调具有接收 <strong>接收机输出的PWM信号</strong> 和 <strong>驱动电机</strong> 的功能，不同的电机驱动方式不同（有刷和无刷，有感和无感）。简单地说，<strong>电调的作用是接收 接收机输出的PWM信号 信号，转换成我们希望的电机驱动信号，并通过内部的电机驱动电路实现对电机的控制</strong>。</p>
 
-<h1 id="ppm-3">单片机提取PPM信号</h1>
-<p>根据PPM信号的特性：</p>
+<h1 id="pwm-3">单片机提取接收机输出的PWM信号</h1>
+<p>  根据此信号的特性：</p>
 
 <p><img src="http://nicekwell.net/images/module-and-agreement/ppm.jpg" alt="ppm.jpg" /></p>
 
-<p>我们想要用单片机提取并解释PPM信号可以有两种方法：<br />
-1、获取上图最上面一行的信号，并解释。<br />
-2、获取接收机输出的各路通道的信号，并解释。<br />
-对于成品的接收机，获取各路的输出信号要容易得多，所以采用第二种方法，直接把各路通道的输出信号接到单片机。</p>
+<p>  我们想要用单片机提取并解释PPM信号可以有两种方法：<br />
+  1、获取上图最上面一行的PPM信号，并解释。<br />
+  2、获取接收机输出的各路通道的PWM信号，并解释。<br />
+  对于成品的接收机，获取各路的输出信号要容易得多，所以采用第二种方法，直接把各路通道的输出信号接到单片机。</p>
 
-<p>另外在前面的PPM信号介绍里有说过：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平。</em>我们可以利用这一点来判断一帧信号的结束。</p>
+<p>  另外在前面的介绍里有说过：<em>接收机输出的每帧信号（20ms）里，理论上最后必然有至少2ms的时间里，所有的通道都输出低电平。</em>我们可以利用这一点来判断一帧信号的结束。</p>
 
-<p>具体的提取方法请看遥控器接收机信号提取的具体工程：<br />
-<a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a><br />
-<a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">单片机提取WFR07接收机信号</a></p>
+<p>  具体的提取方法请看遥控器接收机信号提取的具体工程：<br />
+  <a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a><br />
+  <a href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html">单片机提取WFR07接收机信号</a></p>
 
 <hr />
 
