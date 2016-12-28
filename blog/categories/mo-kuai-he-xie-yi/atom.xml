@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 模块和协议 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-25T13:10:53+08:00</updated>
+  <updated>2016-12-28T13:22:25+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -515,7 +515,7 @@ VCC电压标准是5V。</p>
     <tr>
       <td style="text-align: center">20us</td>
       <td style="text-align: center">50</td>
-      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：18°。占空比从 -100%到+100%，对应占空比分辨率：4%</td>
+      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：1.8°。占空比从 -100%到+100%，对应占空比分辨率：4%</td>
     </tr>
   </tbody>
 </table>
