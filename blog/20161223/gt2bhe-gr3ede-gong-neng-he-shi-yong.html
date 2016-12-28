@@ -153,7 +153,7 @@
   <li><a href="#section" id="markdown-toc-section">特性</a></li>
   <li><a href="#gt2b" id="markdown-toc-gt2b">1、GT2B遥控器功能</a></li>
   <li><a href="#section-1" id="markdown-toc-section-1">3、对码</a></li>
-  <li><a href="#ppm" id="markdown-toc-ppm">4、输出PPM信号特性</a>    <ul>
+  <li><a href="#pwm" id="markdown-toc-pwm">4、输出PWM信号特性</a>    <ul>
       <li><a href="#section-2" id="markdown-toc-section-2">周期</a></li>
       <li><a href="#section-3" id="markdown-toc-section-3">通道分配</a></li>
       <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
@@ -167,7 +167,7 @@
 
 <h1 id="section">特性</h1>
 <p>三通道：方向，电机，第三通道。<br />
-接收机输出的是PPM信号，PPM信号的详细介绍可参考PPM信号那一部分。</p>
+接收机输出的是PWM信号，PPM信号和PWM信号的详细介绍可参考<a href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
 
 <!-- more -->
 
@@ -177,7 +177,7 @@
 
 <p><img src="/images/module-and-agreement/GT2B_2.jpg" alt="GT2B_2.jpg" /></p>
 
-<p>控制面板相关设置的功能会在第4节“输出PPM信号特性”中结合输出信号说明。</p>
+<p>控制面板相关设置的功能会在第4节“输出PWM信号特性”中结合输出信号说明。</p>
 
 <p><img src="/images/module-and-agreement/GR3E.jpg" alt="GR3E.jpg" /></p>
 
@@ -219,11 +219,11 @@ VCC电压标准是5V。</p>
 5、重启遥控器。<br />
 此时接收机就可以用遥控器控制了，信号特性见下面。</p>
 
-<h1 id="ppm">4、输出PPM信号特性</h1>
-<p>PPM的详细文档跳转到：<a href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
+<h1 id="pwm">4、输出PWM信号特性</h1>
+<p>PPM信号和接收机输出的PWM的详细文档跳转到：<a href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a></p>
 
 <h2 id="section-2">周期</h2>
-<p>GR3E 三个通道的PPM信号周期都是16ms，频率大约是60Hz。</p>
+<p>GR3E 三个通道的PWM信号周期都是16ms，频率大约是60Hz。</p>
 
 <h2 id="section-3">通道分配</h2>
 
@@ -249,7 +249,7 @@ VCC电压标准是5V。</p>
     <tr>
       <td style="text-align: center">CH3</td>
       <td style="text-align: center">第三通道</td>
-      <td style="text-align: left">这个通道的PPM脉宽不是连续可变的。遥控器启动时默认设置的脉宽是1000us，按第三通道键可在 1000us 和 2000us 间切换。</td>
+      <td style="text-align: left">这个通道的PWM脉宽不是连续可变的。遥控器启动时默认设置的脉宽是1000us，按第三通道键可在 1000us 和 2000us 间切换。</td>
     </tr>
   </tbody>
 </table>
@@ -310,8 +310,8 @@ VCC电压标准是5V。</p>
 </table>
 
 <h1 id="section-7">5、其他说明</h1>
-<p>关于刹车功能（把电机的两根电源线短接，超再生刹车），不是遥控器和接收机来识别刹车操作的，遥控器和接收机的组合只是单纯地把方向和油门调制成PPM信号反映出来。<br />
-刹车功能是由电调完成的，电调识别PPM信号来分析是否需要刹车。</p>
+<p>关于刹车功能（把电机的两根电源线短接，超再生刹车），不是遥控器和接收机来识别刹车操作的，遥控器和接收机的组合只是单纯地把方向和油门调制成PWM信号反映出来。<br />
+刹车功能是由电调完成的，电调识别PWM信号来分析是否需要刹车。</p>
 
 <hr />
 
