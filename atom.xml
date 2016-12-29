@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-29T11:04:22+08:00</updated>
+  <updated>2016-12-29T14:53:51+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -830,6 +830,7 @@ i2c通信，只需要几根i2c线就可以控制16路pwm，周期和占空比都
       <th style="text-align: center">时间分辨率</th>
       <th style="text-align: center">通常舵机500~2500us可分成份数</th>
       <th style="text-align: center">通常舵机500~2500us，旋转角180°的角度分辨率</th>
+      <th style="text-align: center">对于电调，500us对应100%的占空比分辨率</th>
     </tr>
   </thead>
   <tbody>
@@ -838,12 +839,14 @@ i2c通信，只需要几根i2c线就可以控制16路pwm，周期和占空比都
       <td style="text-align: center">4.88us</td>
       <td style="text-align: center">410份</td>
       <td style="text-align: center">0.439°</td>
+      <td style="text-align: center">0.976%≈1%（约100份）</td>
     </tr>
     <tr>
       <td style="text-align: center">60Hz</td>
       <td style="text-align: center">4us</td>
       <td style="text-align: center">492份</td>
       <td style="text-align: center">0.366°</td>
+      <td style="text-align: center">0.8%（125份）</td>
     </tr>
   </tbody>
 </table>
