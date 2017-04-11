@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 单片机编程 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-31T15:44:13+08:00</updated>
+  <updated>2017-04-12T01:43:49+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,335 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[谈一谈单片机开发的几种调试方案]]></title>
+    <link href="http://nicekwell.net/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html"/>
+    <updated>2017-04-11T20:59:27+08:00</updated>
+    <id>http://nicekwell.net/blog/20170411/tan-[?]-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">我们做调试工具追求的是什么</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">几种调试方案</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">1、加入屏和按键</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">2、串口+上位机</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">3、用树莓派</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">4、串口+通用终端工具</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">如何构建终端工具里的控制台界面</a>    <ul>
+      <li><a href="#section-7" id="markdown-toc-section-7">1、构建界面用到的特殊字符串</a></li>
+      <li><a href="#section-8" id="markdown-toc-section-8">2、封装好的库函数</a></li>
+    </ul>
+  </li>
+  <li><a href="#endif" id="markdown-toc-endif">endif</a></li>
+</ul>
+<p>  </p>
+
+<p>单片机开发过程中，有一个好的调试系统可以极大地提高开发效率。<br />
+举个例子，做平衡系统时调节PID参数，你会选择 修改参数–&gt;编译–&gt;烧录–&gt;运行–&gt;修改…，还是做一个功能可以一边运行一边修改参数呢？<br />
+调试的方法有多种，在这就来分别谈一下我在开发过程中使用过的几种调试方案。<br />
+这里的调试方案也是一种交互方案，但此方案不是为了交互而设计，重在快速地搭建、方便地使用、高效地调试，换句话说长得丑无所谓。</p>
+
+<!-- more -->
+
+<h1 id="section">我们做调试工具追求的是什么</h1>
+
+<p>做调试系统无非是为了两点：</p>
+
+<ol>
+  <li>实时显示一些必要信息。</li>
+  <li>实时修改，其实也就是可以实时接收指令。</li>
+</ol>
+
+<p>为了提高开发效率，我们进一步希望：</p>
+
+<ol>
+  <li>调试系统搭建起来方便快捷，最好可以统一标准，方便移植。<br />
+我们不希望在调试系统上花费太多工作量，不要太复杂，尽量轻量级。</li>
+  <li>直观显示，看得清楚。</li>
+  <li>方便输入，操作快捷。</li>
+</ol>
+
+<h1 id="section-1">几种调试方案</h1>
+
+<h2 id="section-2">1、加入屏和按键</h2>
+
+<p><img src="/images/misc/2017-04-12_1.jpg" alt="" /></p>
+
+<p>最直接的方法就是在嵌入式系统中加入屏和按键，做出一个界面，显示信息和接收按键指令。<br />
+【优点】跟随系统，不需要依赖其他设备，可以随时随地调试。</p>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>添加了硬件。硬件的设计和焊接还是需要花费一些精力的。</li>
+  <li>构建界面同样也要花费不少精力。</li>
+  <li>显示信息有限。<br />
+加入的屏通常显示内容比较少，会受到一些限制。</li>
+  <li>按键功能有限。<br />
+加入的按键通常也不会太多，并且如果我们考虑到长按、组合键等操作的话构建程序也是比较复杂的。</li>
+</ol>
+
+<p>【总结】<br />
+肯定不能算轻量级，功能有限，可移植性差，花费精力多，屏需要额外费用。<br />
+唯一的优点就是跟随系统，没有其他依赖。</p>
+
+<p>所以如果不是非要随时调试的话不建议用这种方法，单纯为了调试来说代价还是比较大的。</p>
+
+<h2 id="section-3">2、串口+上位机</h2>
+
+<p><img src="/images/misc/2017-04-12_2.jpg" alt="" /></p>
+
+<p>单片机自己不负责显示，它把数据发送出去，由上位机显示；也不负责按键检测，由上位机负责并接收上位机指令。<br />
+单片机和上位机之间需规定好通信协议。</p>
+
+<p>通信方式可以是串口也可以是其他，上位机可以是图形也可以是命令行。</p>
+
+<p>【优点】</p>
+
+<ol>
+  <li>对单片机来说做到了一定的轻量级。只需要考虑发送数据和接收指令的协议。</li>
+  <li>对于比较复杂的功能，好的上位机，尤其是图形化的上位机可以很方便地调试。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>需要设计通信协议，双方都要位通信协议写代码。这需要花费一定的精力。</li>
+  <li>制作上位机需要花费较多的精力，并且上位机不通用。</li>
+</ol>
+
+<p>【总结】<br />
+由于上位机在电脑上，有丰富的显示和控制资源，做出一个好的上位机可以极其方便地提高效率。<br />
+但制作上位机要花费大量精力。</p>
+
+<p>所以，如果上位机是作为产品发布，是值得花精力去做的；但如果仅仅是为了调试时用一下，不值得这样做。</p>
+
+<p><strong>到这里有没有注意到，其实我们是想找到一个通用的”显示器”，能够方便地把信息显示出来。
+显示器是已经做好的，不需要我们再做什么，通信协议尽可能简单，最好能直接输出。
+后面我们会找到这么一个好东西。</strong></p>
+
+<h2 id="section-4">3、用树莓派</h2>
+
+<p><img src="/images/misc/2017-04-12_3.jpg" alt="" /></p>
+
+<p>用树莓派进行关键计算，我们关心的数据都在树莓派的程序里。<br />
+由于树莓派里运行linux系统，在其连接网络后，我们可以用局域网里电脑的终端登陆树莓派，在树莓派的程序里直接打印接口显示出来。</p>
+
+<p><em>注：<br />
+在命令行下打印数据并不一定是一行一行地输出，也可以控制光标在指定位置输出，构建出一个简单的界面。这里不做介绍，具体可搜索”控制台编程”。<br />
+命令行下接收键盘操作也不一定非要输入字符再回车，程序里可以直接监测键盘。<br />
+总之在命令行中是可以构建出一个类似于 显示屏+按键 组合的”设备”的。</em></p>
+
+<p>【优点】</p>
+
+<ol>
+  <li>终端就相当于是一个现成的、通用的显示屏，任意可登陆ssh的终端都可使用。</li>
+  <li>程序里直接打印输出！这真是太方便的，c语言中一个printf即可，相当于是一个极其简单的通信协议。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>贵！一个小小的智能车都要塞个树莓派，树莓派价格都够好多个智能车了。</li>
+  <li>树莓派本身是重量级。虽然程序本身是方便了，但使用之前需要配置树莓派，虽然一个树莓派只要配置一次。</li>
+  <li>树莓派本身硬件功能有限，有些功能树莓派不能直接完成，还是需要借助单片机，并和单片机通信。<br />
+比如记录车轮旋转的正交编码器，stm32有专门的硬件模块完成，树莓派没有，如果树莓派想要记录车轮旋转的话还是需要借助stm32，并且设计如何获取stm32记录的数据。</li>
+</ol>
+
+<p>【总结】</p>
+
+<p>对于调试这一方面来说，树莓派是非常方便的，输出、输入都是直接完成。<br />
+所以如果你的项目值得用树莓派，那调试是非常方便的；如果不需要用树莓派，光是为了调试方便而使用是不建议的，请考虑上面3个缺点。</p>
+
+<p><strong>虽然树莓派本身不一定最合适，但我们找到了方向——终端。</strong></p>
+
+<h2 id="section-5">4、串口+通用终端工具</h2>
+
+<p>单片机能不能用终端呢？答案是肯定的。<br />
+有多种终端工具可以通过串口使用，比如windows自带的超级终端，linux和osx下命令行里的minicom，以及夸三个平台的图形化终端secureCRT。<br />
+这些终端工具的功能简单来说就是：1、当某个按键按下立刻发送该按键的键码出去，比如按下p键发送字符’p’。2、接收串口数据并显示出来。</p>
+
+<p>说明：</p>
+
+<ol>
+  <li>这些终端工具的协议是相同的，可以认为是通用的显示器和键盘。</li>
+  <li>单片机可以发送一些特殊字符串完成一些特殊操作，比如清屏、控制光标位置。利用这些功能可以构建出简单的界面。<br />
+这些操作功能已经封装成了函数，会在本文后面给出。</li>
+  <li>一般会先在单片机中实现printf功能，实现之后在程序中用printf即可直接在终端工具中显示信息。<br />
+实现printf功能的方法在这里不介绍，具体可上网查找，工作量并不大。其实就是重定义一个函数，使printf函数通过指定串口输出字符串。</li>
+  <li>串口通过蓝牙模块可快速实现无线传输。</li>
+</ol>
+
+<p>【优点】</p>
+
+<ol>
+  <li>单片机端轻量级，上位机端无工作量。<br />
+具体来说单片机端要做的事情有：初始化串口，重定向printf，通过特殊字符串控制光标构建界面。</li>
+  <li>上位机端通用，单片机端显示相关的代码方便移植。<br />
+本文后文会给出显示相关的库函数。</li>
+  <li>硬件扩展几乎没有。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<p>对比第1种方案，需要一台电脑。其他方面都具有很大优势。</p>
+
+<p>【总结】</p>
+
+<p>此方案是单片机开发调试的理想选择。</p>
+
+<p>下面会介绍如何在终端工具里构建出界面。</p>
+
+<h1 id="section-6">如何构建终端工具里的控制台界面</h1>
+
+<h2 id="section-7">1、构建界面用到的特殊字符串</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">字符(串)</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">\r</td>
+      <td style="text-align: center">光标移到行首</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\b</td>
+      <td style="text-align: center">退格</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[2J”</td>
+      <td style="text-align: center">清屏</td>
+      <td style="text-align: center"><strong>清屏后光标还在原来位置</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[H”</td>
+      <td style="text-align: center">光标复位，回到左上角（1行1列）</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%d;%dH”, y, x</td>
+      <td style="text-align: center">设置光标到y行x列</td>
+      <td style="text-align: center">终端中的行和列都是从1开始数的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dA”, y</td>
+      <td style="text-align: center">光标上移y行</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dB”, y</td>
+      <td style="text-align: center">光标下移y行</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dD”, x</td>
+      <td style="text-align: center">光标左移x列</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dC”, x</td>
+      <td style="text-align: center">光标右移x列</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[?25l”</td>
+      <td style="text-align: center">隐藏光标</td>
+      <td style="text-align: center">在secureCRT中测试无效</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[?25h”</td>
+      <td style="text-align: center">显示光标</td>
+      <td style="text-align: center">在secureCRT中测试无效</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-8">2、封装好的库函数</h2>
+
+<p>使用这个库函数的前提是：<br />
+1、主函数完成了串口初始化，串口功能正常使用。<br />
+2、重定向了printf函数，printf函数可通过串口输出字符串。</p>
+
+<p>disp.h文件：</p>
+
+<p>``` c
+#ifndef <strong>DISP_H</strong>
+#define <strong>DISP_H</strong>
+/* 在主函数已经完成串口初始化，并且重定向printf函数之后，
+   这里提供一些列函数用于操作终端工具显示，可在终端工具里构建界面。 */
+#include <stm32f10x_lib.h></stm32f10x_lib.h></p>
+
+<p>void disp_clean(void);
+void disp_cursor_reset(void);        //复位光标位置，回到左上角（1行1列）
+void disp_gotoxy(int x, int y);  //跳转到y行x列，x和y都是从1开始数。
+void disp_cursor_up(int y);      //上移x行
+void disp_cursor_down(int y);    //下移y行
+void disp_cursor_left(int x);    //左移x列
+void disp_cursor_right(int x);   //右移x列
+void disp_cursor_hide(void);     //隐藏光标，在secureCRT中测试无效。
+void disp_cursor_show(void);     //显示光标，在secureCRT中测试无效。</p>
+
+<h1 id="endif">endif</h1>
+<p>```
+disp.c文件：</p>
+
+<p>``` c
+#include <disp.h>
+#include <uart.h>
+#include <stdio.h></stdio.h></uart.h></disp.h></p>
+
+<p>void disp_clean(void)
+{
+    printf(“\033[2J”);
+}
+void disp_cursor_reset(void)        //复位光标位置，回到左上角
+{
+    printf(“\033[H”);
+}
+void disp_gotoxy(int x, int y)  //跳转到y行x列
+{
+    printf(“\033[%d;%dH”, y, x);
+}
+void disp_cursor_up(int y)      //上移x行
+{
+    printf(“\033[%dA”, y);
+}
+void disp_cursor_down(int y)    //下移y行
+{
+    printf(“\033[%dB”, y);
+}
+void disp_cursor_left(int x)    //左移x列
+{
+    printf(“\033[%dD”, x);
+}
+void disp_cursor_right(int x)   //右移x列
+{
+    printf(“\033[%dC”, x);
+}
+void disp_cursor_hide(void)     //隐藏光标
+{
+    printf(“\033[?25l”);
+}
+void disp_cursor_show(void)     //显示光标
+{
+    printf(“\033[?25h”);
+}
+```</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[第6章 面向对象思想+事件驱动结构]]></title>
@@ -1299,126 +1628,6 @@ bit ds18b20_init()
 
 <p>  不过在此之前，先要补充一点理论知识，这就是下一章的内容。<br />
   下一章将会分析和明确那些“完成某个任务的函数”到底应该做些什么，哪些东西是有用的。并对这些函数进行改造，分析改造成不同形式的函数有什么样的特点。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[第2章 “界面函数”结构]]></title>
-    <link href="http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou.html"/>
-    <updated>2016-09-19T20:48:39+08:00</updated>
-    <id>http://nicekwell.net/blog/20160919/di-2zhang-jie-mian-han-shu-jie-gou</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 界面函数一般结构</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 更高的角度分析这种结构</a></li>
-</ul>
-
-<p>  这一章将介绍的是主循环调用任务函数的一种非常常用的结构。到目前为止，在主进程的构建方面，除了顺序调用我只用到过这一种构建方式，并且用得非常多。在2011年的电子设计大赛上，笔者就用了这种程序结构获得了安徽省第一的成绩，可见这种结构的威力。之所以叫它“界面函数”结构，是因为它各个函数就像一个个界面一样，在每个界面（函数）中完成某些特定的功能，我没找到这种结构的通用叫法。</p>
-
-<!-- more -->
-
-<p>  在第1章中介绍到由主循环顺序调用其他函数的结构，这种顺序执行的方式是最简单的情况了。当情况复杂时，各个函数之间存在着某种逻辑关系，一个函数执行完毕后可能要根据具体情况决定下一个要执行的是哪个函数，同时也可能由于外部原因需要立马切换到另一个函数里。</p>
-
-<p>  为了让大家更好地理解，举这样一个例子：</p>
-
-<p><em>  一个电子钟，上下左右4个方向键，一个 设置/确定 键，一个返回键，一个背光灯键。<br />
-  在正常模式下，显示时间、日期等信息，此时忽略上下左右方向键和返回键，当按下设置键时进入设置模式；<br />
-  在设置模式下，通过上下左右方向键来设置时间、日期，按下 设置/确定 键保存设置的信息并返回正常模式，按下返回键取消本次设置并返回正常模式；<br />
-  在以上两个模式中的任意模式按下背光灯键就亮灯6秒。</em></p>
-
-<p>  例子中有两个基本模式，每个模式中对外部资源（如按键）的响应方式不同。如果把两种模式代码混合在一起编程的话会造成程序混乱，所以很自然地就想到把两种模式分开控制。这就产生了“界面函数”这种结构，之所以叫它界面函数，是因为它们就像是一个个界面一样，每个界面完成不同的功能。下面先介绍一下这种程序结构的一般形式：</p>
-
-<h1 id="section">1. 界面函数一般结构</h1>
-<p>```
-unsigned char FlagPage=0;</p>
-
-<p>void main()
-{
-	/<em>初始化</em>/</p>
-
-<pre><code>while(1)
-{
-	if(FlagPage==0)
-		Task0();
-	else if(FlagPage==1)
-		Task1();
-	else if(FlagPage==2)
-		Task2();
-	……
-} }
-</code></pre>
-
-<p>void Task0()
-{
-	/<em>Do Something</em>/
-	while(1)
-	{
-		/<em>Do Something</em>/
-		if(FlagPage!=0)
-			return;
-	}
-}
-void Task1()
-{
-	/<em>Do Something</em>/
-	while(1)
-	{
-		/<em>Do Something</em>/
-		if(FlagPage!=1)
-			return;
-	}
-}
-void Task2()
-{
-	/<em>Do Something</em>/
-	while(1)
-	{
-		/<em>Do Something</em>/
-		if(FlagPage!=2)
-			return;
-	}
-}
-```
-  可以看到，主循环其实不进行任何实际功能的处理，它完成的只是调用各个任务函数。对于比较大型复杂的系统，main函数的主循环里根本不放要实际处理的代码，而是把所有任务函数归到一起，根据选择进入相应的任务函数，当处理完该任务之后又会回到主循环，由主循环再次分配任务。<br />
-  此时主循环的作用就是调配任务（当然用来调配任务的主循环本身也是一个最基本的任务），而在被调配的任务里面可能还会再次被该任务调配的子任务。<br />
-  再来看看被调用的任务函数，这些函数已经不只是完成一些简单功能了，它并不是执行一些固定操作后返回，每个任务函数都有自己的一套控制逻辑，并且“不那么容易返回”。<br />
-  这些任务函数同属于一个进程，但是同一时刻只有一个可以运行。当进入某个函数时，可以说进程被这个函数阻塞，其他函数得不到运行。但这也就是我们需要的效果，因为每个函数都有自己的一套控制逻辑，不需要考虑其他界面函数。<br />
-  而在函数退出时，可以由该函数本身通过FlagPage指定下一个要进入的函数，或者本来就是由于外部（中断）修改了FlagPage变量才导致该函数退出的。<br />
-  这种结构是非常常用的，并且尤其适合那些有多种界面（或者说多种工作模式）的场合。<br />
-  比如电子钟里可能有时钟界面、设置界面，再复杂一点有秒表、定时器等界面，从一个界面进入到另一个界面都是由按键控制的。如：在时间界面按下设置键进入到设置界面，按下返回键就进入到logo界面。这一个个界面也就是任务函数，只不过这个任务函数不会自动跳出，而是根据按键情况决定是否跳出、并通知主循环要跳到哪。<strong>每个界面里也会有选择地对其他进程提供的信息进行处理，比如时间界面就会对时间累加进程所提供的时间信息进行显示，同时也会对按键扫描进程提供的按键序号进行处理；而logo界面只会对按键信息进行响应，忽略时间进程提供的时间，但是时间进程仍然在运行。这些进程都是由定时器进行的，在后面会说。</strong><br />
-  再如电子设计大赛的小车程序就是，它分为领跑模式、跟随模式、超车模式等，每种模式就是一个界面函数，只不过在运行的过程中不允许有外部操作，完全由每个界面函数本身根据采集到的当前状态信息决定是否退出，并结合一些其他全局变量判断下一个要进入的模式。<br />
-  以上把这个典型结构做了一个简单介绍。</p>
-
-<h1 id="section-1">2. 更高的角度分析这种结构</h1>
-
-<p>  在2.1节分析了一下界面函数这种典型结构，在此我想借这种结构分析一下整个系统的构成。把上述系统用下面这个图表示：
-<img src="/images/dan-pian-ji-bian-cheng/chengxujiegou.jpg" alt="程序结构示意图" /></p>
-
-<p>  这里面所有函数都是由主函数调用的，属于主进程，并且这些函数也都体现出了系统结构。<br />
-  例如在函数1里面想进入函数2，不是直接调用函数2，而是先返回函数1，再由主循环分配到函数2。<br />
-  正如前面所说，这种程序结构特别适合于多种“界面”的功能。一般情况下，主进程不会停留在主循环里，而是偶尔退出到主循环重新分配下一个将要进入的函数，大部分时间会停留在某个界面函数里。</p>
-
-<p>  此外，这些函数之间<strong>有一些公共变量，这些变量的作用就是被各个函数使用，甚至用于函数间通信，辅助完成这些函数之间的逻辑结构的构建。</strong>比如1.1节中提到重要的FlagPage变量，这个标志变量就指明了当前工作于哪种工作模式下，任何函数（包括中断进程中的函数）都可以通过改变此变量来切换工作模式。<br />
-  <strong>也有一些与函数对应的用于完成特定功能的变量。</strong>比如用于数码管或者显示屏显示的现存，这些显存是有特定用处的，一般其他函数不会使用（但确实是公共变量，是可以被使用的）。</p>
-
-<p>  上面是把变量进行了分类，与之对应地我们也把函数进行分类。<br />
-  图中的函数都是所谓的“界面函数”，是用于完成某一特定任务的函数，一般进入这个函数后主进程就会停在里面，当达到特殊目的后返回。而这些“界面函数”也会不断地调用其他函数完成功能，比如延时等。<br />
-  这些<strong>被界面函数调用的函数把它们称作“工具函数”</strong>。这些功能函数中有一些是公用的，比如延时函数，很多地方都会用到。而<strong>也有一些是某一个界面函数才会用到的，用于完成这个特殊功能的函数</strong>，比如用于完成屏幕显示用到的屏幕驱动函数、字符显示函数等，这些函数在其他地方几乎不会被调用。<br />
-  这些函数、变量结构是在编程中自然产生的，在此将它们明确分类一下，整个系统的构成有：</p>
-
-<ul>
-  <li>1、<strong>整体的程序框架是由各个界面函数和少数关键的全局变量构建起来的。</strong>这是构成系统的主体框架。</li>
-  <li>2、每个界面函数在完成特定功能时，会携带一些为自己服务的“私有的”变量和函数。</li>
-  <li>3、为整个框架服务的还有一些常用的变量和函数，它们完成的是一些通用功能，可以把它们理解为“库函数”。</li>
-</ul>
-
-<hr />
-
-<p>  需要提一下，到目前为止讨论的程序结构都没有考虑中断，或者说到目前为止都是把中断当作程序运行过程中的特殊情况处理，并没有融入到整个系统构建的问题内讨论，但是中断确实是存在的。请大家思考一下这种情况会发生什么事情：主进程所构建的程序框架会有一些服务函数，这些服务函数在中断处理程序里也可能会被用到。比如主进程在调用延时函数时被中断，而中断处理程序也调用了该延时函数，这会怎么样呢？<br />
-  这就是所谓“函数重入”问题，在此不想过多地讨论该问题，要知道51单片机的编译器keil默认是不支持函数重入的（事实上，如果你这样做了编译器会发出警告的）。<br />
-  所以，至少对于51单片机编程来说，在遇到多个进程编程时要注意这样一个原则：中断处理程序不要调用到可能被中断的函数。必要时可以为中断进程单独写一个服务函数，函数内容可能跟主进程中的某个函数一模一样，但这样可以避免上述问题。</p>
-
-<p>  以上就是对“界面函数”这个典型结构的介绍，也分析了整个系统的构成。但是，正如上面说过的，这些都是对一个进程的结构的讨论，并没有涉及到中断。后面的内容会引入中断，甚至到最后把所有的任务都放到中断处理函数里，你会发现把任务放到中断处理函数里有着巨大的优势。</p>
 
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2016-12-31T15:44:13+08:00</updated>
+  <updated>2017-04-12T01:43:49+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,389 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[谈一谈单片机开发的几种调试方案]]></title>
+    <link href="http://nicekwell.net/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html"/>
+    <updated>2017-04-11T20:59:27+08:00</updated>
+    <id>http://nicekwell.net/blog/20170411/tan-[?]-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">我们做调试工具追求的是什么</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">几种调试方案</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">1、加入屏和按键</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">2、串口+上位机</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">3、用树莓派</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">4、串口+通用终端工具</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">如何构建终端工具里的控制台界面</a>    <ul>
+      <li><a href="#section-7" id="markdown-toc-section-7">1、构建界面用到的特殊字符串</a></li>
+      <li><a href="#section-8" id="markdown-toc-section-8">2、封装好的库函数</a></li>
+    </ul>
+  </li>
+</ul>
+<p>  </p>
+
+<p>单片机开发过程中，有一个好的调试系统可以极大地提高开发效率。<br />
+举个例子，做平衡系统时调节PID参数，你会选择 修改参数–&gt;编译–&gt;烧录–&gt;运行–&gt;修改…，还是做一个功能可以一边运行一边修改参数呢？<br />
+调试的方法有多种，在这就来分别谈一下我在开发过程中使用过的几种调试方案。<br />
+这里的调试方案也是一种交互方案，但此方案不是为了交互而设计，重在快速地搭建、方便地使用、高效地调试，换句话说长得丑无所谓。</p>
+
+<!-- more -->
+
+<h1 id="section">我们做调试工具追求的是什么</h1>
+
+<p>做调试系统无非是为了两点：</p>
+
+<ol>
+  <li>实时显示一些必要信息。</li>
+  <li>实时修改，其实也就是可以实时接收指令。</li>
+</ol>
+
+<p>为了提高开发效率，我们进一步希望：</p>
+
+<ol>
+  <li>调试系统搭建起来方便快捷，最好可以统一标准，方便移植。<br />
+我们不希望在调试系统上花费太多工作量，不要太复杂，尽量轻量级。</li>
+  <li>直观显示，看得清楚。</li>
+  <li>方便输入，操作快捷。</li>
+</ol>
+
+<h1 id="section-1">几种调试方案</h1>
+
+<h2 id="section-2">1、加入屏和按键</h2>
+
+<p><img src="http://nicekwell.net/images/misc/2017-04-12_1.jpg" alt="" /></p>
+
+<p>最直接的方法就是在嵌入式系统中加入屏和按键，做出一个界面，显示信息和接收按键指令。<br />
+【优点】跟随系统，不需要依赖其他设备，可以随时随地调试。</p>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>添加了硬件。硬件的设计和焊接还是需要花费一些精力的。</li>
+  <li>构建界面同样也要花费不少精力。</li>
+  <li>显示信息有限。<br />
+加入的屏通常显示内容比较少，会受到一些限制。</li>
+  <li>按键功能有限。<br />
+加入的按键通常也不会太多，并且如果我们考虑到长按、组合键等操作的话构建程序也是比较复杂的。</li>
+</ol>
+
+<p>【总结】<br />
+肯定不能算轻量级，功能有限，可移植性差，花费精力多，屏需要额外费用。<br />
+唯一的优点就是跟随系统，没有其他依赖。</p>
+
+<p>所以如果不是非要随时调试的话不建议用这种方法，单纯为了调试来说代价还是比较大的。</p>
+
+<h2 id="section-3">2、串口+上位机</h2>
+
+<p><img src="http://nicekwell.net/images/misc/2017-04-12_2.jpg" alt="" /></p>
+
+<p>单片机自己不负责显示，它把数据发送出去，由上位机显示；也不负责按键检测，由上位机负责并接收上位机指令。<br />
+单片机和上位机之间需规定好通信协议。</p>
+
+<p>通信方式可以是串口也可以是其他，上位机可以是图形也可以是命令行。</p>
+
+<p>【优点】</p>
+
+<ol>
+  <li>对单片机来说做到了一定的轻量级。只需要考虑发送数据和接收指令的协议。</li>
+  <li>对于比较复杂的功能，好的上位机，尤其是图形化的上位机可以很方便地调试。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>需要设计通信协议，双方都要位通信协议写代码。这需要花费一定的精力。</li>
+  <li>制作上位机需要花费较多的精力，并且上位机不通用。</li>
+</ol>
+
+<p>【总结】<br />
+由于上位机在电脑上，有丰富的显示和控制资源，做出一个好的上位机可以极其方便地提高效率。<br />
+但制作上位机要花费大量精力。</p>
+
+<p>所以，如果上位机是作为产品发布，是值得花精力去做的；但如果仅仅是为了调试时用一下，不值得这样做。</p>
+
+<p><strong>到这里有没有注意到，其实我们是想找到一个通用的”显示器”，能够方便地把信息显示出来。
+显示器是已经做好的，不需要我们再做什么，通信协议尽可能简单，最好能直接输出。
+后面我们会找到这么一个好东西。</strong></p>
+
+<h2 id="section-4">3、用树莓派</h2>
+
+<p><img src="http://nicekwell.net/images/misc/2017-04-12_3.jpg" alt="" /></p>
+
+<p>用树莓派进行关键计算，我们关心的数据都在树莓派的程序里。<br />
+由于树莓派里运行linux系统，在其连接网络后，我们可以用局域网里电脑的终端登陆树莓派，在树莓派的程序里直接打印接口显示出来。</p>
+
+<p><em>注：<br />
+在命令行下打印数据并不一定是一行一行地输出，也可以控制光标在指定位置输出，构建出一个简单的界面。这里不做介绍，具体可搜索”控制台编程”。<br />
+命令行下接收键盘操作也不一定非要输入字符再回车，程序里可以直接监测键盘。<br />
+总之在命令行中是可以构建出一个类似于 显示屏+按键 组合的”设备”的。</em></p>
+
+<p>【优点】</p>
+
+<ol>
+  <li>终端就相当于是一个现成的、通用的显示屏，任意可登陆ssh的终端都可使用。</li>
+  <li>程序里直接打印输出！这真是太方便的，c语言中一个printf即可，相当于是一个极其简单的通信协议。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<ol>
+  <li>贵！一个小小的智能车都要塞个树莓派，树莓派价格都够好多个智能车了。</li>
+  <li>树莓派本身是重量级。虽然程序本身是方便了，但使用之前需要配置树莓派，虽然一个树莓派只要配置一次。</li>
+  <li>树莓派本身硬件功能有限，有些功能树莓派不能直接完成，还是需要借助单片机，并和单片机通信。<br />
+比如记录车轮旋转的正交编码器，stm32有专门的硬件模块完成，树莓派没有，如果树莓派想要记录车轮旋转的话还是需要借助stm32，并且设计如何获取stm32记录的数据。</li>
+</ol>
+
+<p>【总结】</p>
+
+<p>对于调试这一方面来说，树莓派是非常方便的，输出、输入都是直接完成。<br />
+所以如果你的项目值得用树莓派，那调试是非常方便的；如果不需要用树莓派，光是为了调试方便而使用是不建议的，请考虑上面3个缺点。</p>
+
+<p><strong>虽然树莓派本身不一定最合适，但我们找到了方向——终端。</strong></p>
+
+<h2 id="section-5">4、串口+通用终端工具</h2>
+
+<p>单片机能不能用终端呢？答案是肯定的。<br />
+有多种终端工具可以通过串口使用，比如windows自带的超级终端，linux和osx下命令行里的minicom，以及夸三个平台的图形化终端secureCRT。<br />
+这些终端工具的功能简单来说就是：1、当某个按键按下立刻发送该按键的键码出去，比如按下p键发送字符’p’。2、接收串口数据并显示出来。</p>
+
+<p>说明：</p>
+
+<ol>
+  <li>这些终端工具的协议是相同的，可以认为是通用的显示器和键盘。</li>
+  <li>单片机可以发送一些特殊字符串完成一些特殊操作，比如清屏、控制光标位置。利用这些功能可以构建出简单的界面。<br />
+这些操作功能已经封装成了函数，会在本文后面给出。</li>
+  <li>一般会先在单片机中实现printf功能，实现之后在程序中用printf即可直接在终端工具中显示信息。<br />
+实现printf功能的方法在这里不介绍，具体可上网查找，工作量并不大。其实就是重定义一个函数，使printf函数通过指定串口输出字符串。</li>
+  <li>串口通过蓝牙模块可快速实现无线传输。</li>
+</ol>
+
+<p>【优点】</p>
+
+<ol>
+  <li>单片机端轻量级，上位机端无工作量。<br />
+具体来说单片机端要做的事情有：初始化串口，重定向printf，通过特殊字符串控制光标构建界面。</li>
+  <li>上位机端通用，单片机端显示相关的代码方便移植。<br />
+本文后文会给出显示相关的库函数。</li>
+  <li>硬件扩展几乎没有。</li>
+</ol>
+
+<p>【缺点】</p>
+
+<p>对比第1种方案，需要一台电脑。其他方面都具有很大优势。</p>
+
+<p>【总结】</p>
+
+<p>此方案是单片机开发调试的理想选择。</p>
+
+<p>下面会介绍如何在终端工具里构建出界面。</p>
+
+<h1 id="section-6">如何构建终端工具里的控制台界面</h1>
+
+<h2 id="section-7">1、构建界面用到的特殊字符串</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">字符(串)</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">\r</td>
+      <td style="text-align: center">光标移到行首</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\b</td>
+      <td style="text-align: center">退格</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[2J”</td>
+      <td style="text-align: center">清屏</td>
+      <td style="text-align: center"><strong>清屏后光标还在原来位置</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[H”</td>
+      <td style="text-align: center">光标复位，回到左上角（1行1列）</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%d;%dH”, y, x</td>
+      <td style="text-align: center">设置光标到y行x列</td>
+      <td style="text-align: center">终端中的行和列都是从1开始数的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dA”, y</td>
+      <td style="text-align: center">光标上移y行</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dB”, y</td>
+      <td style="text-align: center">光标下移y行</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dD”, x</td>
+      <td style="text-align: center">光标左移x列</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[%dC”, x</td>
+      <td style="text-align: center">光标右移x列</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[?25l”</td>
+      <td style="text-align: center">隐藏光标</td>
+      <td style="text-align: center">在secureCRT中测试无效</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">“\033[?25h”</td>
+      <td style="text-align: center">显示光标</td>
+      <td style="text-align: center">在secureCRT中测试无效</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-8">2、封装好的库函数</h2>
+
+<p>使用这个库函数的前提是：<br />
+1、主函数完成了串口初始化，串口功能正常使用。<br />
+2、重定向了printf函数，printf函数可通过串口输出字符串。</p>
+
+<p>disp.h文件：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="cp">#ifndef __DISP_H__</span>
+</span><span class="line"><span class="cp">#define __DISP_H__</span>
+</span><span class="line"><span class="cm">/* 在主函数已经完成串口初始化，并且重定向printf函数之后，</span>
+</span><span class="line"><span class="cm">   这里提供一些列函数用于操作终端工具显示，可在终端工具里构建界面。 */</span>
+</span><span class="line"><span class="cp">#include &lt;stm32f10x_lib.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_clean</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_reset</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>        <span class="c1">//复位光标位置，回到左上角（1行1列）</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_gotoxy</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>  <span class="c1">//跳转到y行x列，x和y都是从1开始数。</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_up</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="p">);</span>      <span class="c1">//上移x行</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_down</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="p">);</span>    <span class="c1">//下移y行</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_left</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span>    <span class="c1">//左移x列</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_right</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span>   <span class="c1">//右移x列</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_hide</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>     <span class="c1">//隐藏光标，在secureCRT中测试无效。</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_show</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>     <span class="c1">//显示光标，在secureCRT中测试无效。</span>
+</span><span class="line">
+</span><span class="line"><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>disp.c文件：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="cp">#include &lt;disp.h&gt;</span>
+</span><span class="line"><span class="cp">#include &lt;uart.h&gt;</span>
+</span><span class="line"><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_clean</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[2J&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_reset</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>        <span class="c1">//复位光标位置，回到左上角</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[H&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_gotoxy</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>  <span class="c1">//跳转到y行x列</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[%d;%dH&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_up</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="p">)</span>      <span class="c1">//上移x行</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[%dA&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_down</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="p">)</span>    <span class="c1">//下移y行</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[%dB&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_left</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>    <span class="c1">//左移x列</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[%dD&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_right</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>   <span class="c1">//右移x列</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[%dC&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_hide</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>     <span class="c1">//隐藏光标</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[?25l&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">disp_cursor_show</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>     <span class="c1">//显示光标</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[?25h&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[通用舵机控制器（pwm信号发生器）]]></title>
