@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 单片机编程 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/dan-pian-ji-bian-cheng/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-04-26T15:42:57+08:00</updated>
+  <updated>2017-05-16T15:57:30+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -221,6 +221,11 @@
       <td style="text-align: center"><strong>清屏后光标还在原来位置</strong></td>
     </tr>
     <tr>
+      <td style="text-align: center">“\033[2K]”</td>
+      <td style="text-align: center">清除本行</td>
+      <td style="text-align: center">清除后光标还在原来位置</td>
+    </tr>
+    <tr>
       <td style="text-align: center">“\033[H”</td>
       <td style="text-align: center">光标复位，回到左上角（1行1列）</td>
       <td style="text-align: center"> </td>
@@ -263,6 +268,13 @@
   </tbody>
 </table>
 
+<p>注：</p>
+
+<ol>
+  <li>终端工具里的x、y坐标都是从1开始数的，同时等于0的话终端也会认为是1。</li>
+  <li>\033代表的是八进制033，对应十进制是27，十六进制是0x1B。</li>
+</ol>
+
 <h2 id="section-8">2、封装好的库函数</h2>
 
 <p>使用这个库函数的前提是：<br />
@@ -279,6 +291,7 @@
 #include <stm32f10x_lib.h></stm32f10x_lib.h></p>
 
 <p>void disp_clean(void);
+void disp_clean_line(void);     //清除当前航，并复位光标到行首
 void disp_cursor_reset(void);        //复位光标位置，回到左上角（1行1列）
 void disp_gotoxy(int x, int y);  //跳转到y行x列，x和y都是从1开始数。
 void disp_cursor_up(int y);      //上移x行
@@ -300,6 +313,10 @@ disp.c文件：</p>
 <p>void disp_clean(void)
 {
     printf(“\033[2J”);
+}
+void disp_clean_line(void)      //清除当前行，并复位光标到行首
+{
+    printf(“\33[2K\r”);
 }
 void disp_cursor_reset(void)        //复位光标位置，回到左上角
 {
