@@ -2,10 +2,10 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Category: 模块和协议 - 生命不息 折腾不止</title>
+  <title>Raspberrypi - 生命不息 折腾不止</title>
   <meta name="author" content="nicekwell">
 
-  <meta name="description" content="Category: 模块和协议">
+  
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -14,16 +14,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/index.html">
+  <link rel="canonical" href="http://nicekwell.net/pages/raspberrypi.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/index.html">
-  <meta property="og:title" content="Category: 模块和协议 - 生命不息 折腾不止">
-  <meta property="og:description" content="Category: 模块和协议">
+  <meta property="og:url" content="http://nicekwell.net/pages/raspberrypi.html">
+  <meta property="og:title" content="Raspberrypi - 生命不息 折腾不止">
+  
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
 
@@ -70,7 +70,7 @@
                 <li >
                     <a rel="index" href="/">Blog</a>
                 </li>
-                <li class="active">
+                <li >
                     <a href="/blog/archives">Archives</a>
                 </li>
 		<!-- <li > -->
@@ -120,232 +120,159 @@
       
         <header class="page-header">
           
+            <p class="meta text-muted text-uppercase">
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-07T12:44:00+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月7日</time></p>
+          
           
             <h1 class="entry-title">
-              Category: 模块和协议
+              Raspberrypi
               
             </h1>
           
         </header>
       
       <div class="entry-content">
-        <div id="blog-archives" class="category" itemscope itemtype="http://schema.org/Blog">
-<meta itemprop="name" content="生命不息 折腾不止" />
+        <p>先介绍树莓派的安装和配置，再介绍 raspberry-gpio-python、wiringPi 这2个库的使用，最后介绍树莓派内核开发。</p>
+
+<h2 id="section">目录：</h2>
+
+<p><br /></p>
+
+<h4 id="section-1">概述和使用</h4>
+
+<ul>
+  <li>
+    <p>下载和安装</p>
+  </li>
+  <li>
+    <p>配置和使用</p>
+  </li>
+  <li>
+    <p>功耗</p>
+  </li>
+</ul>
+
+<h4 id="section-2">硬件和功能</h4>
+
+<ul>
+  <li>硬件和功能</li>
+</ul>
+
+<h4 id="raspberry-gpio-python">raspberry-gpio-python</h4>
+
+<ul>
+  <li>
+    <p>说明和安装</p>
+  </li>
+  <li>
+    <p>GPIO</p>
+  </li>
+  <li>
+    <p>UART串口</p>
+  </li>
+</ul>
+
+<h4 id="wiringpi-c">wiringPi-C</h4>
+
+<ul>
+  <li>
+    <p>说明和安装</p>
+  </li>
+  <li>
+    <p>编译、头文件和lib</p>
+  </li>
+  <li>
+    <p>设置引脚编号模式</p>
+  </li>
+  <li>
+    <p>GPIO</p>
+  </li>
+  <li>
+    <p>时间函数</p>
+  </li>
+  <li>
+    <p>优先级、中断和线程</p>
+  </li>
+  <li>
+    <p>UART串口</p>
+  </li>
+  <li>
+    <p>I2C</p>
+
+    <ul>
+      <li>
+        <p>树莓派的I2C配置</p>
+      </li>
+      <li>
+        <p>linux上层操作i2c的标准方法</p>
+      </li>
+      <li>
+        <p>i2c_smbus_access</p>
+      </li>
+      <li>
+        <p>wiringPi-C的i2c库使用</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="section-3">内核开发</h4>
+
+<ul>
+  <li>说明、下载代码、编译、替换内核</li>
+</ul>
 
-<meta itemprop="url" content="http://nicekwell.net" />
-
-
-
-  
-  <h2 class="year">2016</h2>
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html" itemprop="url">单片机提取WFR07接收机信号</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:39:52+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>, <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html" itemprop="url">单片机提取GR3E接收机信号</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:08:33+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>, <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html" itemprop="url">WFT07和WFR07的功能和使用</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:47:02+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html" itemprop="url">GT2B和GR3E的功能和使用</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:26:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161223/ppmxin-hao-jie-shao.html" itemprop="url">PPM信号介绍</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:00:25+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161213/pca9685-16lu-12wei-pwmxin-hao-fa-sheng-qi.html" itemprop="url">PCA9685 16路12位pwm信号发生器</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-13T20:24:30+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月13日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-</div>
 
       </div>
       
+        <footer>
+          <p class="meta text-muted">
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-07T12:44:00+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月7日</time>
+            
+          </p>
+          
+            <div class="sharing">
+  
+  
+  
+</div>
+
+          
+        </footer>
+      
     </article>
+    
+      <section>
+        <h2>Comments</h2>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
     
   </div>
 
@@ -429,7 +356,10 @@
       var disqus_shortname = 'nicekwell';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicekwell.net/pages/raspberrypi.html';
+        var disqus_url = 'http://nicekwell.net/pages/raspberrypi.html';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
