@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he.html</loc>
+<lastmod>2017-11-08T19:21:11+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html</loc>
 <lastmod>2017-04-11T20:59:27+08:00</lastmod>
 </url>
@@ -92,5 +96,11 @@
 </url>
 <url>
 <loc>http://nicekwell.net/blog/categories/mo-kuai-he-xie-yi/</loc>
+</url>
+<url>
+<loc>http://nicekwell.net/blog/categories/shu-mei-pai/</loc>
+</url>
+<url>
+<loc>http://nicekwell.net/posts/2/</loc>
 </url>
 </urlset>
