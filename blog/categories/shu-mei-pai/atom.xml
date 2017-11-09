@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-08T20:23:22+08:00</updated>
+  <updated>2017-11-09T08:41:05+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -190,22 +190,22 @@ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 <strong>make -j4 zIma
 一个是ext4分区，也就是系统的根目录分区。</p>
 
 <p>我们生成的文件涉及到这两个分区的内容，一般插入ubuntu后会自动挂载，fat分区可以不用root权限操作，ext4分区需要root权限操作。<br />
-两个分区具体挂载在什么地方可以自己决定，以下用<fat>表示boot挂载的路径，<ext4>表示ext4挂载的路径。</ext4></fat></p>
+两个分区具体挂载在什么地方可以自己决定，以下用[fat]表示boot挂载的路径，[ext4]表示ext4挂载的路径。</p>
 
 <p><strong>1、安装modules</strong><br />
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make INSTALL_MOD_PATH=<ext4> modules_install  
-操作ext4分区，需要root权限。</ext4></p>
+sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make INSTALL_MOD_PATH=[ext4] modules_install<br />
+操作ext4分区，需要root权限。</p>
 
 <p><strong>2、更新 kernel.img 文件</strong><br />
 前面已经用 mkknlimg 工具打包了kernel_new.img文件了，把它复制到boot分区并配置使用即可：<br />
-cp kernel_new.img <fat>/  
-编辑 <fat>/config.txt 文件，在最后加入一行：  
-kernel=kernel_new.img</fat></fat></p>
+cp kernel_new.img [fat]/<br />
+编辑 [fat]/config.txt 文件，在最后加入一行：<br />
+kernel=kernel_new.img</p>
 
 <p><strong>3、复制其他相关文件</strong><br />
-cp arch/arm/boot/dts/*.dtb <fat>/  
-cp arch/arm/boot/dts/overlays/*.dtb* <fat>/overlays/  
-cp arch/arm/boot/dts/overlays/README <fat>/overlays/</fat></fat></fat></p>
+cp arch/arm/boot/dts/<em>.dtb [fat]/<br />
+cp arch/arm/boot/dts/overlays/</em>.dtb* [fat]/overlays/<br />
+cp arch/arm/boot/dts/overlays/README [fat]/overlays/</p>
 
 <p>更新完成后插回树莓派即可开机，开机后可以用 uname -a 命令查看kernel信息已经改变。</p>
 
