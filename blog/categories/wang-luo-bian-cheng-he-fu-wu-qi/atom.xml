@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 网络编程和服务器 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/wang-luo-bian-cheng-he-fu-wu-qi/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-14T20:43:27+08:00</updated>
+  <updated>2017-11-14T20:58:08+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -48,7 +48,7 @@
 <h2 id="git">1、git</h2>
 
 <p>  git的详细使用方法这里不介绍，这里只要知道git服务器端建立git仓库的命令：<br />
-  <strong>git init –bare [仓库名].git</strong></p>
+   <code>git init --bare [仓库名].git</code></p>
 
 <p>  而客户端创建工程、关联远程仓库、第一次提交的方法是：<br />
   <strong>创建工程：</strong><br />
@@ -131,7 +131,7 @@
   我们在服务器创建一个 manifest.git 工程就是用于存放我们自己的 repo 工程的manifest.xml文件。<br />
   一般放在大工程目录下。</p>
 
-<p>  <strong>git init –bare /home/git/[工程目录]/manifest.git</strong></p>
+<p>  <code>git init --bare /home/git/[工程目录]/manifest.git</code></p>
 
 <h2 id="manifestxml-1">4、客户端修改并上传manifest.xml文件</h2>
 
