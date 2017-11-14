@@ -254,7 +254,7 @@
 
 <p>  1、<strong>.repo/repo/repo sync</strong><br />
   2、删掉所有的.git目录<br />
-    <strong>find . -name “.git” | xargx rm -rf</strong><br />
+    <code>find . -name ".git" | xargx rm -rf</code><br />
     因为待会会重新初始化这些git工程，所以以前的git信息不需要了。<br />
   3、复制出.repo/manifest.xml文件，删除.repo目录<br />
     repo工程里都会有一个.repo目录，此目录不再需要，但manifest.xml文件记录的各个工程信息是我们需要的，后面会解析此文件，把这个文件复制出来找个地方放一下。</p>
