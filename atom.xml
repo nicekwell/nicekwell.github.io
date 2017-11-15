@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-14T21:00:19+08:00</updated>
+  <updated>2017-11-15T19:43:09+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,81 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-概述和使用-下载和安装]]></title>
+    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang.html"/>
+    <updated>2017-11-15T19:22:54+08:00</updated>
+    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">下载镜像</a></li>
+  <li><a href="#mac" id="markdown-toc-mac">mac下安装</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">启动树莓派</a></li>
+</ul>
+<p>  </p>
+
+<p>本文介绍如何下载树莓派镜像，并安装到sd卡，实现开机。</p>
+
+<!-- more -->
+
+<h3 id="section">下载镜像</h3>
+
+<p>官网：<a href="https://www.raspberrypi.org/">https://www.raspberrypi.org/</a><br />
+下载页面：<a href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a><br />
+推荐下载raspbian：</p>
+
+<p><img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/1.png" alt="1.png" /></p>
+
+<p>这是基于debian jessie的系统，有Full desktop版本和Minimal版本：</p>
+
+<p><img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/2.png" alt="2.png" /><br />
+full desktop版本有图形界面；Minimal版本没有图形界面，是精简版。<br />
+由于后面要配置网络等配置项，用图形界面会方便很多，推荐使用不带LITE的desktop版。</p>
+
+<h3 id="mac">mac下安装</h3>
+
+<ul>
+  <li>
+    <p><strong>1、不插入sd卡查看当前磁盘情况</strong>
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/3.png" alt="3.png" /></p>
+  </li>
+  <li>
+    <p><strong>2、插入sd卡查看当前磁盘情况</strong>
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/4.png" alt="4.png" /><br />
+多出来的 /dev/disk2s1 就是sd卡的分区。</p>
+  </li>
+  <li>
+    <p><strong>3、卸载这个分区</strong><br />
+<strong>diskutil unmount /dev/[disk*s*]</strong><br />
+卸载是为了待会写入这个分区时不会被其他程序的读写干扰。<br />
+卸载之后可以通过  diskutil list 命令查看设备：
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/5.png" alt="5.png" /><br />
+可以看到我们的sd卡对应的设备是 /dev/disk2。</p>
+  </li>
+  <li>
+    <p><strong>4、使用dd命令写入镜像</strong><br />
+<strong>sudo dd bs=4m if=[镜像].img of=/dev/<code>[磁盘的字符设备]</code></strong><br />
+注意，磁盘的字符设备是 r 开头的，网上有个说法：/dev/disk2s1是分区，/dev/disk2是块设备，/dev/rdisk2是原始字符设备。<br />
+由于文件很大，写入过程会比较长。成功之后会显示如下界面：
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/6.png" alt="6.png" /></p>
+  </li>
+  <li>
+    <p><strong>5、卸载sd卡设备</strong><br />
+<strong>diskutil unmountDisk /dev/[disk*]</strong><br />
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/7.png" alt="7.png" /></p>
+  </li>
+</ul>
+
+<h3 id="section-1">启动树莓派</h3>
+
+<p>安装好之后把sd卡插在树莓派上，接通电源即可启动。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[把已有的repo工程提交到服务器]]></title>
