@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-15T19:43:09+08:00</updated>
+  <updated>2017-11-15T19:46:12+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -76,6 +76,8 @@ full desktop版本有图形界面；Minimal版本没有图形界面，是精简�
 <img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/7.png" alt="7.png" /></p>
   </li>
 </ul>
+
+<p>ubuntu下安装步骤和mac下类似，由于没有实际操作过，这里不介绍ubuntu下的安装。</p>
 
 <h3 id="section-1">启动树莓派</h3>
 
