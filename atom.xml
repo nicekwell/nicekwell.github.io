@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-15T19:50:30+08:00</updated>
+  <updated>2017-11-15T20:18:52+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,114 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-概述和使用-配置和使用]]></title>
+    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html"/>
+    <updated>2017-11-15T19:52:47+08:00</updated>
+    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#ssh" id="markdown-toc-ssh">打开ssh</a></li>
+  <li><a href="#section" id="markdown-toc-section">树莓派配置命令</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">默认用户</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">修改主机名</a></li>
+  <li><a href="#sd" id="markdown-toc-sd">扩展sd卡空间</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">更新源</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">设置时区</a></li>
+  <li><a href="#section-5" id="markdown-toc-section-5">支持中文</a></li>
+</ul>
+<p>  </p>
+
+<p>本文介绍树莓派的常用设置，经常是一些开机后必须设置的项目。</p>
+
+<!-- more -->
+
+<h3 id="ssh">打开ssh</h3>
+
+<p>第一次开机网络都没配置，这一步肯定要连接显示器才能配置的。</p>
+
+<p>从2016.11.25开始，树莓派默认关闭ssh，导致不能远程登陆，需要手动开启ssh功能，方法是在 /boot/ 分区下建立一个名为“ssh的空文件。<br />
+方法1：在树莓派上直接打开ssh：<strong>sudo touch /boot/ssh</strong><br />
+方法2：在电脑上打开ssh：插入sd卡后有个boot分区，在里面创建一个名为“ssh”的文件<br />
+树莓派重启后会删掉此文件，但已经可以使用ssh登陆了。</p>
+
+<h3 id="section">树莓派配置命令</h3>
+
+<p>打开命令行，用 <strong>sudo raspi-config</strong> 命令可开启树莓派配置程序。</p>
+
+<h3 id="section-1">默认用户</h3>
+
+<p>pi@raspberrypi，密码 raspberry。</p>
+
+<h3 id="section-2">修改主机名</h3>
+
+<p>多个树莓派分不清，可以修改主机名称区分。<br />
+sudo raspi-config –&gt; 9 Advanced Options –&gt; A2 Hostname<br />
+2017年stretch新版设置路径是：<br />
+sudo raspi-config –&gt;2 Hostname</p>
+
+<h3 id="sd">扩展sd卡空间</h3>
+<p>2017年stretch已经不需要此步骤了，老的版本需要执行以下操作后才能使用全部sd卡空间。</p>
+
+<p>安装好系统后默认的系统空间很小，几乎仅能放下系统，而sd卡有很多空间没有用到：
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/1.png" alt="1.png" /><br />
+使用 raspi-config 的“Expand Filesystem”功能可以把sd卡的全部空间用起：
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/2.png" alt="2.png" /><br />
+此修改需要重启树莓派，重启之后：
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/3.png" alt="3.png" /></p>
+
+<h3 id="section-3">更新源</h3>
+
+<p>使用不同的 raspbian 版本，对应的更新源是不一样的，可以从网上查找。<br />
+stretch版本的源：</p>
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi  
+</span><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi</span></code></pre></td></tr></table></div></figure>
+
+<p>修改方法和ubuntu、debian相同：<br />
+1、修改 /etc/source.list 文件<br />
+2、sudo apt-get update</p>
+
+<h3 id="section-4">设置时区</h3>
+
+<p>网上找到的linux下通用设置方法 tzselect 设置无效，最后用 raspi-config 设置完成：<br />
+sudo raspi-config –&gt; 5 Internationalisation … –&gt; I2 Change Timezone –&gt; Asia –&gt; ShangHai –&gt; OK<br />
+2017年stretch版本设置路径：<br />
+sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&gt; Asia –&gt; ShangHai –&gt; OK</p>
+
+<h3 id="section-5">支持中文</h3>
+
+<p>2017年stretch版本已经不需要设置了。</p>
+
+<p>默认的命令行不支持中文，git log查看提交记录都不能显示中文。修改方法：</p>
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pi@raspberrypi:~$ sudo apt-get install ttf-wqy-zenhei  #安装字体
+</span><span class="line">pi@raspberrypi:~$ sudo fc-cache       #刷新字库缓存
+</span><span class="line">pi@raspberrypi:~$ sudo dpkg-reconfigure locales        #字体配置</span></code></pre></td></tr></table></div></figure>
+<p>然后用上下方向键选中以下5项：</p>
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">en-GB.UTF-8 UTF-8
+</span><span class="line">zh_CN.GB2312
+</span><span class="line">zh.CN.GB18030 GB18030
+</span><span class="line">zh_CN.GBK GBK
+</span><span class="line">zh_CN.UTF-8 UTF-8</span></code></pre></td></tr></table></div></figure>
+<p>选中后回车，会让你选择默认的字体，<br />
+  如果想要系统语言是中文，则选择“zh_CN.UTF-8 UTF-8 ”回车<br />
+  如果想要系统语言是英文，则选择“en_GB.UTF-8”回车。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-概述和使用-下载和安装]]></title>
