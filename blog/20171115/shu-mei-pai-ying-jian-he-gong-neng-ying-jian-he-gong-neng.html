@@ -2,10 +2,10 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Category: Diy - 生命不息 折腾不止</title>
+  <title>树莓派-硬件和功能-硬件和功能 - 生命不息 折腾不止</title>
   <meta name="author" content="nicekwell">
 
-  <meta name="description" content="Category: diy">
+  
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -14,16 +14,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicekwell.net/blog/categories/diy/index.html">
+  <link rel="canonical" href="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://nicekwell.net/blog/categories/diy/index.html">
-  <meta property="og:title" content="Category: Diy - 生命不息 折腾不止">
-  <meta property="og:description" content="Category: diy">
+  <meta property="og:url" content="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html">
+  <meta property="og:title" content="树莓派-硬件和功能-硬件和功能 - 生命不息 折腾不止">
+  
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
 
@@ -33,6 +33,8 @@
 
   
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
   
 
   
@@ -67,10 +69,10 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li >
+                <li class="active">
                     <a rel="index" href="/">Blog</a>
                 </li>
-                <li class="active">
+                <li >
                     <a href="/blog/archives">Archives</a>
                 </li>
 		<!-- <li > -->
@@ -115,35 +117,21 @@
       <div id="main" role="main" class="container">
         <div id="content">
           <div class="row">
-  <div class="page-content col-md-9">
-    <article role="article">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="生命不息 折腾不止" />
+    
+    <meta itemprop="url" content="http://nicekwell.net" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-        <header class="page-header">
-          
-          
-            <h1 class="entry-title">
-              Category: Diy
-              
-            </h1>
-          
-        </header>
-      
-      <div class="entry-content">
-        <div id="blog-archives" class="category" itemscope itemtype="http://schema.org/Blog">
-<meta itemprop="name" content="生命不息 折腾不止" />
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
 
-<meta itemprop="url" content="http://nicekwell.net" />
 
 
 
-  
-  <h2 class="year">2016</h2>
 
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html" itemprop="url">通用舵机控制器（pwm信号发生器）</a></h2>
-<p class="meta text-muted">
-  
 
 
 
@@ -151,140 +139,107 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-15T20:25:20+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月15日</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        树莓派-硬件和功能-硬件和功能
+        
+    </h1>
+    
+  </header>
 
 
+<div class="entry-content clearfix" itemprop="articleBody description"><p>  </p>
 
+<p>本文介绍树莓派的常用设置，经常是一些开机后必须设置的项目。</p>
 
+<!-- more -->
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-28T14:49:53+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月28日</time>
-  
+<p><strong>树莓派引脚电平是3.3V。</strong></p>
 
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>
-  
-</span>
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/1.png" alt="1.png" /></p>
 
+<p>关于引脚的编号，不同的库会有不同的编号：</p>
 
-</p>
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/2.jpg" alt="2.jpg" /></p>
 
-</article>
+<p>老的树莓派1代引脚如下：</p>
 
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/3.png" alt="3.png" /></p>
 
+<hr />
 
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-wfr07jie-shou-ji-xin-hao.html" itemprop="url">单片机提取WFR07接收机信号</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:39:52+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>, <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html" itemprop="url">单片机提取GR3E接收机信号</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-24T00:08:33+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月24日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>, <a class='category' href='/blog/categories/mo-kuai-he-xie-yi/'>模块和协议</a>
-  
-</span>
-
-
-</p>
-
-</article>
-
-
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20161008/bie-cai-bai-kuai-er-bot.html" itemprop="url">别踩白块儿bot</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-10-08T14:12:06+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年10月8日</time>
-  
-
-<span class="glyphicon glyphicon-tags"></span>&nbsp;
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/diy/'>diy</a>
-  
-</span>
-
-
-</p>
-
-</article>
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
 
 </div>
 
-      </div>
-      
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">nicekwell</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-15T20:25:20+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月15日</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/shu-mei-pai/'>树莓派</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html" title="Previous Post: 树莓派-概述和使用-配置和使用">&laquo; 树莓派-概述和使用-配置和使用</a></li>
+            
+            
+          </ul>
+        
+      </footer>
     </article>
+    
+      <section>
+        <h2>Comments</h2>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
     
   </div>
 
   
-    <aside class="sidebar col-md-3">
-      
-        <section class="panel panel-default">
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">文章目录</h3>
   </div>
@@ -305,7 +260,7 @@
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html">树莓派-硬件和功能-硬件和功能</a>
+    <a class="list-group-item active" href="/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html">树莓派-硬件和功能-硬件和功能</a>
     
     <a class="list-group-item " href="/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html">树莓派-概述和使用-配置和使用</a>
     
@@ -337,8 +292,8 @@
   </div>
 </section>
 
-      
-    </aside>
+    
+  </aside>
   
 </div>
 
@@ -362,7 +317,10 @@
       var disqus_shortname = 'nicekwell';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html';
+        var disqus_url = 'http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

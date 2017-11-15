@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html</loc>
+<lastmod>2017-11-15T20:25:20+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html</loc>
 <lastmod>2017-11-15T19:52:47+08:00</lastmod>
 </url>
@@ -117,5 +121,8 @@
 </url>
 <url>
 <loc>http://nicekwell.net/blog/categories/wang-luo-bian-cheng-he-fu-wu-qi/</loc>
+</url>
+<url>
+<loc>http://nicekwell.net/posts/2/</loc>
 </url>
 </urlset>

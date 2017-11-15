@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-15T20:18:52+08:00</updated>
+  <updated>2017-11-15T20:33:04+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-硬件和功能-硬件和功能]]></title>
+    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html"/>
+    <updated>2017-11-15T20:25:20+08:00</updated>
+    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<p>本文介绍树莓派的常用设置，经常是一些开机后必须设置的项目。</p>
+
+<!-- more -->
+
+<p><strong>树莓派引脚电平是3.3V。</strong></p>
+
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/1.png" alt="1.png" /></p>
+
+<p>关于引脚的编号，不同的库会有不同的编号：</p>
+
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/2.jpg" alt="2.jpg" /></p>
+
+<p>老的树莓派1代引脚如下：</p>
+
+<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng/3.png" alt="3.png" /></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-概述和使用-配置和使用]]></title>
