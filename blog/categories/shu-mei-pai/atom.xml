@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-15T20:33:04+08:00</updated>
+  <updated>2017-11-15T20:43:14+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -14,13 +14,54 @@
 
   
   <entry>
+    <title type="html"><![CDATA[树莓派-硬件和功能-功耗]]></title>
+    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-gong-hao.html"/>
+    <updated>2017-11-15T20:37:34+08:00</updated>
+    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-gong-hao</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<!-- more -->
+
+<p>3代B型：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>几乎0%使用</td>
+      <td>270mA</td>
+    </tr>
+    <tr>
+      <td>单核100%</td>
+      <td>320mA，每隔几秒跳一次400mA</td>
+    </tr>
+    <tr>
+      <td>双核100%</td>
+      <td>360mA，每隔几秒跳一次510mA</td>
+    </tr>
+    <tr>
+      <td>三个100%</td>
+      <td>410mA，每隔几秒跳一次630mA</td>
+    </tr>
+    <tr>
+      <td>四核100%</td>
+      <td>460mA，每隔几秒跳一次760mA</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[树莓派-硬件和功能-硬件和功能]]></title>
     <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html"/>
     <updated>2017-11-15T20:25:20+08:00</updated>
     <id>http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng</id>
     <content type="html"><![CDATA[<p>  </p>
-
-<p>本文介绍树莓派的常用设置，经常是一些开机后必须设置的项目。</p>
 
 <!-- more -->
 
