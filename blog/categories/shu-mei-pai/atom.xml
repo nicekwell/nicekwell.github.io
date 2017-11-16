@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-16T08:29:00+08:00</updated>
+  <updated>2017-11-16T15:59:07+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-pypi-说明和安装]]></title>
+    <link href="http://nicekwell.net/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang.html"/>
+    <updated>2017-11-16T15:44:09+08:00</updated>
+    <id>http://nicekwell.net/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">安装</a></li>
+</ul>
+<p>  </p>
+
+<p>这个库完整的名字是raspberry-gpio-python，通过这个库可以方便地用python操作树莓派的GPIO，但没有提供SPI、i2c等操作接口。</p>
+
+<!-- more -->
+
+<h3 id="section">安装</h3>
+
+<ul>
+  <li>
+    <p>1、安装python3<br />
+<strong>sudo apt-get install python-dev python3-dev</strong></p>
+  </li>
+  <li>
+    <p>2、下载pypi库:<br />
+官方下载：<a href="https://pypi.python.org/pypi/RPi.GPIO">https://pypi.python.org/pypi/RPi.GPIO</a></p>
+  </li>
+  <li>
+    <p>3、放到树莓派里，解压<br />
+<strong>tar zxvf RPi.GPIO-0.6.2.tar.gz</strong></p>
+  </li>
+  <li>
+    <p>4、进入解压后的目录，执行安装<br />
+<strong>sudo python3 setup.py install</strong><br />
+可参考解压后目录中的INSTALL.txt文档说明。</p>
+  </li>
+</ul>
+
+<p>安装成功后就可以使用 RPi.GPIO模块了。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-硬件和功能-功耗]]></title>
@@ -257,279 +302,6 @@ full desktop版本有图形界面；Minimal版本没有图形界面，是精简�
 <h3 id="section-1">启动树莓派</h3>
 
 <p>安装好之后把sd卡插在树莓派上，接通电源即可启动。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-内核开发-说明 下载代码 编译 替换内核]]></title>
-    <link href="http://nicekwell.net/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he.html"/>
-    <updated>2017-11-08T19:21:11+08:00</updated>
-    <id>http://nicekwell.net/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">一、概述</a></li>
-  <li><a href="#ubuntu" id="markdown-toc-ubuntu">二、ubuntu里交叉编译</a>    <ul>
-      <li><a href="#section-1" id="markdown-toc-section-1">1、获取交叉编译工具和源码</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">2、配置编译环境变量</a>        <ul>
-          <li><a href="#section-3" id="markdown-toc-section-3">2.1 手动配置环境变量</a></li>
-          <li><a href="#section-4" id="markdown-toc-section-4">2.2 自动配置环境变量</a></li>
-        </ul>
-      </li>
-      <li><a href="#config" id="markdown-toc-config">3、配置config</a>        <ul>
-          <li><a href="#config-1" id="markdown-toc-config-1">3.1 使用源码里自带的config</a></li>
-          <li><a href="#config-2" id="markdown-toc-config-2">3.2 获取当前树莓派的config</a></li>
-        </ul>
-      </li>
-      <li><a href="#section-5" id="markdown-toc-section-5">4、编译</a></li>
-      <li><a href="#sddirectly-sd" id="markdown-toc-sddirectly-sd">5、挂载树莓派sd卡，并安装编译出的DIRECTLY 到sd卡</a></li>
-    </ul>
-  </li>
-  <li><a href="#section-6" id="markdown-toc-section-6">三、树莓派本地编译</a>    <ul>
-      <li><a href="#section-7" id="markdown-toc-section-7">1、获取源码</a></li>
-      <li><a href="#section-8" id="markdown-toc-section-8">2、配置编译环境</a></li>
-      <li><a href="#config-3" id="markdown-toc-config-3">3、配置config</a></li>
-      <li><a href="#section-9" id="markdown-toc-section-9">4、编译</a></li>
-      <li><a href="#section-10" id="markdown-toc-section-10">5、更新系统</a></li>
-    </ul>
-  </li>
-</ul>
-<p>  </p>
-
-<p>树莓派运行linux系统，内核代码开源，我们可以自己修改内核代码、编写驱动。</p>
-
-<p>本文介绍如何获取linux内核代码，并完成编译、内核替换。</p>
-
-<!-- more -->
-
-<h1 id="section">一、概述</h1>
-
-<p>树莓派的github主页：<a href="https://github.com/raspberrypi">https://github.com/raspberrypi</a>，里面包含了linux源码、交叉编译工具链等内容。</p>
-
-<p>对于我们要用到的有两个仓库：</p>
-
-<p><a href="https://github.com/raspberrypi/linux">https://github.com/raspberrypi/linux</a> 内核源码</p>
-
-<p><a href="https://github.com/raspberrypi/tools">https://github.com/raspberrypi/tools</a> 交叉编译工具链（仅在交叉编译时用到）</p>
-
-<p>注：<br />
-1、树莓派里安装的系统镜像版本要和kernel代码对应。因为树莓派系统是在不断开发和升级的，如果你的树莓派使用的是某个时间的系统镜像，那么最好也使用当时的kernel代码。<br />
-2、关于内核编译方法，官网有很详细的介绍：<a href="https://www.raspberrypi.org/documentation/linux/kernel/building.md">https://www.raspberrypi.org/documentation/linux/kernel/building.md</a>，这里算是翻译和补充。<br />
-3、以下编译过程在树莓派1和树莓派3B上测试ok。</p>
-
-<h1 id="ubuntu">二、ubuntu里交叉编译</h1>
-
-<h2 id="section-1">1、获取交叉编译工具和源码</h2>
-
-<p>源码：<strong>git clone git@github.com:raspberrypi/linux</strong></p>
-
-<p>交叉编译工具：<strong>git clone git@github.com:raspberrypi/tools</strong></p>
-
-<h2 id="section-2">2、配置编译环境变量</h2>
-
-<h3 id="section-3">2.1 手动配置环境变量</h3>
-
-<p>编译工具下载后，在64位ubuntu上编译我们需要的编译工具bin文件在：tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin 目录下，将此目录添加到环境变量PATH中，添加方法：</p>
-
-<p><strong>PATH=$PATH:/home/nicek/githubProjects/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin</strong></p>
-
-<p>如果是在32位系统中编译则要选择32位的交叉编译工具。</p>
-
-<p>配置完成之后可以用编译工具命令查看到版本号：<br />
-arm-linux-gnueabihf-gcc -v</p>
-
-<p>之后，所有的make命令都要指明一些环境变量：<br />
-<strong>ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7</strong></p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>ARCH=arm</td>
-      <td>指明当前要编译arm，虽然树莓派是64位的，这里仍然选择arm，而不是arm64。</td>
-    </tr>
-    <tr>
-      <td>CROSS_COMPILE</td>
-      <td>指明交叉工具链名称。</td>
-    </tr>
-    <tr>
-      <td>KERNEL</td>
-      <td>指明kernel类型，<strong>树莓派1设置为kernel，树莓派2、3设置为kernel7。</strong></td>
-    </tr>
-  </tbody>
-</table>
-
-<p>每次make都需要指明这些环境变量，如：<br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make menuconfig<br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make -j4 zImage</p>
-
-<h3 id="section-4">2.2 自动配置环境变量</h3>
-
-<p>上面这些环境变量每次命令都要写很麻烦，可以通过export一次设置：<br />
- export PATH=$PATH:/home/nicek/githubProjects/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7<br />
-之后在本终端里执行的所有命令都带有这些环境变量信息。</p>
-
-<p>此 export 命令可以写成一个脚本，然后在编译前在终端里source一下这个脚本即可设置好所有的环境变量。就像android编译前也要先source一下envsetup.sh一样。</p>
-
-<p><code>bash
-#!/bin/bash
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &amp;&amp; pwd )"
-export PATH="$PATH:$DIR/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/"
-export ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7
-</code></p>
-
-<p>上述命令中的路径可能和你实际不同，注意修改。</p>
-
-<p>export环境变量后，在本终端里的后续命令都可以不用再指明这些环境变量，如：<br />
-配置之前的命令：ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make menuconfig<br />
-配置之后的命令：make menuconfig</p>
-
-<h2 id="config">3、配置config</h2>
-
-<p>linux源码中有很多工程：<br />
-树莓派1的工程是<strong>bcmrpi_defconfig</strong>；<br />
-树莓派2、3的工程是<strong>bcm2709_defconfig</strong>。</p>
-
-<h3 id="config-1">3.1 使用源码里自带的config</h3>
-
-<p>ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make bcm2709_defconfig</p>
-
-<p>此命令功能是获取bcm2709_defconfig的配置到 .config里。<br />
-我们可以直接用工程里的配置，但这样的话可能会丢失原来使用的树莓派的配置，这里提供一个方法可以获取当前正在使用的树莓派的config。</p>
-
-<h3 id="config-2">3.2 获取当前树莓派的config</h3>
-
-<p>已经开机的树莓派上会有这个节点：<strong>/proc/config.gz</strong>，从这个节点可以获取本树莓派的config。<br />
-如果没有这个节点的话则需要先加载模块：<strong>sudo modprobe configs</strong></p>
-
-<p>把 config.gz 内容复制到要编译的电脑上：<br />
-scp pi@[ip]:/proc/config.gz .</p>
-
-<p>解压，保存为.confg文件。<br />
-zcat config.gz &gt; .config<br />
-注：必须在linux环境下解压，在mac下会乱码。</p>
-
-<p>把此config文件复制到linux源码的根目录。</p>
-
-<h2 id="section-5">4、编译</h2>
-
-<p>安装必要的库：<br />
-sudo apt-get install bc<br />
-sudo apt-get install libncurses5-dev libncursesw5-dev<br />
-sudo apt-get install zlib1g:i386<br />
-sudo apt-get install libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5</p>
-
-<p><strong>1、执行menuconfig</strong><br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 <strong>make menuconfig</strong><br />
-如果没什么改的就不用执行这一步。</p>
-
-<p><strong>2、编译</strong><br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 <strong>make -j4 zImage modules dtbs</strong> 2&gt;&amp;1 | tee build.log<br />
-以n进程编译。不指明几进程的话则默认以单进程编译。</p>
-
-<p><strong>3、打包zImage文件</strong><br />
-直接用linux源码包里的工具：<br />
-./scripts/mkknlimg arch/arm/boot/zImage ./kernel_new.img<br />
-在本目录生成一个kernel_new.img文件，这个文件就是要放到sd卡中的文件。<br />
-注：网上很多地方说的用 tools/mkimage/imagetool-uncompressd.py 的方法不行！！</p>
-
-<h2 id="sddirectly-sd">5、挂载树莓派sd卡，并安装编译出的DIRECTLY 到sd卡</h2>
-
-<p>把树莓派的sd卡插入ubuntu系统电脑，树莓派的sd卡有两个分区：<br />
-一个fat分区，是boot相关的内容，kernel的img文件就放在这个分区里；<br />
-一个是ext4分区，也就是系统的根目录分区。</p>
-
-<p>我们生成的文件涉及到这两个分区的内容，一般插入ubuntu后会自动挂载，fat分区可以不用root权限操作，ext4分区需要root权限操作。<br />
-两个分区具体挂载在什么地方可以自己决定，以下用[fat]表示boot挂载的路径，[ext4]表示ext4挂载的路径。</p>
-
-<p><strong>1、安装modules</strong><br />
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make INSTALL_MOD_PATH=[ext4] modules_install<br />
-操作ext4分区，需要root权限。</p>
-
-<p><strong>2、更新 kernel.img 文件</strong><br />
-前面已经用 mkknlimg 工具打包了kernel_new.img文件了，把它复制到boot分区并配置使用即可：<br />
-cp kernel_new.img [fat]/<br />
-编辑 [fat]/config.txt 文件，在最后加入一行：<br />
-kernel=kernel_new.img</p>
-
-<p><strong>3、复制其他相关文件</strong><br />
-cp arch/arm/boot/dts/<em>.dtb [fat]/<br />
-cp arch/arm/boot/dts/overlays/</em>.dtb* [fat]/overlays/<br />
-cp arch/arm/boot/dts/overlays/README [fat]/overlays/</p>
-
-<p>更新完成后插回树莓派即可开机，开机后可以用 uname -a 命令查看kernel信息已经改变。</p>
-
-<h1 id="section-6">三、树莓派本地编译</h1>
-
-<p>树莓派上本地编译和上面交叉编译原理基本相同，由于是本地编译，在编译工具和环境变量配置方面还简单一些。<br />
-树莓派上编一次内核花了将近2小时。</p>
-
-<h2 id="section-7">1、获取源码</h2>
-
-<p>git clone git@github.com:raspberrypi/linux</p>
-
-<h2 id="section-8">2、配置编译环境</h2>
-
-<p>在ubuntu里交叉编译时需要配置的环境变量有：</p>
-
-<ul>
-  <li>PATH: 添加交叉工具链的目录</li>
-  <li>ARCH: 配置成arm</li>
-  <li>CROSS_COMPILE: 配置成ubuntu上使用的交叉工具链arm-linux-gnueabihf- KERNEL=kernel7</li>
-  <li>KERNEL: 配置成kernel7</li>
-</ul>
-
-<p>而在树莓派本地编译：<br />
-关于交叉工具链，本身的编译工具就可以编译给自己使用，所以不用配置；<br />
-只需要配置 KERNEL=kernel7 即可。</p>
-
-<p>和上面相同，可以用 export KERNEL=kernel7，一次设置之后此终端里所有命令都带有此环境变量。<br />
-也可以更进一步写成脚本，不过这里这一行命令很简单，不写脚本也可以。</p>
-
-<h2 id="config-3">3、配置config</h2>
-<p>和上面一样，<br />
-树莓派1使用的是 <strong>bcmrpi_defconfig</strong>，<br />
-树莓派2、3使用的是 <strong>bcm2709_defconfig</strong>。<br />
-例：KERNEL=kernel7 make bcm2709_defconfig</p>
-
-<p>如果要使用树莓派自带的config的话：<br />
-<strong>sudo modprobe configs</strong>    # 加载模块<br />
-<strong>zcat config.gz &gt; .config</strong>      # 获取配置</p>
-
-<h2 id="section-9">4、编译</h2>
-<p>安装必要的库：<br />
-sudo apt-get install bc<br />
-sudo apt-get install libncurses5-dev libncursesw5-dev<br />
-sudo apt-get install zlib1g<br />
-sudo apt-get install libc6</p>
-
-<p>1、执行menuconfig<br />
-<strong>KERNEL=kernel7 make menuconfig</strong><br />
-没什么要改的话就不用执行这一步。</p>
-
-<p>2、编译<br />
-<strong>KERNEL=kernel7 make -j4 zImage modules dtbs 2&gt;&amp;1 | tee build.log</strong><br />
-以n进程编译。不指明几进程的话则默认以单进程编译。</p>
-
-<p>3、打包zImage文件<br />
-直接用linux源码包里的工具：<br />
-<strong>./scripts/mkknlimg arch/arm/boot/zImage ./kernel_new.img</strong><br />
-在本目录生成一个kernel_new.img文件，这个文件就是要放到sd卡中的文件。</p>
-
-<h2 id="section-10">5、更新系统</h2>
-
-<p>1、安装模块<br />
-<strong>sudo make modules_install</strong></p>
-
-<p>2、复制dtb文件<br />
-<strong>sudo cp arch/arm/boot/dts/<em>.dtb /boot/
-sudo cp arch/arm/boot/dts/overlays/</em>.dtb* /boot/overlays/
-sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/</strong></p>
-
-<p>3、更新kernel.img文件<br />
-<strong>sudo cp arch/arm/boot/zImage /boot/$KERNEL.img</strong></p>
 
 <hr />
 
