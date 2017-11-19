@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-16T15:59:07+08:00</updated>
+  <updated>2017-11-19T22:55:47+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-pypi-GPIO]]></title>
+    <link href="http://nicekwell.net/blog/20171119/shu-mei-pai-pypi-gpio.html"/>
+    <updated>2017-11-19T22:44:47+08:00</updated>
+    <id>http://nicekwell.net/blog/20171119/shu-mei-pai-pypi-gpio</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1、导入模块</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2、设置引脚排列方式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">3、设置某个引脚的输入输出</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">4、输入</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">5、输出</a></li>
+</ul>
+<p>  </p>
+
+<!-- more -->
+
+<h3 id="section">1、导入模块</h3>
+
+<p><strong>import RPi.GPIO as GPIO</strong></p>
+
+<h3 id="section-1">2、设置引脚排列方式</h3>
+
+<p>1、主板编号方式<br />
+<strong>GPIO.setmode(GPIO.BOARD)</strong><br />
+就是按照主板的引脚顺序：<br />
+<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/1.png" alt="1.png" /><br />
+注意有些引脚是没有GPIO功能的，这些引脚仍然为它们分配了序号，但控制时使用这些非GPIO的序号是会报错的。</p>
+
+<p>2、BCM编号方式<br />
+<strong>GPIO.setmode(GPIO.BCM)</strong><br />
+按照BCM方式编号。<br />
+<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/2.jpg" alt="2.jpg" /></p>
+
+<h3 id="section-2">3、设置某个引脚的输入输出</h3>
+
+<p><strong>GPIO.setup([gpio], GPIO.[dir])</strong><br />
+[GPIO]是一个引脚的序号，按照上面的编号方式决定。<br />
+GPIO.[dir]是方向，可以设置：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>GPIO.IN</strong></td>
+      <td>输入</td>
+    </tr>
+    <tr>
+      <td><strong>GPIO.OUT</strong></td>
+      <td>输出</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>同时设置多个通道：<br />
+<strong>chan_list = [[gpio1], [gpio2], …]</strong><br />
+<strong>GPIO.setup(chan_list, GPIO_[dir]]</strong></p>
+
+<h3 id="section-3">4、输入</h3>
+
+<p><strong>GPIO.input([gpio])</strong><br />
+获取指定通道的电平，返回的是一个数值，0或1。</p>
+
+<h3 id="section-4">5、输出</h3>
+
+<p>单通道输出：<br />
+<strong>GPIO.output([gpio], GPIO.[level])</strong><br />
+[gpio]是一个引脚的序号，按照上面的编号方式决定。<br />
+GPIO.[level]是引脚的电平：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>GPIO.LOW</strong></td>
+      <td>低电平</td>
+    </tr>
+    <tr>
+      <td><strong>GPIO.HIGH</strong></td>
+      <td>高电平（3.3v）</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>同时设置多通道输出：<br />
+<strong>chan_list = [[gpio1], [gpio2], …]</strong><br />
+<strong>GPIO.output(chan_list, (GPIO.HIGH, GPIO.LOW, …))</strong><br />
+第一个参数是list，第二个参数是tuple。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-pypi-说明和安装]]></title>
@@ -225,83 +318,6 @@ zh_CN.UTF-8 UTF-8
 选中后回车，会让你选择默认的字体，<br />
   如果想要系统语言是中文，则选择“zh_CN.UTF-8 UTF-8 ”回车<br />
   如果想要系统语言是英文，则选择“en_GB.UTF-8”回车。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-概述和使用-下载和安装]]></title>
-    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang.html"/>
-    <updated>2017-11-15T19:22:54+08:00</updated>
-    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">下载镜像</a></li>
-  <li><a href="#mac" id="markdown-toc-mac">mac下安装</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">启动树莓派</a></li>
-</ul>
-<p>  </p>
-
-<p>本文介绍如何下载树莓派镜像，并安装到sd卡，实现开机。</p>
-
-<!-- more -->
-
-<h3 id="section">下载镜像</h3>
-
-<p>官网：<a href="https://www.raspberrypi.org/">https://www.raspberrypi.org/</a><br />
-下载页面：<a href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a><br />
-推荐下载raspbian：</p>
-
-<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/1.png" alt="1.png" /></p>
-
-<p>这是基于debian jessie的系统，有Full desktop版本和Minimal版本：</p>
-
-<p><img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/2.png" alt="2.png" /><br />
-full desktop版本有图形界面；Minimal版本没有图形界面，是精简版。<br />
-由于后面要配置网络等配置项，用图形界面会方便很多，推荐使用不带LITE的desktop版。</p>
-
-<h3 id="mac">mac下安装</h3>
-
-<ul>
-  <li>
-    <p><strong>1、不插入sd卡查看当前磁盘情况</strong>
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/3.png" alt="3.png" /></p>
-  </li>
-  <li>
-    <p><strong>2、插入sd卡查看当前磁盘情况</strong>
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/4.png" alt="4.png" /><br />
-多出来的 /dev/disk2s1 就是sd卡的分区。</p>
-  </li>
-  <li>
-    <p><strong>3、卸载这个分区</strong><br />
-<strong>diskutil unmount /dev/[disk*s*]</strong><br />
-卸载是为了待会写入这个分区时不会被其他程序的读写干扰。<br />
-卸载之后可以通过  diskutil list 命令查看设备：
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/5.png" alt="5.png" /><br />
-可以看到我们的sd卡对应的设备是 /dev/disk2。</p>
-  </li>
-  <li>
-    <p><strong>4、使用dd命令写入镜像</strong><br />
-<strong>sudo dd bs=4m if=[镜像].img of=/dev/<code>[磁盘的字符设备]</code></strong><br />
-注意，磁盘的字符设备是 r 开头的，网上有个说法：/dev/disk2s1是分区，/dev/disk2是块设备，/dev/rdisk2是原始字符设备。<br />
-由于文件很大，写入过程会比较长。成功之后会显示如下界面：
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/6.png" alt="6.png" /></p>
-  </li>
-  <li>
-    <p><strong>5、卸载sd卡设备</strong><br />
-<strong>diskutil unmountDisk /dev/[disk*]</strong><br />
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang/7.png" alt="7.png" /></p>
-  </li>
-</ul>
-
-<p>ubuntu下安装步骤和mac下类似，由于没有实际操作过，这里不介绍ubuntu下的安装。</p>
-
-<h3 id="section-1">启动树莓派</h3>
-
-<p>安装好之后把sd卡插在树莓派上，接通电源即可启动。</p>
 
 <hr />
 
