@@ -158,6 +158,7 @@
   <li><a href="#section-2" id="markdown-toc-section-2">3、设置某个引脚的输入输出</a></li>
   <li><a href="#section-3" id="markdown-toc-section-3">4、输入</a></li>
   <li><a href="#section-4" id="markdown-toc-section-4">5、输出</a></li>
+  <li><a href="#pythongpio" id="markdown-toc-pythongpio">python控制GPIO的速度</a></li>
 </ul>
 <p>  </p>
 
@@ -233,6 +234,14 @@ GPIO.[level]是引脚的电平：</p>
 <strong>GPIO.output(chan_list, (GPIO.HIGH, GPIO.LOW, …))</strong><br />
 第一个参数是list，第二个参数是tuple。</p>
 
+<h3 id="pythongpio">python控制GPIO的速度</h3>
+
+<p>设置python控制一个GPIO循环输出高低电平（不加延时），波形如下：<br />
+<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/3.png" alt="3.png" /></p>
+
+<p>高低电平切换响应速度大约2us。<br />
+但是注意，<strong>由于python是在上层运行的，所以波形输出不太稳定</strong>，上面是最理想的状态，实际上程序会受到影响，波形输出不稳定。</p>
+
 <hr />
 
 <p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
@@ -286,6 +295,8 @@ GPIO.[level]是引脚的电平：</p>
             <li class="previous"><a href="/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang.html" title="Previous Post: 树莓派-pypi-说明和安装">&laquo; 树莓派-pypi-说明和安装</a></li>
             
             
+            <li class="next"><a href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html" title="Next Post: 树莓派-pypi-UART串口">树莓派-pypi-UART串口 &raquo;</a></li>
+            
           </ul>
         
       </footer>
@@ -323,6 +334,8 @@ GPIO.[level]是引脚的电平：</p>
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html">树莓派-pypi-UART串口</a>
+    
     <a class="list-group-item active" href="/blog/20171119/shu-mei-pai-pypi-gpio.html">树莓派-pypi-GPIO</a>
     
     <a class="list-group-item " href="/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang.html">树莓派-pypi-说明和安装</a>
@@ -350,8 +363,6 @@ GPIO.[level]是引脚的电平：</p>
     <a class="list-group-item " href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html">WFT07和WFR07的功能和使用</a>
     
     <a class="list-group-item " href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html">GT2B和GR3E的功能和使用</a>
-    
-    <a class="list-group-item " href="/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a>
     
   </div>
 </section>
