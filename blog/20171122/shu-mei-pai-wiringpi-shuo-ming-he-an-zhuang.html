@@ -2,10 +2,10 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Category: 网络编程和服务器 - 生命不息 折腾不止</title>
+  <title>树莓派-wiringPi-说明和安装 - 生命不息 折腾不止</title>
   <meta name="author" content="nicekwell">
 
-  <meta name="description" content="Category: 网络编程和服务器">
+  
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -14,16 +14,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicekwell.net/blog/categories/wang-luo-bian-cheng-he-fu-wu-qi/index.html">
+  <link rel="canonical" href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://nicekwell.net/blog/categories/wang-luo-bian-cheng-he-fu-wu-qi/index.html">
-  <meta property="og:title" content="Category: 网络编程和服务器 - 生命不息 折腾不止">
-  <meta property="og:description" content="Category: 网络编程和服务器">
+  <meta property="og:url" content="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html">
+  <meta property="og:title" content="树莓派-wiringPi-说明和安装 - 生命不息 折腾不止">
+  
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
 
@@ -33,6 +33,8 @@
 
   
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
   
 
   
@@ -67,10 +69,10 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li >
+                <li class="active">
                     <a rel="index" href="/">Blog</a>
                 </li>
-                <li class="active">
+                <li >
                     <a href="/blog/archives">Archives</a>
                 </li>
 		<!-- <li > -->
@@ -115,74 +117,161 @@
       <div id="main" role="main" class="container">
         <div id="content">
           <div class="row">
-  <div class="page-content col-md-9">
-    <article role="article">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="生命不息 折腾不止" />
+    
+    <meta itemprop="url" content="http://nicekwell.net" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-        <header class="page-header">
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-22T19:16:22+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月22日</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        树莓派-wiringPi-说明和安装
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">说明</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">原理</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">安装</a></li>
+</ul>
+<p>  </p>
+
+<p>wiringPi是树莓派上层提供gpio、串口、i2c等硬件操作的一套库，经过其封装后的接口函数使用起来非常方便。<br />
+wiringpi已经不局限于C语言了，也提供了其他各种语言的接口，甚至提供了命令行工具，直接在命令行操作GPIO。<br />
+我们这里介绍的是wiringPi的C接口。</p>
+
+<!-- more -->
+
+<h3 id="section">说明</h3>
+
+<p>wiringPi是树莓派上层提供gpio、串口、i2c等硬件操作的一套库，经过其封装后的接口函数使用起来非常方便。<br />
+wiringpi已经不局限于C语言了，也提供了其他各种语言的接口，甚至提供了命令行工具，直接在命令行操作GPIO。<br />
+我们这里介绍的是wiringPi的C接口。</p>
+
+<p>官方首页：<a href="http://wiringpi.com/">http://wiringpi.com/</a><br />
+wiringPi-c的github主页：<a href="https://github.com/WiringPi/WiringPi">https://github.com/WiringPi/WiringPi</a><br />
+官方说明文档：<a href="http://wiringpi.com/reference/">http://wiringpi.com/reference/</a></p>
+
+<h3 id="section-1">原理</h3>
+
+<p>通过wiringPi 的源码可以看出，<strong>wiringPi是一个在现有的上层接口基础上封装的一层库函数</strong>。上层不通过wiringPi也可以直接通过linux标准接口完成功能，wiringPi封装的好处是使用比较方便（但也裁剪了很多功能）。<br />
+如：<br />
+  GPIO库，实际上是通过操作GPIO节点实现：<br />
+  <img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang/1.png" alt="1.png" /></p>
+
+<p>  serial库，实际上也是通过标准的open、write等函数实现：<br />
+  <img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang/2.png" alt="2.png" /></p>
+
+<h3 id="section-2">安装</h3>
+
+<p>1、用git把代码拖下来<br />
+<strong>git clone git://git.drogon.net/wiringPi</strong><br />
+也可以从github拖下来：<br />
+<strong>git clone git@github.com:WiringPi/WiringPi.git</strong></p>
+
+<p>对比发现作者在这两个地方都进行维护，代码内容完全一样。</p>
+
+<p> </p>
+
+<p>2、安装
+进入目录，直接<br />
+<strong>./build</strong><br />
+不需要sudo权限。</p>
+
+<p>安装过后，就可以使用命令行和C接口了。具体怎么使用见后面内容。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
           
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">nicekwell</span></span>
+
           
-            <h1 class="entry-title">
-              Category: 网络编程和服务器
-              
-            </h1>
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-22T19:16:22+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月22日</time>
           
-        </header>
-      
-      <div class="entry-content">
-        <div id="blog-archives" class="category" itemscope itemtype="http://schema.org/Blog">
-<meta itemprop="name" content="生命不息 折腾不止" />
-
-<meta itemprop="url" content="http://nicekwell.net" />
-
-
-
-  
-  <h2 class="year">2017</h2>
-
-<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  
-<h2 class="post-title" itemprop="name headline"><a href="/blog/20171112/ba-yi-you-de-repogong-cheng-ti-jiao-dao-fu-wu-qi.html" itemprop="url">把已有的repo工程提交到服务器</a></h2>
-<p class="meta text-muted">
-  
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-12T23:19:32+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月12日</time>
-  
 
 <span class="glyphicon glyphicon-tags"></span>&nbsp;
 <span class="categories">
   
-    <a class='category' href='/blog/categories/wang-luo-bian-cheng-he-fu-wu-qi/'>网络编程和服务器</a>
+    <a class='category' href='/blog/categories/shu-mei-pai/'>树莓派</a>
   
 </span>
 
 
-</p>
-
-</article>
-
+        </p>
+        
+          <div class="sharing">
+  
+  
+  
 </div>
 
-      </div>
-      
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html" title="Previous Post: 树莓派-pypi-UART串口">&laquo; 树莓派-pypi-UART串口</a></li>
+            
+            
+          </ul>
+        
+      </footer>
     </article>
+    
+      <section>
+        <h2>Comments</h2>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
     
   </div>
 
   
-    <aside class="sidebar col-md-3">
-      
-        <section class="panel panel-default">
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">文章目录</h3>
   </div>
@@ -203,7 +292,7 @@
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html">树莓派-wiringPi-说明和安装</a>
+    <a class="list-group-item active" href="/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html">树莓派-wiringPi-说明和安装</a>
     
     <a class="list-group-item " href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html">树莓派-pypi-UART串口</a>
     
@@ -255,8 +344,8 @@
   </div>
 </section>
 
-      
-    </aside>
+    
+  </aside>
   
 </div>
 
@@ -280,7 +369,10 @@
       var disqus_shortname = 'nicekwell';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html';
+        var disqus_url = 'http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

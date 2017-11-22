@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-20T20:44:36+08:00</updated>
+  <updated>2017-11-22T19:34:31+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,68 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-说明和安装]]></title>
+    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html"/>
+    <updated>2017-11-22T19:16:22+08:00</updated>
+    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">说明</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">原理</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">安装</a></li>
+</ul>
+<p>  </p>
+
+<p>wiringPi是树莓派上层提供gpio、串口、i2c等硬件操作的一套库，经过其封装后的接口函数使用起来非常方便。<br />
+wiringpi已经不局限于C语言了，也提供了其他各种语言的接口，甚至提供了命令行工具，直接在命令行操作GPIO。<br />
+我们这里介绍的是wiringPi的C接口。</p>
+
+<!-- more -->
+
+<h3 id="section">说明</h3>
+
+<p>wiringPi是树莓派上层提供gpio、串口、i2c等硬件操作的一套库，经过其封装后的接口函数使用起来非常方便。<br />
+wiringpi已经不局限于C语言了，也提供了其他各种语言的接口，甚至提供了命令行工具，直接在命令行操作GPIO。<br />
+我们这里介绍的是wiringPi的C接口。</p>
+
+<p>官方首页：<a href="http://wiringpi.com/">http://wiringpi.com/</a><br />
+wiringPi-c的github主页：<a href="https://github.com/WiringPi/WiringPi">https://github.com/WiringPi/WiringPi</a><br />
+官方说明文档：<a href="http://wiringpi.com/reference/">http://wiringpi.com/reference/</a></p>
+
+<h3 id="section-1">原理</h3>
+
+<p>通过wiringPi 的源码可以看出，<strong>wiringPi是一个在现有的上层接口基础上封装的一层库函数</strong>。上层不通过wiringPi也可以直接通过linux标准接口完成功能，wiringPi封装的好处是使用比较方便（但也裁剪了很多功能）。<br />
+如：<br />
+  GPIO库，实际上是通过操作GPIO节点实现：<br />
+  <img src="http://nicekwell.net/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang/1.png" alt="1.png" /></p>
+
+<p>  serial库，实际上也是通过标准的open、write等函数实现：<br />
+  <img src="http://nicekwell.net/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang/2.png" alt="2.png" /></p>
+
+<h3 id="section-2">安装</h3>
+
+<p>1、用git把代码拖下来<br />
+<strong>git clone git://git.drogon.net/wiringPi</strong><br />
+也可以从github拖下来：<br />
+<strong>git clone git@github.com:WiringPi/WiringPi.git</strong></p>
+
+<p>对比发现作者在这两个地方都进行维护，代码内容完全一样。</p>
+
+<p> </p>
+
+<p>2、安装
+进入目录，直接<br />
+<strong>./build</strong><br />
+不需要sudo权限。</p>
+
+<p>安装过后，就可以使用命令行和C接口了。具体怎么使用见后面内容。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-pypi-UART串口]]></title>
@@ -3525,659 +3587,6 @@ update_rate是频率，比如周期是20ms，那么频率就是50。<br />
   这点和类似于操作系统的GTK库或者QT库，它们提供了大量的绘图函数。<br />
   在本项目中，使用了绘图库，它就是在底层对液晶屏操作的基础上建立的文字和图片显示函数，提供了在指定位置写入字符、汉字，以及反色写入、垂直镜像写入等功能。上层的对象调用这些函数会非常方便。<br />
   总结一下库的作用：利用系统层的API，或者跳过系统层直接调用驱动函数，构建出自己的一套控制逻辑，并对外提供基于这个控制逻辑的函数库。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[第5章 定时器执行任务]]></title>
-    <link href="http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html"/>
-    <updated>2016-09-19T22:52:11+08:00</updated>
-    <id>http://nicekwell.net/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1. 定时器执行任务的程序结构</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2. 定时器里面任务函数的特点</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">3. 过程任务的定时器化</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">4. 定时器执行任务程序结构总结</a></li>
-  <li><a href="#section-4" id="markdown-toc-section-4">5. 我们追求的是什么</a></li>
-</ul>
-
-<p>  先来回顾一下：<br />
-  在第2章中介绍了界面函数结构，它的思想是主进程为主体，外部的按键等作为特殊情况单独处理。但是当接触到的程序更复杂时，尤其是当程序里还要进行精确定时时，用单进程结构已经满足不了要求了，这就进一步产生了第3章的结构——定时器分配任务。<br />
-  定时器分配任务结构在主进程结构基础上开辟了一个定时器进程，在这个进程里进行按键扫描任务、计时任务等。此时这些任务是不会被中断的，定时并且精确地每隔一段时间执行一次。当时的看法是：这些定时器里的进程完成任务后把结果保存，主进程可以选用这些结果进行处理。<br />
-  此外定时器还要进行一个特殊的功能——给主进程下达命令，通知主进程进行某种动作。这个功能的本质就是向主进程提供了时间信息。<br />
-  这种结构已经结合了定时器，并且已经把一些简短的代码直接放到了定时器中断处理程序里了，但还有相当一部分代码放在主进程里。不是说不能放在主进程里，而是当时没有明确出定时器中的各个进程是如何形成的，这些定时器中的任务有什么更深刻的特征。<br />
-  本章就是专门讨论这些放在定时器里执行的任务。</p>
-
-<!-- more -->
-
-<p>  这种结构也有产生的背景，它源于一个“温度控制系统”的项目，具体内容大概有：数码管扫描、按键扫描、时间计时、蜂鸣器控制、温度控制，当温度低于某个值时启动一个固定功率的加热器，温度高于某个值时停止加热，温度更高时启动报警。<br />
-  由于这是给公司做的项目，所以不公开源代码，不过不需要源代码也完全可以理解这个结构。<br />
-  这个项目并不复杂，功能要求很明确，没有多个工作模式和界面。按开始的想法，这里面除了计时任务需要定时器外，其他任务都可以放在主进程里完成。但是这样的话可能就会出现各个任务之间的相互干扰，比如按下按键时进程被阻塞，数码管扫描就无法得到运行。<br />
-  所以，在做这个项目时我尝试了另一种方法——把这些任务全部放在定时器中断处理程序里，由定时器驱动每个任务的运行，主循环什么也不做。<br />
-  完成之后事实证明这种结构效果很不错，并且体现出了很多操作系统的思想。下面就来分析一下这种结构。</p>
-
-<h1 id="section">1. 定时器执行任务的程序结构</h1>
-<p>  【时间分配系统】
-  这种结构的任务需要在定时器中断里执行，而定时器中断的时间不一定是任务想要调用的时间，并且不同的任务的调用时间可能不同。所以肯定有一个时间分配系统，这个系统在特定的时间调用不同的任务函数。<br />
-  比如在这次的工程中，51单片机的定时器8位自动填装模式的定时时间不会太长，定时时间设为250us。而按键扫描、数码管扫描、蜂鸣器控制、温度控制、时间控制，这几个任务的执行时间是不一样的：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>  </td>
-      <td>任务名称</td>
-      <td>调用时间</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>——</td>
-      <td>——</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>按键扫描</td>
-      <td>5ms一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>按键处理</td>
-      <td>5ms一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>数码管扫描</td>
-      <td>250us一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>蜂鸣器控制</td>
-      <td>5ms一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>温度检测</td>
-      <td>1s一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>温度控制</td>
-      <td>1s一次</td>
-    </tr>
-    <tr>
-      <td>  </td>
-      <td>计时和时间控制</td>
-      <td>1min一次</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>  在这里请大家回顾一下，第三章里提到过这样一个问题：当500ms来临时，需要完成的任务有 按键扫描、1602刷新显示、电源管理，（温度采集暂且忽略），定时器中断周期只有200us，现在一下子来了这么多任务，一个中断周期内可以处理完吗？<br />
-  当时采用的方法是把一些对时序要求不高的程序放到主进程里完成，而在这里我们还有另一种方法——把任务错开放在不同的定时器中断周期里。虽然这里面的每一个单独的任务都可以在一个定时器中断周期里完成，但是可能会有某个定时器周期里同时来了多个任务，这有可能会导致在一个定时器周期里不能处理完，所以一定要注意时间分配系统要把任务错开放在不同的定时器周期里。<br />
-  比如按键扫描和蜂鸣器控制都是5ms执行一次，但是它们却不在同一次定时器中断内执行，因为定时器中断周期是250us，如果在一个中断时处理多个任务可能时间比较长，不能在250us内处理完，所以将它们错开分到不同的时间段内执行，但是周期仍然是5ms。</p>
-
-<p>  时间分配代码如下：</p>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">void t0() interrupt 1 	//250us一次中断
-</span><span class="line">{
-</span><span class="line">    static unsigned char numto5ms=0;	//用于5ms计时
-</span><span class="line">    static unsigned char numto1min=0;	//用于1min计时
-</span><span class="line">    /***数码管扫描任务***/	//数码管扫描，每次中断都执行，这里省略数码管扫描代码
-</span><span class="line">
-</span><span class="line">    numto5ms++;
-</span><span class="line">    if(numto5ms==5)	//5ms一次，温度检测
-</span><span class="line">    {
-</span><span class="line">        /***温度检测任务***/
-</span><span class="line">    }
-</span><span class="line">    else if(numto5ms==10)	//5ms一次，蜂鸣器发生
-</span><span class="line">    {
-</span><span class="line">        /***蜂鸣器发声任务***/
-</span><span class="line">    }
-</span><span class="line">    else if(numto5ms==15)	//5ms一次，按键扫描
-</span><span class="line">    {
-</span><span class="line">        /***按键扫描任务***/
-</span><span class="line">    }
-</span><span class="line">    else if(numto5ms==20)	//5ms到了，进行分钟判断，此时numto5ms要清
-</span><span class="line">    {
-</span><span class="line">        numto5ms=0;
-</span><span class="line">        numto1min++;
-</span><span class="line">        if(numto1min==12000)	//1min到了
-</span><span class="line">        {
-</span><span class="line">            numto1min=0;
-</span><span class="line">            /***时间处理任务***/
-</span><span class="line">        }
-</span><span class="line">    }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-
-<p>  【任务执行函数】</p>
-
-<p>  任务执行函数就是在定时器里调用的用于完成某种任务的函数。<br />
-  这个函数的具体特点将在下节介绍，因为很重要。</p>
-
-<h1 id="section-1">2. 定时器里面任务函数的特点</h1>
-
-<p>  首先分析一下这种任务函数的特点和要求：</p>
-
-<ul>
-  <li>1、这些函数由定时器调用，所以对于它们的调用时间是很精确地每隔固定时间调用一次。</li>
-  <li>2、由于这些函数是放在定时器里，所以<strong>这些函数必须简短，不能占用过长时间，必须可以在一个定时器中断周期内全部处理完。</strong></li>
-  <li>3、与在主进程连续执行的任务函数相比，这种函数的调用是周期、间断的，这种周期间断性的调用，决定它自己<strong>必须具有记忆以前的状态的能力</strong>，只有这样才能在本次被调用时决定应该进行什么样的操作。<br />
-在上一章“占用式与非占用式程序结构分析”中已经明确了非占用式程序结构的优势，并且也明确了其内部结构：<br />
-<img src="http://nicekwell.net/images/dan-pian-ji-bian-cheng/feizhanyongshichengxu.jpg" alt="非占用式程序的一般结构" title="非占用式程序的一般结构" /><br />
-  有了上一章的基础就好理解这些在定时器里的任务函数了，实际上这些任务函数和在主进程连续执行的任务函数相比，就是把它们改为了非占用式程序放在定时器里执行。</li>
-  <li>4、由于要保证每个任务都要在很短的时间内执行结束，所以就要求每个任务不能阻塞进程，不论这个任务当前处于什么情况，应当执行一次之后立马退出。<br />
-这样，<strong>不论某个进程的执行情况如何，其他进程绝对都会继续执行，也就把各个进程独立开了，保证每个进程都会得到及时的执行。</strong></li>
-  <li>5、各个进程相对独立，但各个进程间也有通信。比如按键扫描进程把按键码传递给其他进程；蜂鸣器进程通过变量接收外部下达的响铃指令。<br />
-要注意一个特点：<strong>由于定时器里面的任务函数是被周期性的调用的，所以如果想使用某个进程的功能，必然不可能像以前那样通过调用函数来实现，因为它本身就一直在被调用着，必然是通过这个进程对外设置的接口变量来实现。</strong></li>
-</ul>
-
-<h1 id="section-2">3. 过程任务的定时器化</h1>
-
-<p>  这里讨论如何把一个过程化的程序改成定时器化的程序。<br />
-  没有找到通用的方法，可以确定的是定时器化的任务结构肯定就是像非占用式程序结构那样。<br />
-  下面举几个定时器化的程序的例子。</p>
-
-<ul>
-  <li>数码管扫描</li>
-</ul>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">void smgdisp()
-</span><span class="line">{
-</span><span class="line">	static unsigned char n;
-</span><span class="line">	n++;
-</span><span class="line">	if(n==8)
-</span><span class="line">		n=0;
-</span><span class="line">
-</span><span class="line">	smgndisp(n,?);
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-
-<p>  用静态变量n记忆点亮的数码管序号，这样轮换点亮完成扫描。<br />
-  还想举一下上一章里面的扫描全彩点阵的程序：</p>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">void refresh7()
-</span><span class="line">{
-</span><span class="line">	static unsigned char r=0;
-</span><span class="line">	static unsigned char flagrgb=0;	//当前需要点亮的颜色，0-R,1-G,2-B
-</span><span class="line">	static unsigned char num=0;
-</span><span class="line">	num++;
-</span><span class="line">	if(num==32)
-</span><span class="line">	{
-</span><span class="line">		num=0;
-</span><span class="line">		flagrgb++;
-</span><span class="line">		if(flagrgb==3)	//说明三种颜色都扫描完了
-</span><span class="line">		{
-</span><span class="line">			flagrgb=0;	//从红色开始扫描
-</span><span class="line">			r++;		//开始扫描下一行
-</span><span class="line">			if(r==8)	//如果发现行都扫描结束则从第行开始扫描
-</span><span class="line">				r=0;
-</span><span class="line">		}
-</span><span class="line">	}
-</span><span class="line">
-</span><span class="line">	if(num&lt;light7)	//说明需要点亮
-</span><span class="line">	{
-</span><span class="line">		switch(flagrgb)
-</span><span class="line">		{
-</span><span class="line">		case 0:	//扫描红色
-</span><span class="line">			DPw = ~(0x01&lt;&lt;r);
-</span><span class="line">			DPr = ~vm7r[r];//送入R灯IO接口显示
-</span><span class="line">			break;
-</span><span class="line">		case 1:	//扫描绿色	
-</span><span class="line">			DPw = ~(0x01&lt;&lt;r);
-</span><span class="line">			DPg = ~vm7g[r];
-</span><span class="line">			break;
-</span><span class="line">		case 2:	//扫描蓝色
-</span><span class="line">			DPw = ~(0x01&lt;&lt;r);
-</span><span class="line">			DPb = ~vm7b[r];
-</span><span class="line">			break;
-</span><span class="line">		}
-</span><span class="line">	}
-</span><span class="line">	else	//说明不需要点亮
-</span><span class="line">	{
-</span><span class="line">		DPw=0xff;
-</span><span class="line">		DPr=0xff;
-</span><span class="line">		DPg=0xff;
-</span><span class="line">		DPb=0xff;
-</span><span class="line">	}
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-
-<p>  也是通过静态变量记忆，完成某行某个颜色的亮度判断。</p>
-
-<ul>
-  <li>按键扫描</li>
-</ul>
-
-<p>  简单的一个按键扫描程序在上一章也例举过：</p>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">static unsigned char keylast;	//保存上次的按键值
-</span><span class="line">if(key==0 &amp;&amp; keylast==1)	//检测到一个下降沿
-</span><span class="line">{
-</span><span class="line">	/*do something*/
-</span><span class="line">}
-</span><span class="line">keylast=key;</span></code></pre></td></tr></table></div></figure>
-
-<p>  下面例举一个增强型的按键扫描程序，它可以识别多个按键按下、释放：</p>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">void keyscan()	//5ms调用一次 
-</span><span class="line">
-</span><span class="line">{
-</span><span class="line">	static unsigned int key;	//本次扫描结果
-</span><span class="line">	static unsigned int keylast=0xffff;	//上次扫描结果
-</span><span class="line">	unsigned char i,j;
-</span><span class="line">
-</span><span class="line">	//开始扫描
-</span><span class="line">	for(i=0;i&lt;=3;i++)
-</span><span class="line">	{
-</span><span class="line">		DPkey=~pow2[i];    //pow[]是一个数组，代表2^i
-</span><span class="line">		for(j=4;j&lt;=7;j++)
-</span><span class="line">		{
-</span><span class="line">			if(DPkey&amp;pow2[j])	//是1
-</span><span class="line">			{
-</span><span class="line">				key|=pow2[4*i+7-j];
-</span><span class="line">			}
-</span><span class="line">			else	//是0
-</span><span class="line">			{
-</span><span class="line">				key&amp;=~pow2[4*i+7-j];
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">	}
-</span><span class="line">	//开始判断上升沿和下降沿
-</span><span class="line">	if(key^keylast)	//说明按键状态有变化
-</span><span class="line">	{
-</span><span class="line">		for(i=0;i&lt;=15;i++)
-</span><span class="line">		{
-</span><span class="line">			if((key&amp;pow2[i])==0 &amp;&amp; (keylast&amp;pow2[i]))	//下降沿，按键按下
-</span><span class="line">			{
-</span><span class="line">				/****在此添加i号按键按下时要做的事****/
-</span><span class="line">			}
-</span><span class="line">			else if((key&amp;pow2[i]) &amp;&amp; (keylast&amp;pow2[i])==0)	//上升沿，按键释放
-</span><span class="line">			{
-</span><span class="line">				/****在此添加i号按键释放时要做的事****/
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">	}
-</span><span class="line">
-</span><span class="line">	keylast=key;
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-
-<p>  在这里我想说明的是，任何复杂的功能都可以写成这种“定时器化”的形式。<br />
-  <em>如果希望更多的功能则需要添加其他结构，比如想要识别按键长按，则需要添加静态变量记忆按键状态并进行计时。</em><br />
-  <strong>不管需要的功能如何，都是可以用这种结构实现的。</strong></p>
-
-<ul>
-  <li>蜂鸣器控制</li>
-</ul>
-
-<p>  这个相比较于上面两个比较特别，因为上面两个结构比较简单，目的明确，要干什么很清楚。而这个蜂鸣器控制任务平时不工作，当外部下达指令时才会发声。<br />
-  所以想以此为例，再次说明<strong>任意功能都可以写成定时器内部任务的结构</strong>。虽然没有证明它，但看起来是这样的。<br />
-  对于这个蜂鸣器控制进程来说，需要有一下几种功能：短响1声、短响2声、短响3声、长响1s。<br />
-  这些功能在定时器任务里完成，通过一个变量通知这个进程执行哪种任务。<br />
-  具体完成代码如下：</p>
-
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-<span class="line-number">54</span>
-<span class="line-number">55</span>
-<span class="line-number">56</span>
-<span class="line-number">57</span>
-<span class="line-number">58</span>
-<span class="line-number">59</span>
-<span class="line-number">60</span>
-<span class="line-number">61</span>
-<span class="line-number">62</span>
-<span class="line-number">63</span>
-<span class="line-number">64</span>
-<span class="line-number">65</span>
-<span class="line-number">66</span>
-<span class="line-number">67</span>
-<span class="line-number">68</span>
-<span class="line-number">69</span>
-<span class="line-number">70</span>
-<span class="line-number">71</span>
-<span class="line-number">72</span>
-<span class="line-number">73</span>
-<span class="line-number">74</span>
-<span class="line-number">75</span>
-<span class="line-number">76</span>
-<span class="line-number">77</span>
-<span class="line-number">78</span>
-<span class="line-number">79</span>
-<span class="line-number">80</span>
-<span class="line-number">81</span>
-<span class="line-number">82</span>
-<span class="line-number">83</span>
-<span class="line-number">84</span>
-<span class="line-number">85</span>
-<span class="line-number">86</span>
-<span class="line-number">87</span>
-<span class="line-number">88</span>
-<span class="line-number">89</span>
-<span class="line-number">90</span>
-<span class="line-number">91</span>
-<span class="line-number">92</span>
-<span class="line-number">93</span>
-<span class="line-number">94</span>
-<span class="line-number">95</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">/*****************************以下是蜂鸣器任务相关*********************************
-</span><span class="line">蜂鸣器的任务函数会由定时器5ms调用一次，由一个标志变量标志完成什么样的声音，使用时只要修改一下变量就行了。
-</span><span class="line">总共有这么及几种声音：
-</span><span class="line">	短响1声、短响2声、短响3声、长响1s
-</span><span class="line">/**********************************************************************************/
-</span><span class="line">unsigned char music=0;	/*对外接口，外部想要发声直接修改这个变量就可以了。
-</span><span class="line">			0-不响
-</span><span class="line">			1-短响声
-</span><span class="line">			2-短响声
-</span><span class="line">			3-短响声
-</span><span class="line">			4-长响1s		*/
-</span><span class="line">void beep()	//发声任务，由定时器每5ms调用一次
-</span><span class="line">{
-</span><span class="line">	static unsigned char flagDoing=0;	/*标志当前是否正在执行某个任务，0-不在，1-在
-</span><span class="line">						当检测到music变量不为时说明有任务，此时将此变量置，标志正在执行；
-</span><span class="line">						具体执行哪个任务根据music变量指示；
-</span><span class="line">						当任务执行完毕时清此变量，标志没有任务，是空闲状态，清零music变量，标志没有任务将要执行。	*/
-</span><span class="line">
-</span><span class="line">	if(music==0)	//没有任务
-</span><span class="line">	{
-</span><span class="line">		buzzer=1;	//关闭蜂鸣器，	buzzer是蜂鸣器控制引脚，0-响，1-不响
-</span><span class="line">	}
-</span><span class="line">	else	//说明有任务
-</span><span class="line">	{
-</span><span class="line">		if(flagDoing==0)	//如果当前没有任务正在执行，则给当前任务赋值为想要执行的任务
-</span><span class="line">			flagDoing=music;
-</span><span class="line">
-</span><span class="line">		if(flagDoing==1)	//短响声
-</span><span class="line">		{
-</span><span class="line">			static unsigned char count=0;	//用来计时
-</span><span class="line">			buzzer=0;	//打开蜂鸣器
-</span><span class="line">			count++;
-</span><span class="line">			if(count==20)	//任务结束判断条件
-</span><span class="line">			{
-</span><span class="line">				count=0;	//为下次任务做准备
-</span><span class="line">				buzzer=1;	//关闭蜂鸣器
-</span><span class="line">				flagDoing=0;
-</span><span class="line">				music=0;
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">		else if(flagDoing==2)	//短响声
-</span><span class="line">		{
-</span><span class="line">			static unsigned char count=0;
-</span><span class="line">			count++;
-</span><span class="line">			if(count&lt;=20)
-</span><span class="line">				buzzer=0;	//打开蜂鸣器
-</span><span class="line">			else if(count&gt;20 &amp;&amp; count&lt;=30)
-</span><span class="line">				buzzer=1;	//关闭
-</span><span class="line">			else if(count&gt;30 &amp;&amp; count&lt;=50)
-</span><span class="line">				buzzer=0;	//打开
-</span><span class="line">			else	//执行结束
-</span><span class="line">			{
-</span><span class="line">				count=0;
-</span><span class="line">				buzzer=1;
-</span><span class="line">				flagDoing=0;
-</span><span class="line">				music=0;
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">		else if(flagDoing==3)	//短响声
-</span><span class="line">		{
-</span><span class="line">			static unsigned char count=0;
-</span><span class="line">			count++;
-</span><span class="line">			if(count&lt;=20)
-</span><span class="line">				buzzer=0;	//打开蜂鸣器
-</span><span class="line">			else if(count&gt;20 &amp;&amp; count&lt;=30)
-</span><span class="line">				buzzer=1;	//关闭
-</span><span class="line">			else if(count&gt;30 &amp;&amp; count&lt;=50)
-</span><span class="line">				buzzer=0;	//打开
-</span><span class="line">			else if(count&gt;50 &amp;&amp; count&lt;=60)
-</span><span class="line">				buzzer=1;	//关闭
-</span><span class="line">			else if(count&gt;60 &amp;&amp; count&lt;=80)
-</span><span class="line">				buzzer=0;
-</span><span class="line">			else	//执行结束
-</span><span class="line">			{
-</span><span class="line">				count=0;
-</span><span class="line">				buzzer=1;
-</span><span class="line">				flagDoing=0;
-</span><span class="line">				music=0;
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">		else if(flagDoing==4)	//长响s
-</span><span class="line">		{
-</span><span class="line">			static unsigned char count=0;
-</span><span class="line">			buzzer=0;	//打开蜂鸣器
-</span><span class="line">			count++;
-</span><span class="line">			if(count==140)	//结束条件
-</span><span class="line">			{
-</span><span class="line">				count=0;
-</span><span class="line">				buzzer=1;
-</span><span class="line">				flagDoing=0;
-</span><span class="line">				music=0;
-</span><span class="line">			}
-</span><span class="line">		}
-</span><span class="line">	}
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
-
-<p>  用一个变量music来作为对外的API，通过它通知本进程执行哪个任务；<br />
-  <strong>music和具体任务之间有一个中间变量flagDoing，这个变量是用来缓冲外部对此进程发送的指令的，只有当进程内部的某个任务执行结束后才会响应下一个任务请求；<br />
-  本进程的各个分支是一个小任务，每个小任务中都各自有自己的静态变量，用于完成各自特定的功能；</strong><br />
-  <em>在每个小任务执行结束后，都会做一些处理，让本进程准备好接收下一个任务。</em><br />
-  总之，不管什么复杂的控制结构，都是可以写成这种被间断调用的“定时器化”的形式。</p>
-
-<h1 id="section-3">4. 定时器执行任务程序结构总结</h1>
-
-<p>  1、每个任务函数不会因外部状态不同而阻塞，<strong>不管外部状态如何，这个任务的本次执行都能够顺利通畅地执行完。</strong><br />
-  2、每个任务函数执行时间都很短，有时间限制，都有自己的时间段。<strong>所以不管一个进程的状态如何，它绝对不会影响到其他进程的执行</strong>，整个系统不会因为一个进程而停下来，仍然随着定时器的节拍不断地运行。<br />
-  3、在这种结构中，所有被执行的代码都是高效的，因为没有延时等函数。<br />
-  4、可以用一个定时器完成多个精确的时间控制任务，事实上整个系统都在精确的时间控制下运行。</p>
-
-<h1 id="section-4">5. 我们追求的是什么</h1>
-
-<p>  从第3章开始，程序的主体逐渐从主进程转移到了定时器中断（从后台转移到前台），也对任务函数进行了一系列改造。</p>
-
-<p>  首先，我想强调这些都是在大量编程时自然产生的，是整个系统越来越复杂的必然结果。</p>
-
-<p>  另外，我们进行了这么多改变到底是在追求什么？我们渴望的系统结构是什么样的？</p>
-
-<p>  在此我想引用《底层工作者手册之嵌入式操作系统内核》中的一段话，也算是为操作系统做个铺垫：<br />
-  “在没有操作系统的情况下，C语言是以函数为单位实现功能的，一个函数一个函数串行地执行，一个完整的功能会由多个函数共同完成。然而当软件系统的功能变得多而庞大的时候，这种方法几乎无法使用，因为此时各个功能之间必然会有千丝万缕的联系，不可能依次串行地完成每个功能，各个功能必然需要交替执行。以函数为功能单元的程序很难在执行一个函数的时候转而去执行另外一个不相关的函数，即使是使用一些技巧实现了，也会使整个软件的结构变得混乱不堪，不利于软件的维护和扩展。函数的工作方式就决定了并不适合以它为功能单元运行复杂的程序，在这种情况下就要使用操作系统了。操作系统是对函数运行管理的系统，它可以在一个函数还没有运行完就转而去执行另一个函数，并且还可以恢复到原来的函数继续执行，这样就可以根据需要及时调整到需要运行的函数来满足各种要求。”</p>
-
-<p>  这段话的大概意思是：<br />
-  1、传统的过程式程序是以函数为单位执行的。<br />
-  2、以函数为单位的程序，在一个函数的执行过程中不能立刻跳转到另一个函数，也就是说可能会耽误另一个函数的响应。<br />
-  3、就算在一个函数中嵌入了另一个函数的代码使得另一个函数也能及时得到响应，那也会是整个程序结构混乱，不利于维护和扩展。<br />
-  而相比之下，操作系统具有很大的好处：<br />
-  1、操作系统中的编程是以功能为单位的。在实现一个任务时根本不需要考虑其他的任务函数，更不需要在一个任务里嵌入另一个任务的代码。<br />
-  2、操作系统可以在一个函数没有运行完之前直接跳转到另一个地方运行，并且以后可以恢复到原来地方继续运行。这样就可以及时对重要的函数进行响应。</p>
-
-<hr />
-
-<p>  再来回头看看我们做的更改，我们把占用式程序改为了非占用式程序，实际上就是细化了各个任务，让每个任务函数的单次执行时间很短，也就可以及时地响应其他任务。对比第1章所说的主函数顺序调用的结构，如果把里面的函数全都换成非占用式结构，就能大幅缩短循环时间。当时有么一句话：“在最坏情况下的任务级响应时间取决于整个循环的执行时间”，为什么这里把这句话搬过来，你懂的。</p>
-
-<p>  另外一点，在改为定时器执行任务后，保证了各个任务都有自己固定的时间段执行，每个任务都绝对不会阻塞进程、绝对不会影响到其他任务的运行。这一点和操作系统相比甚至更有优势，因为操作系统的高优先级任务是可以阻塞低优先级任务的，而定时器执行任务结构中的所有任务都一定会及时得到执行。只要能够把这个任务以“定时器化”的形式写入到定时器中断处理程序里，它就绝对不会因为意外而被阻塞（这也是对任务函数的要求之一）。</p>
-
-<hr />
-
-<p>  我们的追求和操作系统是一样的，我们希望各个任务功能独立实现，不要相互影响。同时各个任务都能够及时得到响应。操作系统采用将寄存器入栈的方式保存状态信息，而在定时器执行任务的结构中是用静态变量的方式保存任务信息。</p>
-
-<p>  从第3章到这里介绍的都是定时器中断相关的结构，下一章将介绍一种以外部中断为核心的编程结构。</p>
 
 ]]></content>
   </entry>

@@ -141,6 +141,61 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T22:52:11+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html" itemprop="url">第5章 定时器执行任务</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">1. 定时器执行任务的程序结构</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">2. 定时器里面任务函数的特点</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">3. 过程任务的定时器化</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">4. 定时器执行任务程序结构总结</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">5. 我们追求的是什么</a></li>
+</ul>
+
+<p>  先来回顾一下：<br />
+  在第2章中介绍了界面函数结构，它的思想是主进程为主体，外部的按键等作为特殊情况单独处理。但是当接触到的程序更复杂时，尤其是当程序里还要进行精确定时时，用单进程结构已经满足不了要求了，这就进一步产生了第3章的结构——定时器分配任务。<br />
+  定时器分配任务结构在主进程结构基础上开辟了一个定时器进程，在这个进程里进行按键扫描任务、计时任务等。此时这些任务是不会被中断的，定时并且精确地每隔一段时间执行一次。当时的看法是：这些定时器里的进程完成任务后把结果保存，主进程可以选用这些结果进行处理。<br />
+  此外定时器还要进行一个特殊的功能——给主进程下达命令，通知主进程进行某种动作。这个功能的本质就是向主进程提供了时间信息。<br />
+  这种结构已经结合了定时器，并且已经把一些简短的代码直接放到了定时器中断处理程序里了，但还有相当一部分代码放在主进程里。不是说不能放在主进程里，而是当时没有明确出定时器中的各个进程是如何形成的，这些定时器中的任务有什么更深刻的特征。<br />
+  本章就是专门讨论这些放在定时器里执行的任务。</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20160919/di-5zhang-ding-shi-qi-zhi-xing-ren-wu.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-09-19T21:39:56+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年9月19日</time>
         
       </p>
@@ -360,6 +415,8 @@
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-shuo-ming-he-an-zhuang.html">树莓派-wiringPi-说明和安装</a>
+    
     <a class="list-group-item " href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html">树莓派-pypi-UART串口</a>
     
     <a class="list-group-item " href="/blog/20171119/shu-mei-pai-pypi-gpio.html">树莓派-pypi-GPIO</a>
@@ -387,8 +444,6 @@
     <a class="list-group-item " href="/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html">单片机提取GR3E接收机信号</a>
     
     <a class="list-group-item " href="/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html">WFT07和WFR07的功能和使用</a>
-    
-    <a class="list-group-item " href="/blog/20161223/gt2bhe-gr3ede-gong-neng-he-shi-yong.html">GT2B和GR3E的功能和使用</a>
     
   </div>
 </section>
