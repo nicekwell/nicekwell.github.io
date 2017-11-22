@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-22T19:34:31+08:00</updated>
+  <updated>2017-11-22T19:48:50+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-编译&amp;头文件&amp;lib]]></title>
+    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-bian-yi-and-tou-wen-jian-and-lib.html"/>
+    <updated>2017-11-22T19:40:06+08:00</updated>
+    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-bian-yi-and-tou-wen-jian-and-lib</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<p>安装好之后想要使用wiringPi的接口，就必须要包含wiringPi的头文件、链接wiringPi库，本文介绍如何正确编译。</p>
+
+<!-- more -->
+
+<p>安装好之后，会生成以下头文件：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>/usr/local/include/wiringPi.h</td>
+      <td>提供基础的服务，包括GPIO。</td>
+    </tr>
+    <tr>
+      <td>/usr/local/include/wiringPiI2C.h</td>
+      <td>提供I2C相关支持。</td>
+    </tr>
+    <tr>
+      <td>/usr/local/include/wiringPiSPI.h</td>
+      <td>提供SPI相关支持。</td>
+    </tr>
+    <tr>
+      <td>/usr/local/include/wiringPiShift.h</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>生成以下库：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>/usr/local/lib/libwiringPiDev.so</td>
+    </tr>
+    <tr>
+      <td>等</td>
+    </tr>
+  </tbody>
+</table>
+
+<p> </p>
+
+<p>在编写C程序时：</p>
+
+<ol>
+  <li>要 include 头文件，直接用&lt;&gt;即可，不需要指明路径。<br />
+如：#include <wiringPi.h>  
+编译器会自动从/usr/local/include/目录下寻找头文件。</wiringPi.h></li>
+  <li>编译时要连接wiringPi的库。<br />
+如：gcc gpio.c -o gpio -<strong>lwiringPi</strong><br />
+编译器会自动从/usr/local/lib/目录下寻找库。</li>
+</ol>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-说明和安装]]></title>
@@ -388,49 +455,6 @@ GPIO.[level]是引脚的电平：</p>
 </ul>
 
 <p>安装成功后就可以使用 RPi.GPIO模块了。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-硬件和功能-功耗]]></title>
-    <link href="http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-gong-hao.html"/>
-    <updated>2017-11-15T20:37:34+08:00</updated>
-    <id>http://nicekwell.net/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-gong-hao</id>
-    <content type="html"><![CDATA[<p>  </p>
-
-<!-- more -->
-
-<p>3代B型：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>几乎0%使用</td>
-      <td>270mA</td>
-    </tr>
-    <tr>
-      <td>单核100%</td>
-      <td>320mA，每隔几秒跳一次400mA</td>
-    </tr>
-    <tr>
-      <td>双核100%</td>
-      <td>360mA，每隔几秒跳一次510mA</td>
-    </tr>
-    <tr>
-      <td>三个100%</td>
-      <td>410mA，每隔几秒跳一次630mA</td>
-    </tr>
-    <tr>
-      <td>四核100%</td>
-      <td>460mA，每隔几秒跳一次760mA</td>
-    </tr>
-  </tbody>
-</table>
 
 <hr />
 
