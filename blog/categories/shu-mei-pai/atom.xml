@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-22T19:48:50+08:00</updated>
+  <updated>2017-11-22T20:03:52+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPI-设置引脚编号模式]]></title>
+    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi.html"/>
+    <updated>2017-11-22T19:52:38+08:00</updated>
+    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<p>前面说过树莓派在不同的库下对引脚的编号方式是不同的，wiringPi支持设置各种不同的引脚编号方式。</p>
+
+<!-- more -->
+
+<p>安装好wiringPi之后，不仅在系统中添加了头文件和库，同时也安装了命令行工具。<br />
+在shell中可以用 <strong>gpio readall</strong> 命令获取到以下信息：<br />
+<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi/1.png" alt="1.png" /></p>
+
+<p>wiringPi提供三种引脚排序方式：wPi、BCM、Phy。<br />
+必须在程序开始时指明使用哪种排序方式。</p>
+
+<ol>
+  <li>wiringPi排序方式<br />
+<strong>int wiringPiSetup (void) ;</strong><br />
+调用此函数即可设置为wiringPi排序。</li>
+  <li>BCM排序方式<br />
+<strong>int wiringPiSetupGpio (void) ;</strong><br />
+调用此函数即可。</li>
+  <li>物理排序方式（和 raspberry-gpio-python 的排序相同）<br />
+<strong>int wiringPiSetupPhys (void) ;</strong><br />
+按照引脚顺序排序，没有GPIO的引脚是无法控制的。</li>
+</ol>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-编译&amp;头文件&amp;lib]]></title>
@@ -410,51 +447,6 @@ GPIO.[level]是引脚的电平：</p>
 
 <p>高低电平切换响应速度大约2us。<br />
 但是注意，<strong>由于python是在上层运行的，所以波形输出不太稳定</strong>，上面是最理想的状态，实际上程序会受到影响，波形输出不稳定。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-pypi-说明和安装]]></title>
-    <link href="http://nicekwell.net/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang.html"/>
-    <updated>2017-11-16T15:44:09+08:00</updated>
-    <id>http://nicekwell.net/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">安装</a></li>
-</ul>
-<p>  </p>
-
-<p>这个库完整的名字是raspberry-gpio-python，通过这个库可以方便地用python操作树莓派的GPIO，但没有提供SPI、i2c等操作接口。</p>
-
-<!-- more -->
-
-<h3 id="section">安装</h3>
-
-<ul>
-  <li>
-    <p>1、安装python3<br />
-<strong>sudo apt-get install python-dev python3-dev</strong></p>
-  </li>
-  <li>
-    <p>2、下载pypi库:<br />
-官方下载：<a href="https://pypi.python.org/pypi/RPi.GPIO">https://pypi.python.org/pypi/RPi.GPIO</a></p>
-  </li>
-  <li>
-    <p>3、放到树莓派里，解压<br />
-<strong>tar zxvf RPi.GPIO-0.6.2.tar.gz</strong></p>
-  </li>
-  <li>
-    <p>4、进入解压后的目录，执行安装<br />
-<strong>sudo python3 setup.py install</strong><br />
-可参考解压后目录中的INSTALL.txt文档说明。</p>
-  </li>
-</ul>
-
-<p>安装成功后就可以使用 RPi.GPIO模块了。</p>
 
 <hr />
 
