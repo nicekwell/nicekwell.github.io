@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-22T20:15:59+08:00</updated>
+  <updated>2017-11-22T20:19:05+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -132,6 +132,13 @@ value是占空比，范围是0~1023。<br />
 <strong>analogWrite (int pin, int value) ;</strong><br />
 输出模拟量（DA）。<br />
 <em>以上两个功能需要外加芯片</em>，这里略去。</p>
+
+<p> </p>
+
+<p><strong>wiringPi-C控制GPIO的速度</strong><br />
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/2.png" alt="2.png" /><br />
+高低电平变化响应速度大约是80ns。（raspberry-gpio-python的速度大约是2us，大约是它的25倍）<br />
+注意，wiringPi-C也是在上层的程序，输出的波形同样是不稳定的。</p>
 
 <hr />
 
