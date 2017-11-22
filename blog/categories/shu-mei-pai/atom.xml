@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-22T20:03:52+08:00</updated>
+  <updated>2017-11-22T20:15:59+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,132 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-GPIO]]></title>
+    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html"/>
+    <updated>2017-11-22T20:07:42+08:00</updated>
+    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<!-- more -->
+
+<p>GPIO接口在官网有详细的说明：<a href="http://wiringpi.com/reference/core-functions/">http://wiringpi.com/reference/core-functions/</a></p>
+
+<p>wiringPi的GPIO序号如下：<br />
+<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/1.jpg" alt="1.jpg" /></p>
+
+<p> </p>
+
+<p><strong>void pinMode (int pin, int mode) ;</strong><br />
+设置GPIO模式。<br />
+pin是引脚序号，以何种方式编号在前面决定。<br />
+mode可以设置为：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>INPUT</td>
+    </tr>
+    <tr>
+      <td>OUTPUT</td>
+    </tr>
+    <tr>
+      <td>PWM_OUTPUT</td>
+    </tr>
+    <tr>
+      <td>GPIO_CLOCK</td>
+    </tr>
+    <tr>
+      <td>SOFT_PWM_OUTPUT</td>
+    </tr>
+    <tr>
+      <td>SOFT_TONE_OUTPUT</td>
+    </tr>
+    <tr>
+      <td>PWM_TONE_OUTPUT</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>只有具有相应功能的引脚才能设置为该功能。</p>
+
+<p> </p>
+
+<p><strong>void pullUpDnControl (int pin, int pud) ;</strong><br />
+设置上下拉。<br />
+pin是引脚序号，以何种方式编号在前面决定。<br />
+pud是上下拉配置，可设置为：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>PUD_OFF</td>
+      <td>无上下拉</td>
+    </tr>
+    <tr>
+      <td>PUD_UP</td>
+      <td>上拉，3.3v，50kΩ</td>
+    </tr>
+    <tr>
+      <td>PUD_DOWN</td>
+      <td>下拉，50kΩ</td>
+    </tr>
+  </tbody>
+</table>
+
+<p> </p>
+
+<p><strong>void digitalWrite (int pin, int value) ;</strong><br />
+设置指定引脚的输出。<br />
+pin是引脚序号，以何种方式编号在前面决定。<br />
+value是输出值，可以设置为：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>HIGH 或 非0</td>
+      <td>高电平（3.3v）</td>
+    </tr>
+    <tr>
+      <td>LOW 或 0</td>
+      <td>低电平</td>
+    </tr>
+  </tbody>
+</table>
+
+<p> </p>
+
+<p>void digitalWriteByte (int value) ;</p>
+
+<p> </p>
+
+<p><strong>int digitalRead (int pin) ;</strong><br />
+读取指定引脚。<br />
+pin是引脚序号，以何种方式编号在前面决定。<br />
+返回的是该引脚的电平，返回HIGH或LOW。</p>
+
+<p> </p>
+
+<p><strong>void pwmWrite (int pin, int value) ;</strong><br />
+设置pwn输出占空比。<br />
+pin是引脚序号，以何种方式编号在前面决定。（最新的树莓派里面好像把pwm功能去掉了）<br />
+value是占空比，范围是0~1023。<br />
+？？？在哪设置pwm的周期呢？</p>
+
+<p> </p>
+
+<p><strong>analogRead (int pin) ;</strong><br />
+读入模拟量（AD）。<br />
+<strong>analogWrite (int pin, int value) ;</strong><br />
+输出模拟量（DA）。<br />
+<em>以上两个功能需要外加芯片</em>，这里略去。</p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPI-设置引脚编号模式]]></title>
@@ -345,108 +471,6 @@ github主页：<a href="https://github.com/pyserial/pyserial">https://github.com
 <h4 id="section-8">6、关闭串口</h4>
 
 <p>  <strong>[串口对象].close()</strong></p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-pypi-GPIO]]></title>
-    <link href="http://nicekwell.net/blog/20171119/shu-mei-pai-pypi-gpio.html"/>
-    <updated>2017-11-19T22:44:47+08:00</updated>
-    <id>http://nicekwell.net/blog/20171119/shu-mei-pai-pypi-gpio</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1、导入模块</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2、设置引脚排列方式</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">3、设置某个引脚的输入输出</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">4、输入</a></li>
-  <li><a href="#section-4" id="markdown-toc-section-4">5、输出</a></li>
-  <li><a href="#pythongpio" id="markdown-toc-pythongpio">python控制GPIO的速度</a></li>
-</ul>
-<p>  </p>
-
-<!-- more -->
-
-<h3 id="section">1、导入模块</h3>
-
-<p><strong>import RPi.GPIO as GPIO</strong></p>
-
-<h3 id="section-1">2、设置引脚排列方式</h3>
-
-<p>1、主板编号方式<br />
-<strong>GPIO.setmode(GPIO.BOARD)</strong><br />
-就是按照主板的引脚顺序：<br />
-<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/1.png" alt="1.png" /><br />
-注意有些引脚是没有GPIO功能的，这些引脚仍然为它们分配了序号，但控制时使用这些非GPIO的序号是会报错的。</p>
-
-<p>2、BCM编号方式<br />
-<strong>GPIO.setmode(GPIO.BCM)</strong><br />
-按照BCM方式编号。<br />
-<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/2.jpg" alt="2.jpg" /></p>
-
-<h3 id="section-2">3、设置某个引脚的输入输出</h3>
-
-<p><strong>GPIO.setup([gpio], GPIO.[dir])</strong><br />
-[GPIO]是一个引脚的序号，按照上面的编号方式决定。<br />
-GPIO.[dir]是方向，可以设置：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td><strong>GPIO.IN</strong></td>
-      <td>输入</td>
-    </tr>
-    <tr>
-      <td><strong>GPIO.OUT</strong></td>
-      <td>输出</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>同时设置多个通道：<br />
-<strong>chan_list = [[gpio1], [gpio2], …]</strong><br />
-<strong>GPIO.setup(chan_list, GPIO_[dir]]</strong></p>
-
-<h3 id="section-3">4、输入</h3>
-
-<p><strong>GPIO.input([gpio])</strong><br />
-获取指定通道的电平，返回的是一个数值，0或1。</p>
-
-<h3 id="section-4">5、输出</h3>
-
-<p>单通道输出：<br />
-<strong>GPIO.output([gpio], GPIO.[level])</strong><br />
-[gpio]是一个引脚的序号，按照上面的编号方式决定。<br />
-GPIO.[level]是引脚的电平：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td><strong>GPIO.LOW</strong></td>
-      <td>低电平</td>
-    </tr>
-    <tr>
-      <td><strong>GPIO.HIGH</strong></td>
-      <td>高电平（3.3v）</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>同时设置多通道输出：<br />
-<strong>chan_list = [[gpio1], [gpio2], …]</strong><br />
-<strong>GPIO.output(chan_list, (GPIO.HIGH, GPIO.LOW, …))</strong><br />
-第一个参数是list，第二个参数是tuple。</p>
-
-<h3 id="pythongpio">python控制GPIO的速度</h3>
-
-<p>设置python控制一个GPIO循环输出高低电平（不加延时），波形如下：<br />
-<img src="/images/raspberrypi/2017-11-19-shu-mei-pai-pypi-gpio/3.png" alt="3.png" /></p>
-
-<p>高低电平切换响应速度大约2us。<br />
-但是注意，<strong>由于python是在上层运行的，所以波形输出不太稳定</strong>，上面是最理想的状态，实际上程序会受到影响，波形输出不稳定。</p>
 
 <hr />
 
