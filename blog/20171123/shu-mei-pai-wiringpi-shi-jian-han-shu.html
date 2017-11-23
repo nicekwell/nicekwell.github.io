@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>树莓派-wiringPi-GPIO - 生命不息 折腾不止</title>
+  <title>树莓派-wiringPi-时间函数 - 生命不息 折腾不止</title>
   <meta name="author" content="nicekwell">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html">
+  <link rel="canonical" href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html">
-  <meta property="og:title" content="树莓派-wiringPi-GPIO - 生命不息 折腾不止">
+  <meta property="og:url" content="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html">
+  <meta property="og:title" content="树莓派-wiringPi-时间函数 - 生命不息 折腾不止">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -139,13 +139,13 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-22T20:07:42+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月22日</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-23T19:27:41+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月23日</time>
         
       </p>
     
     
     <h1 class="entry-title" itemprop="name headline">
-        树莓派-wiringPi-GPIO
+        树莓派-wiringPi-时间函数
         
     </h1>
     
@@ -154,125 +154,96 @@
 
 <div class="entry-content clearfix" itemprop="articleBody description"><p>  </p>
 
+<p>wiringPi不仅提供硬件操作的接口，同时也提供了一些时间管理函数。</p>
+
 <!-- more -->
 
-<p>GPIO接口在官网有详细的说明：<a href="http://wiringpi.com/reference/core-functions/">http://wiringpi.com/reference/core-functions/</a></p>
+<p> </p>
 
-<p>wiringPi的GPIO序号如下：<br />
-<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/1.jpg" alt="1.jpg" /></p>
+<p><strong>void delay (unsigned int howLong)</strong><br />
+延时ms，最大传入32位无符号型整数，大约49天。<br />
+实际上是睡眠，不占用cpu。<br />
+由于linux是多任务的，所以实际延时时间可能会更长。</p>
 
 <p> </p>
 
-<p><strong>void pinMode (int pin, int mode) ;</strong><br />
-设置GPIO模式。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-mode可以设置为：</p>
+<p><strong>void delayMicroseconds (unsigned int howLong)</strong><br />
+延时微秒，最大传入32位无符号型整数，大约71分钟。</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>INPUT</td>
-    </tr>
-    <tr>
-      <td>OUTPUT</td>
-    </tr>
-    <tr>
-      <td>PWM_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>GPIO_CLOCK</td>
-    </tr>
-    <tr>
-      <td>SOFT_PWM_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>SOFT_TONE_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>PWM_TONE_OUTPUT</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>只有具有相应功能的引脚才能设置为该功能。</p>
-
-<p> </p>
-
-<p><strong>void pullUpDnControl (int pin, int pud) ;</strong><br />
-设置上下拉。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-pud是上下拉配置，可设置为：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>PUD_OFF</td>
-      <td>无上下拉</td>
-    </tr>
-    <tr>
-      <td>PUD_UP</td>
-      <td>上拉，3.3v，50kΩ</td>
-    </tr>
-    <tr>
-      <td>PUD_DOWN</td>
-      <td>下拉，50kΩ</td>
-    </tr>
-  </tbody>
-</table>
+<p>wiringPi的库文件中有这样一个函数：</p>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">void</span> <span class="nf">delayMicrosecondsHard</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">howLong</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">struct</span> <span class="n">timeval</span> <span class="n">tNow</span><span class="p">,</span> <span class="n">tLong</span><span class="p">,</span> <span class="n">tEnd</span> <span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">gettimeofday</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">tNow</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">;</span>
+</span><span class="line">  <span class="n">tLong</span><span class="p">.</span><span class="n">tv_sec</span>  <span class="o">=</span> <span class="n">howLong</span> <span class="o">/</span> <span class="mi">1000000</span> <span class="p">;</span>
+</span><span class="line">  <span class="n">tLong</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">=</span> <span class="n">howLong</span> <span class="o">%</span> <span class="mi">1000000</span> <span class="p">;</span>
+</span><span class="line">  <span class="n">timeradd</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">tNow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tLong</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tEnd</span><span class="p">)</span> <span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">while</span> <span class="p">(</span><span class="n">timercmp</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">tNow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tEnd</span><span class="p">,</span> <span class="o">&lt;</span><span class="p">))</span>
+</span><span class="line">    <span class="n">gettimeofday</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">tNow</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>其实 delayMicroseconds 函数会判断传入时间如果小于100us就使用 delayMicrosecondsHard 占用式延时，否则会调用 nanosleep 函数。<br />
+如果我们想要精确延时，是可以使用 delayMicrosecondsHard 函数的，这个函数在.h文件里没有声明，但已经编译完成，只要用 void delayMicrosecondsHard (unsigned int howLong); 把此函数声明一下就可以使用了。</p>
 
 <p> </p>
 
-<p><strong>void digitalWrite (int pin, int value) ;</strong><br />
-设置指定引脚的输出。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-value是输出值，可以设置为：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>HIGH 或 非0</td>
-      <td>高电平（3.3v）</td>
-    </tr>
-    <tr>
-      <td>LOW 或 0</td>
-      <td>低电平</td>
-    </tr>
-  </tbody>
-</table>
+<p><strong>unsigned int millis (void)</strong><br />
+返回从设置Setup以来所经过的时间，单位是ms。</p>
 
 <p> </p>
 
-<p>void digitalWriteByte (int value) ;</p>
+<p><strong>unsigned int micros (void)</strong><br />
+返回从设置Setup以来所经过的时间，单位是us。<br />
+<strong>测试发现这个函数获取时间速度是很快地，此函数执行时间大约1us，也就是说连续执行两次此函数时间相差大约1us。</strong>在用树莓派处理对时间比较敏感的任务时可能会在意这些时间。</p>
 
-<p> </p>
-
-<p><strong>int digitalRead (int pin) ;</strong><br />
-读取指定引脚。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-返回的是该引脚的电平，返回HIGH或LOW。</p>
-
-<p> </p>
-
-<p><strong>void pwmWrite (int pin, int value) ;</strong><br />
-设置pwn输出占空比。<br />
-pin是引脚序号，以何种方式编号在前面决定。（最新的树莓派里面好像把pwm功能去掉了）<br />
-value是占空比，范围是0~1023。<br />
-？？？在哪设置pwm的周期呢？</p>
-
-<p> </p>
-
-<p><strong>analogRead (int pin) ;</strong><br />
-读入模拟量（AD）。<br />
-<strong>analogWrite (int pin, int value) ;</strong><br />
-输出模拟量（DA）。<br />
-<em>以上两个功能需要外加芯片</em>，这里略去。</p>
-
-<p> </p>
-
-<p><strong>wiringPi-C控制GPIO的速度</strong><br />
-<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/2.png" alt="2.png" /><br />
-高低电平变化响应速度大约是80ns。（raspberry-gpio-python的速度大约是2us，大约是它的25倍）<br />
-注意，wiringPi-C也是在上层的程序，输出的波形同样是不稳定的。</p>
+<p>树莓派中经常需要精确地周期性执行某个动作，可以用如下方式精确定时，类似于单片机里的定时器：</p>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="cp">#define INTERVAL 20000 </span><span class="c1">//间隔时间，单位是us</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">tim</span><span class="p">;</span>
+</span><span class="line">    <span class="cm">/* do something */</span>
+</span><span class="line">    <span class="n">tim</span> <span class="o">=</span> <span class="n">micros</span><span class="p">();</span>
+</span><span class="line">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span><span class="p">(</span><span class="n">micros</span><span class="p">()</span> <span class="o">-</span> <span class="n">tim</span> <span class="o">&gt;=</span> <span class="n">INTERVAL</span><span class="p">)</span>
+</span><span class="line">      <span class="p">{</span>
+</span><span class="line">            <span class="n">tim</span> <span class="o">+=</span> <span class="n">INTERVAL</span><span class="p">;</span>
+</span><span class="line">            <span class="cm">/* do something */</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <hr />
 
@@ -300,7 +271,7 @@ value是占空比，范围是0~1023。<br />
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-22T20:07:42+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月22日</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-23T19:27:41+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月23日</time>
           
 
 <span class="glyphicon glyphicon-tags"></span>&nbsp;
@@ -323,10 +294,8 @@ value是占空比，范围是0~1023。<br />
         
           <ul class="meta text-muted pager">
             
-            <li class="previous"><a href="/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi.html" title="Previous Post: 树莓派-wiringPI-设置引脚编号模式">&laquo; 树莓派-wiringPI-设置引脚编号模式</a></li>
+            <li class="previous"><a href="/blog/20171122/shu-mei-pai-wiringpi-gpio.html" title="Previous Post: 树莓派-wiringPi-GPIO">&laquo; 树莓派-wiringPi-GPIO</a></li>
             
-            
-            <li class="next"><a href="/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html" title="Next Post: 树莓派-wiringPi-时间函数">树莓派-wiringPi-时间函数 &raquo;</a></li>
             
           </ul>
         
@@ -365,9 +334,9 @@ value是占空比，范围是0~1023。<br />
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html">树莓派-wiringPi-时间函数</a>
+    <a class="list-group-item active" href="/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html">树莓派-wiringPi-时间函数</a>
     
-    <a class="list-group-item active" href="/blog/20171122/shu-mei-pai-wiringpi-gpio.html">树莓派-wiringPi-GPIO</a>
+    <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-gpio.html">树莓派-wiringPi-GPIO</a>
     
     <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi.html">树莓派-wiringPI-设置引脚编号模式</a>
     
@@ -443,8 +412,8 @@ value是占空比，范围是0~1023。<br />
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html';
-        var disqus_url = 'http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html';
+        var disqus_identifier = 'http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html';
+        var disqus_url = 'http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html';
         var disqus_script = 'embed.js';
       
     (function () {

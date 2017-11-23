@@ -141,6 +141,65 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-23T23:00:25+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月23日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20161223/ppmxin-hao-jie-shao.html" itemprop="url">PPM信号介绍</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">电平</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">工作方式</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">刷新率</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">脉宽和数值</a></li>
+  <li><a href="#pwm" id="markdown-toc-pwm">多路PWM信号</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">精度</a></li>
+  <li><a href="#pwm-1" id="markdown-toc-pwm-1">PWM信号和舵机</a></li>
+  <li><a href="#pwm-2" id="markdown-toc-pwm-2">PWM信号和电调</a></li>
+  <li><a href="#pwm-3" id="markdown-toc-pwm-3">单片机提取接收机输出的PWM信号</a></li>
+</ul>
+<p>  </p>
+
+<p>  我们知道PWM信号可以控制舵机，一般信号周期是20ms，脉宽在500us~2500us之间。<br />
+  实际上这种pwm信号不仅可以控制舵机，航模中使用的电调（有刷和无刷）也是用这种信号控制，只不过它们的脉宽范围一般限制在1000us~2000us。<br />
+  而航模接收机输出的正是上述 周期20ms，脉宽1000us~2000us之间的pwm信号。可以理解为，接收机通过pwm信号来反映遥控器的操作。<br />
+  航模遥控器有多路通道，可以传输多个操作（油门、方向等），而无线信道只有一路，怎么把多路通道的pwm信息传输到接收机呢？这就是所谓的PPM调制。<br />
+  PPM信号把多路PWM信号调制到一路通道上，发送到接收机后再由接收机还原成多路PWM从各个通道输出。</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20161223/ppmxin-hao-jie-shao.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-12-13T20:24:30+08:00"  data-updated="true" itemprop="datePublished dateCreated">2016年12月13日</time>
         
       </p>
@@ -605,6 +664,8 @@
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html">树莓派-wiringPi-时间函数</a>
+    
     <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-gpio.html">树莓派-wiringPi-GPIO</a>
     
     <a class="list-group-item " href="/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi.html">树莓派-wiringPI-设置引脚编号模式</a>
@@ -632,8 +693,6 @@
     <a class="list-group-item " href="/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he.html">树莓派-内核开发-说明 下载代码 编译 替换内核</a>
     
     <a class="list-group-item " href="/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html">谈一谈单片机开发的几种调试方案</a>
-    
-    <a class="list-group-item " href="/blog/20161228/tong-yong-duo-ji-kong-zhi-qi-(pwmxin-hao-fa-sheng-qi-).html">通用舵机控制器（pwm信号发生器）</a>
     
   </div>
 </section>

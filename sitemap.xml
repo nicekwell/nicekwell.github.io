@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html</loc>
+<lastmod>2017-11-23T19:27:41+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html</loc>
 <lastmod>2017-11-22T20:07:42+08:00</lastmod>
 </url>

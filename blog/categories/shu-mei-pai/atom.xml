@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-22T20:19:05+08:00</updated>
+  <updated>2017-11-23T19:35:56+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-时间函数]]></title>
+    <link href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu.html"/>
+    <updated>2017-11-23T19:27:41+08:00</updated>
+    <id>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shi-jian-han-shu</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<p>wiringPi不仅提供硬件操作的接口，同时也提供了一些时间管理函数。</p>
+
+<!-- more -->
+
+<p> </p>
+
+<p><strong>void delay (unsigned int howLong)</strong><br />
+延时ms，最大传入32位无符号型整数，大约49天。<br />
+实际上是睡眠，不占用cpu。<br />
+由于linux是多任务的，所以实际延时时间可能会更长。</p>
+
+<p> </p>
+
+<p><strong>void delayMicroseconds (unsigned int howLong)</strong><br />
+延时微秒，最大传入32位无符号型整数，大约71分钟。</p>
+
+<p>wiringPi的库文件中有这样一个函数：
+```c
+	void delayMicrosecondsHard (unsigned int howLong)
+	{
+	  struct timeval tNow, tLong, tEnd ;</p>
+
+<pre><code>  gettimeofday (&amp;tNow, NULL) ;
+  tLong.tv_sec  = howLong / 1000000 ;
+  tLong.tv_usec = howLong % 1000000 ;
+  timeradd (&amp;tNow, &amp;tLong, &amp;tEnd) ;
+
+  while (timercmp (&amp;tNow, &amp;tEnd, &lt;))
+    gettimeofday (&amp;tNow, NULL) ;
+} ``` 其实 delayMicroseconds 函数会判断传入时间如果小于100us就使用 delayMicrosecondsHard 占用式延时，否则会调用 nanosleep 函数。   如果我们想要精确延时，是可以使用 delayMicrosecondsHard 函数的，这个函数在.h文件里没有声明，但已经编译完成，只要用 void delayMicrosecondsHard (unsigned int howLong); 把此函数声明一下就可以使用了。
+</code></pre>
+
+<p> </p>
+
+<p><strong>unsigned int millis (void)</strong><br />
+返回从设置Setup以来所经过的时间，单位是ms。</p>
+
+<p> </p>
+
+<p><strong>unsigned int micros (void)</strong><br />
+返回从设置Setup以来所经过的时间，单位是us。<br />
+<strong>测试发现这个函数获取时间速度是很快地，此函数执行时间大约1us，也就是说连续执行两次此函数时间相差大约1us。</strong>在用树莓派处理对时间比较敏感的任务时可能会在意这些时间。</p>
+
+<p>树莓派中经常需要精确地周期性执行某个动作，可以用如下方式精确定时，类似于单片机里的定时器：
+<code>c
+#define INTERVAL 20000 //间隔时间，单位是us
+int main(int argc, char *argv[])
+{
+    long tim;
+    /* do something */
+    tim = micros();
+    while(1)
+    {
+      if(micros() - tim &gt;= INTERVAL)
+      {
+            tim += INTERVAL;
+            /* do something */
+        }
+    }
+    return 0;
+}
+</code></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-GPIO]]></title>
@@ -309,180 +385,6 @@ wiringPi-c的github主页：<a href="https://github.com/WiringPi/WiringPi">https
 <hr />
 
 <p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-pypi-UART串口]]></title>
-    <link href="http://nicekwell.net/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html"/>
-    <updated>2017-11-20T19:37:15+08:00</updated>
-    <id>http://nicekwell.net/blog/20171120/shu-mei-pai-pypi-uartchuan-kou</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">概述</a></li>
-  <li><a href="#pythonpyserial" id="markdown-toc-pythonpyserial">python通用串口库——pyserial</a>    <ul>
-      <li><a href="#section-1" id="markdown-toc-section-1">一、安装</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">二、使用</a>        <ul>
-          <li><a href="#section-3" id="markdown-toc-section-3">1、打开串口并创建对象</a></li>
-          <li><a href="#section-4" id="markdown-toc-section-4">2、缓冲区操作</a></li>
-          <li><a href="#section-5" id="markdown-toc-section-5">3、波特率设置</a></li>
-          <li><a href="#section-6" id="markdown-toc-section-6">4、从串口发送数据</a></li>
-          <li><a href="#section-7" id="markdown-toc-section-7">5、从串口接收数据</a></li>
-          <li><a href="#section-8" id="markdown-toc-section-8">6、关闭串口</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<p>  </p>
-
-<p>树莓派在linux上层支持通用的串口接口，用linux上通用的串口编程即可操作。<br />
-树莓派3B的板载串口被蓝牙占用，但可以方便地使用USB串口模块。</p>
-
-<!-- more -->
-
-<h2 id="section">概述</h2>
-
-<p>树莓派的板载串口是给系统登录使用的，我们要先把这个功能关掉。<br />
-<strong>sudo raspi-config</strong><br />
-Advanced Options –&gt; Serial –&gt; 关闭串口 –&gt; 重启</p>
-
-<p>树莓派上有两个串口，一个硬件串口，工作稳定，但是分配给了蓝牙；还有一个“mini-uart”，这个串口的时钟是由内核提供，所以不太稳定  。
-在树莓派3B上，蓝牙和硬件串口是不能兼得的。<br />
-这个链接(<a href="http://ukonline2000.com/?p=880">http://ukonline2000.com/?p=880</a>)有介绍如何把硬件串口分配到GPIO14、GPIO15上，这里不做介绍了。</p>
-
-<p>总之，在树莓派3B上，想要使用板载硬件串口是比较麻烦的，我们这里使用的是USB转串口模块，也能很方便地使用串口。</p>
-
-<p>pypi库没有提供串口操作函数，我们使用串口的思路是通过linux上层通用的串口接口。</p>
-
-<h2 id="pythonpyserial">python通用串口库——pyserial</h2>
-
-<p>这里介绍的是第三方库 pyserial 的安装和使用。<br />
-ubuntu、mac和树莓派上，只要安装了python都可以用此方法操作串口。</p>
-
-<p>官网：<a href="http://pyserial.sourceforge.net/">http://pyserial.sourceforge.net/</a><br />
-github主页：<a href="https://github.com/pyserial/pyserial">https://github.com/pyserial/pyserial</a></p>
-
-<h3 id="section-1">一、安装</h3>
-
-<p>网上有很多pip安装的方法，但那些好像都是针对python2的，python3安装不了，正确方法如下：<br />
-<strong>mac下也可以用这种方法安装，但mac需要先安装驱动，我用的是PL2303，从官网下载的驱动，安装完成后的节点是 /dev/tty.usbserial。</strong></p>
-
-<p>1、从github clone代码<br />
-<strong>git clone git@github.com:pyserial/pyserial.git</strong></p>
-
-<p>2、进入安装目录安装<br />
-<strong>sudo python3 setup.py install</strong><br />
-（在mac下安装不用sudo权限也行）</p>
-
-<p>3、python3中import模块<br />
-<strong>import serial</strong><br />
-如果没有安装成功的话 import 会报错。</p>
-
-<h3 id="section-2">二、使用</h3>
-
-<p>首先要 <strong>import serial</strong></p>
-
-<h4 id="section-3">1、打开串口并创建对象</h4>
-
-<p><strong>[串口对象] = serial.Serial(‘[串口设备文件]’,<br />
-              baudrate=[波特率],<br />
-              bytesize=[数据位],<br />
-              parity=’[校验]’,<br />
-              stopbits=[停止位],<br />
-              timeout=[timeout])</strong></p>
-
-<ul>
-  <li>串口设备文件就是/dev/目录下的设备文件，传入的是一个字符串，比如 ‘/dev/ttyUSB0’。</li>
-  <li>budrate是波特率，<strong>传入的是数值</strong>。可以选择：<br />
-2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200</li>
-  <li>bytesize是数据位，<strong>传入的是数值</strong>。<br />
-可以省略，默认是8。</li>
-  <li>parity是校验，传入的是字符串。可以设置为：<br />
-<strong>‘N’    不校验<br />
-‘O’    奇校验（ODD）<br />
-‘E’    偶校验（EVEN）</strong><br />
-可以省略，默认是’N’。</li>
-  <li>stopbits是停止位个数，<strong>传入的是数值</strong>，一般都是设成1。<br />
-可以生录入，默认是1。</li>
-  <li>timeout是超时等待，在接收数据时，如果接收到的字符不满足返回条件则会等待，超时后返回。</li>
-</ul>
-
-<p>  例1，指明所有参数：<br />
-  <em>ser = serial.Serial(‘/dev/ttyUSB1’,<br />
-           baudrate=9600,<br />
-           bytesize=8,<br />
-           parity=’N’,<br />
-           stopbits=1,<br />
-           timeout=3)</em><br />
-  例2，只指定某些参数：<br />
-  <em>ser = serial.Serial(‘/dev/ttyUSB1’, 9600, timeout=3)</em></p>
-
-<h4 id="section-4">2、缓冲区操作</h4>
-
-<p>  python对串口接收数据和单片机有所不同。<br />
-  单片机接收到数据后会产生中断，然后在中断中处理数据。<br />
-  <strong>python是不会产生串口中断的，接收到的数据会存放在缓冲区，然后python程序主动检查缓冲区读取数据。</strong>读取数据方法也有多种。<br />
-  <strong>每次新打开一个串口，之前的缓冲区就会被清空。</strong><br />
-  缓冲区有输入缓冲区和输出缓冲区。<br />
-  缓冲区的大小是：</p>
-
-<p>  <strong>[串口对象].flushInput()</strong><br />
-  清除接收缓冲区，放弃接收到的所有内容。<br />
-  <strong>[串口对象].flushOutput()</strong><br />
-  清除发送缓冲区，放弃输出。</p>
-
-<p>  <strong>[串口对象].inWaiting()</strong><br />
-  【功能】获取缓冲区里的字节数。<br />
-  【输出】返回一个数值，代表缓冲区里有多少数据。</p>
-
-<h4 id="section-5">3、波特率设置</h4>
-
-<p>  <strong>[串口对象].setBaudrate([波特率])</strong><br />
-  设置已经打开的串口的波特率，传入的是数值，可以选择：<br />
-  2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200</p>
-
-<h4 id="section-6">4、从串口发送数据</h4>
-
-<p>  <strong>[串口对象].write([单字节数组])</strong><br />
-  <strong>发送的数据必须是单字节数据</strong>，可以是单字节组成的list，也可以是单字节编码的字符串（如ASCII、UTF-8）。
-  返回的是写入的字节数。<br />
-  例1，发送16进制数据：<br />
-  <em>list1 = [0x01,0x02,0x03,0x10]<br />
-  ser.write(list1)</em><br />
-  会把这几个16进制数依次通过串口发出，另一端会接收到一模一样的数据。<br />
-  例2，发送单字节编码的字符串：<br />
-  <em>ser.write(b’abcdefg’)</em><br />
-  把字符串’abcdefg’的ascii码发出，另一端收到：0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67。</p>
-
-<h4 id="section-7">5、从串口接收数据</h4>
-
-<p>  <strong>[串口对象].read([长度])</strong><br />
-  【功能】从缓冲区读取指定长度内容。<br />
-  【输入】<br />
-  [长度] 是一个数值，代表要从缓冲区读取的字节数。<br />
-  这个参数可以省略，默认是1。<br />
-  【输出】输出的是一连串单字节数据。<br />
-  【说明】<strong>如果缓冲区内容小于读取的长度则会等待，直到timeout后读取仅有的全部内容返回。</strong></p>
-
-<p>  <strong>[串口对象].readall()</strong><br />
-  【功能】读取缓冲区的所有数据。<br />
-  【输出】输出的是一连串单字节数据。<br />
-  <strong>这个函数必然会等待一个timeout时间，把之前缓冲区里所有内容和等待阶段接收到的所有内容读出。</strong></p>
-
-<p>  <strong>[串口对象].readline()</strong><br />
-  【功能】从缓冲区里读取一行。<br />
-  【输出】输出的是一连串单字节数据。<br />
-  【说明】<br />
-  读取时会找到第一个’\n’结束，如果缓冲区里的数据没有’\n’，则会等待，知道timeout后返回仅有的所有内容。</p>
-
-<h4 id="section-8">6、关闭串口</h4>
-
-<p>  <strong>[串口对象].close()</strong></p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
 ]]></content>
   </entry>
   
