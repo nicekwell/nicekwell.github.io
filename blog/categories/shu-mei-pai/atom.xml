@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-23T19:56:05+08:00</updated>
+  <updated>2017-11-23T20:22:29+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-UART串口]]></title>
+    <link href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-uartchuan-kou.html"/>
+    <updated>2017-11-23T20:05:37+08:00</updated>
+    <id>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-uartchuan-kou</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">概述</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">0、包含头文件</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">1、打开串口</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">2、写入（发送）</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">3、读取（接收）</a></li>
+  <li><a href="#section-5" id="markdown-toc-section-5">4、缓冲区操作</a></li>
+  <li><a href="#section-6" id="markdown-toc-section-6">5、关闭串口</a></li>
+</ul>
+<p>  </p>
+
+<p>前面介绍了python操作串口的方法，是通过通用的串口库实现的。<br />
+用c语言当然也可以通过通用串口接口实现，而wiringPi也提供了自己的一套串口操作函数，可以很方便地操作串口。<br />
+事实上，wiringPi就是在上层利用通用串口操作接口，封装了一套自己的库函数。</p>
+
+<!-- more -->
+
+<h3 id="section">概述</h3>
+
+<p>在前面python串口编程处就介绍了，树莓派3B的板载串口被蓝牙占用，但可以方便地使用USB串口模块。</p>
+
+<p>树莓派的板载串口是给系统登录使用的，我们要先把这个功能关掉。<br />
+<strong>sudo raspi-config</strong><br />
+Advanced Options –&gt; Serial –&gt; 关闭串口 –&gt; 重启</p>
+
+<p>树莓派上有两个串口，一个硬件串口，工作稳定，但是分配给了蓝牙；还有一个“mini-uart”，这个串口的时钟是由内核提供，所以不太稳定 。 在树莓派3B上，蓝牙和硬件串口是不能兼得。<br />
+这个链接(http://ukonline2000.com/?p=880)有介绍如何把硬件串口分配到GPIO14、GPIO15上，这里不做介绍了。</p>
+
+<p>总之，在树莓派3B上，想要使用板载硬件串口是比较麻烦的，我们这里使用的是USB转串口模块，也能很方便地使用串口。</p>
+
+<h3 id="section-1">0、包含头文件</h3>
+
+<p><strong>#include &lt;wiringSerial.h&gt;</strong></p>
+
+<h3 id="section-2">1、打开串口</h3>
+
+<p><strong>&lt;fd&gt; = serialOpen(char* device, int buad);</strong><br />
+【功能】<br />
+打开串口文件，并设置波特率，返回文件编号。<br />
+【输入】</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>*device</td>
+      <td>设备路径的字符串。比如 “/dev/ttyUSB0”</td>
+    </tr>
+    <tr>
+      <td>buad</td>
+      <td>波特率，是一个数值。可以设置为：2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>【输出】一个文件编号，代表这个串口设备文件，后面对这个串口的操作都会用到。<br />
+【说明】<br />
+1、wiringPi提供的设置（以及后面的读写功能）是简化的文件操作，可以满足大部分需求。<br />
+2、这里的<file编号>是标准的linux文件描述符，可以使用linux标准的文件操作函数write()、read()等来操作。</file编号></p>
+
+<p>后面也会有说明，wiringPi提供的读写功能是简化的，不提供二进制数值读写，但是可以使用linux标准的读写函数来操作。</p>
+
+<h3 id="section-3">2、写入（发送）</h3>
+
+<p><strong>void serialPutchar(int fd, unsigned char c) ;</strong><br />
+【功能】发送一个字节数据。<br />
+【输入】<br />
+fd是打开串口时的文件描述符。<br />
+输入的就是一个字节数据，可以用字符表示，也可以用十六进制数表示。</p>
+
+<p><strong>void serialPuts(int fd, char *s) ;</strong><br />
+【功能】发送字符串。<br />
+【输入】<br />
+fd是打开串口时的文件描述符。<br />
+*s 是一个字符串，会发送该字符串，直到’\0’结束。<strong>‘\0’不会发送出去。</strong></p>
+
+<p><strong>void serialPrintf(int fd, char *message, …) ;</strong><br />
+【功能】功能类似于printf，可以同时发送多个字符串。</p>
+
+<p> </p>
+
+<p>注意：<strong>以上两个发送函数只是把数据推送到发送缓冲区里，不会等待串口发送完成。</strong>后续程序如果要用到用到串口返回数据应当要考虑到串口传输时间。<br />
+<strong>并且最好等之前的数据全部发送完成后再发送新数据，否则可能会出问题，这也要考虑到串口发送数据的时间，可能需要等待。</strong><br />
+关键是上层还没有找到判断串口发送完成的方法。</p>
+
+<h3 id="section-4">3、读取（接收）</h3>
+
+<p><strong>int serialDataAvail(int fd) ;</strong><br />
+【功能】获取接收缓冲区里的字节数。<br />
+【输入】创建串口设备文件时的文件描述符。<br />
+【输出】接收缓冲区里所存放的数据字节数。</p>
+
+<p><strong>int serialGetchar(int fd) ;</strong><br />
+【功能】从接收缓冲区里读取一个字节数据。<br />
+【输入】创建串口设备文件时的文件描述符。<br />
+【输出】读取到的一个字节内容。虽然是一个字节内容，但仍然定义为了int型。<br />
+【说明】<br />
+<strong>如果缓冲区里没有数据，则会等待10s，相当于python里把timeout设置为10s。<br />
+10s过后如果还没有数据的话，则会返回 -1，十六进制显示为 0xffffffff。</strong>
+这里的10s是wiringPi默认的，查看源代码可以看到：<br />
+<img src="/images/raspberrypi/2017-11-23-shu-mei-pai-wiringpi-uartchuan-kou/1.png" alt="1.png" /></p>
+
+<h3 id="section-5">4、缓冲区操作</h3>
+<p><strong>void serialFlush(int fd) ;</strong><br />
+清空缓冲区，放弃所有数据。</p>
+
+<h3 id="section-6">5、关闭串口</h3>
+<p><strong>void serialClose(int fd) ;</strong></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-优先级&amp;中断&amp;线程]]></title>
@@ -335,73 +455,6 @@ value是占空比，范围是0~1023。<br />
   <li>物理排序方式（和 raspberry-gpio-python 的排序相同）<br />
 <strong>int wiringPiSetupPhys (void) ;</strong><br />
 按照引脚顺序排序，没有GPIO的引脚是无法控制的。</li>
-</ol>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-wiringPi-编译&amp;头文件&amp;lib]]></title>
-    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-bian-yi-and-tou-wen-jian-and-lib.html"/>
-    <updated>2017-11-22T19:40:06+08:00</updated>
-    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-bian-yi-and-tou-wen-jian-and-lib</id>
-    <content type="html"><![CDATA[<p>  </p>
-
-<p>安装好之后想要使用wiringPi的接口，就必须要包含wiringPi的头文件、链接wiringPi库，本文介绍如何正确编译。</p>
-
-<!-- more -->
-
-<p>安装好之后，会生成以下头文件：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>/usr/local/include/wiringPi.h</td>
-      <td>提供基础的服务，包括GPIO。</td>
-    </tr>
-    <tr>
-      <td>/usr/local/include/wiringPiI2C.h</td>
-      <td>提供I2C相关支持。</td>
-    </tr>
-    <tr>
-      <td>/usr/local/include/wiringPiSPI.h</td>
-      <td>提供SPI相关支持。</td>
-    </tr>
-    <tr>
-      <td>/usr/local/include/wiringPiShift.h</td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<p>生成以下库：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>/usr/local/lib/libwiringPiDev.so</td>
-    </tr>
-    <tr>
-      <td>等</td>
-    </tr>
-  </tbody>
-</table>
-
-<p> </p>
-
-<p>在编写C程序时：</p>
-
-<ol>
-  <li>要 include 头文件，直接用&lt;&gt;即可，不需要指明路径。<br />
-如：#include <wiringPi.h>  
-编译器会自动从/usr/local/include/目录下寻找头文件。</wiringPi.h></li>
-  <li>编译时要连接wiringPi的库。<br />
-如：gcc gpio.c -o gpio -<strong>lwiringPi</strong><br />
-编译器会自动从/usr/local/lib/目录下寻找库。</li>
 </ol>
 
 <hr />

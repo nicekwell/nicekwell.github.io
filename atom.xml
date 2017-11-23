@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-23T19:56:05+08:00</updated>
+  <updated>2017-11-23T20:22:29+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-UART串口]]></title>
+    <link href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-uartchuan-kou.html"/>
+    <updated>2017-11-23T20:05:37+08:00</updated>
+    <id>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-uartchuan-kou</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">概述</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">0、包含头文件</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">1、打开串口</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">2、写入（发送）</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">3、读取（接收）</a></li>
+  <li><a href="#section-5" id="markdown-toc-section-5">4、缓冲区操作</a></li>
+  <li><a href="#section-6" id="markdown-toc-section-6">5、关闭串口</a></li>
+</ul>
+<p>  </p>
+
+<p>前面介绍了python操作串口的方法，是通过通用的串口库实现的。<br />
+用c语言当然也可以通过通用串口接口实现，而wiringPi也提供了自己的一套串口操作函数，可以很方便地操作串口。<br />
+事实上，wiringPi就是在上层利用通用串口操作接口，封装了一套自己的库函数。</p>
+
+<!-- more -->
+
+<h3 id="section">概述</h3>
+
+<p>在前面python串口编程处就介绍了，树莓派3B的板载串口被蓝牙占用，但可以方便地使用USB串口模块。</p>
+
+<p>树莓派的板载串口是给系统登录使用的，我们要先把这个功能关掉。<br />
+<strong>sudo raspi-config</strong><br />
+Advanced Options –&gt; Serial –&gt; 关闭串口 –&gt; 重启</p>
+
+<p>树莓派上有两个串口，一个硬件串口，工作稳定，但是分配给了蓝牙；还有一个“mini-uart”，这个串口的时钟是由内核提供，所以不太稳定 。 在树莓派3B上，蓝牙和硬件串口是不能兼得。<br />
+这个链接(http://ukonline2000.com/?p=880)有介绍如何把硬件串口分配到GPIO14、GPIO15上，这里不做介绍了。</p>
+
+<p>总之，在树莓派3B上，想要使用板载硬件串口是比较麻烦的，我们这里使用的是USB转串口模块，也能很方便地使用串口。</p>
+
+<h3 id="section-1">0、包含头文件</h3>
+
+<p><strong>#include &lt;wiringSerial.h&gt;</strong></p>
+
+<h3 id="section-2">1、打开串口</h3>
+
+<p><strong>&lt;fd&gt; = serialOpen(char* device, int buad);</strong><br />
+【功能】<br />
+打开串口文件，并设置波特率，返回文件编号。<br />
+【输入】</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>*device</td>
+      <td>设备路径的字符串。比如 “/dev/ttyUSB0”</td>
+    </tr>
+    <tr>
+      <td>buad</td>
+      <td>波特率，是一个数值。可以设置为：2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>【输出】一个文件编号，代表这个串口设备文件，后面对这个串口的操作都会用到。<br />
+【说明】<br />
+1、wiringPi提供的设置（以及后面的读写功能）是简化的文件操作，可以满足大部分需求。<br />
+2、这里的<file编号>是标准的linux文件描述符，可以使用linux标准的文件操作函数write()、read()等来操作。</file编号></p>
+
+<p>后面也会有说明，wiringPi提供的读写功能是简化的，不提供二进制数值读写，但是可以使用linux标准的读写函数来操作。</p>
+
+<h3 id="section-3">2、写入（发送）</h3>
+
+<p><strong>void serialPutchar(int fd, unsigned char c) ;</strong><br />
+【功能】发送一个字节数据。<br />
+【输入】<br />
+fd是打开串口时的文件描述符。<br />
+输入的就是一个字节数据，可以用字符表示，也可以用十六进制数表示。</p>
+
+<p><strong>void serialPuts(int fd, char *s) ;</strong><br />
+【功能】发送字符串。<br />
+【输入】<br />
+fd是打开串口时的文件描述符。<br />
+*s 是一个字符串，会发送该字符串，直到’\0’结束。<strong>‘\0’不会发送出去。</strong></p>
+
+<p><strong>void serialPrintf(int fd, char *message, …) ;</strong><br />
+【功能】功能类似于printf，可以同时发送多个字符串。</p>
+
+<p> </p>
+
+<p>注意：<strong>以上两个发送函数只是把数据推送到发送缓冲区里，不会等待串口发送完成。</strong>后续程序如果要用到用到串口返回数据应当要考虑到串口传输时间。<br />
+<strong>并且最好等之前的数据全部发送完成后再发送新数据，否则可能会出问题，这也要考虑到串口发送数据的时间，可能需要等待。</strong><br />
+关键是上层还没有找到判断串口发送完成的方法。</p>
+
+<h3 id="section-4">3、读取（接收）</h3>
+
+<p><strong>int serialDataAvail(int fd) ;</strong><br />
+【功能】获取接收缓冲区里的字节数。<br />
+【输入】创建串口设备文件时的文件描述符。<br />
+【输出】接收缓冲区里所存放的数据字节数。</p>
+
+<p><strong>int serialGetchar(int fd) ;</strong><br />
+【功能】从接收缓冲区里读取一个字节数据。<br />
+【输入】创建串口设备文件时的文件描述符。<br />
+【输出】读取到的一个字节内容。虽然是一个字节内容，但仍然定义为了int型。<br />
+【说明】<br />
+<strong>如果缓冲区里没有数据，则会等待10s，相当于python里把timeout设置为10s。<br />
+10s过后如果还没有数据的话，则会返回 -1，十六进制显示为 0xffffffff。</strong>
+这里的10s是wiringPi默认的，查看源代码可以看到：<br />
+<img src="http://nicekwell.net/images/raspberrypi/2017-11-23-shu-mei-pai-wiringpi-uartchuan-kou/1.png" alt="1.png" /></p>
+
+<h3 id="section-5">4、缓冲区操作</h3>
+<p><strong>void serialFlush(int fd) ;</strong><br />
+清空缓冲区，放弃所有数据。</p>
+
+<h3 id="section-6">5、关闭串口</h3>
+<p><strong>void serialClose(int fd) ;</strong></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-优先级&amp;中断&amp;线程]]></title>
@@ -2340,100 +2460,6 @@ TXD：P3.1</p>
 
 <p>主循环进程只干一件事，等待定时器进程发送指令，接收到指令后发送数据。<br />
 但主循环会忽略第一帧数据，因为第一帧数据可能采集不完整。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[WFT07和WFR07的功能和使用]]></title>
-    <link href="http://nicekwell.net/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong.html"/>
-    <updated>2016-12-23T23:47:02+08:00</updated>
-    <id>http://nicekwell.net/blog/20161223/wft07he-wfr07de-gong-neng-he-shi-yong</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">1、特性</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">2、基本设置</a>    <ul>
-      <li><a href="#section-2" id="markdown-toc-section-2">设置供电模式</a></li>
-      <li><a href="#section-3" id="markdown-toc-section-3">设置遥控模式</a></li>
-      <li><a href="#section-4" id="markdown-toc-section-4">对码</a></li>
-      <li><a href="#section-5" id="markdown-toc-section-5">失控设置</a></li>
-    </ul>
-  </li>
-  <li><a href="#section-6" id="markdown-toc-section-6">3、遥控器功能</a></li>
-  <li><a href="#section-7" id="markdown-toc-section-7">4、接收机引脚</a></li>
-  <li><a href="#pwm" id="markdown-toc-pwm">5、接收机输出PWM特性</a></li>
-</ul>
-<p>  </p>
-
-<h1 id="section">1、特性</h1>
-<p>我买的是美国手，油门在左边。<br />
-7通道。<br />
-自带4节5号电池盒，可以用5号电池供电，也可以换成锂电池供电。</p>
-
-<p>可设置固定翼和直升机两种遥控模式。<em>直升机模式下各个通道之间的调节会相互影响，比如调节油门一个通道，会有多个通道一起改变；而在固定翼模式下，各个通道是独立调节。</em><br />
-<strong>对我来说，我只想在接收端还原遥控器的操作，对操作进行何种响应由飞机上的程序决定，所以我用的是固定翼模式，下面的所有介绍都是在固定翼模式下。</strong></p>
-
-<!-- more -->
-
-<h1 id="section-1">2、基本设置</h1>
-
-<h2 id="section-2">设置供电模式</h2>
-
-<p>遥控器虽然不能直接给电池充电，但是可以设置电池的供电方式，根据不同的电池类型判断当前电量。<br />
-设置方法：<br />
-<strong>按住menu键开机–&gt;供电方式–&gt;选择对应的供电方式–&gt;关机重开机生效</strong><br />
-我买了充电锂电池，所以选择锂电池供电。</p>
-
-<h2 id="section-3">设置遥控模式</h2>
-<p>如上面所说，这里所有的介绍都是在“固定翼”模式下，需要把模式设置成“固定：<br />
-按menu键开机–&gt;机型设置–&gt;固定翼。</p>
-
-<h2 id="section-4">对码</h2>
-<p>1、接收机上电<br />
-2、接收机长按SET键，接收机指示灯编程橙色，进入对码状态。<br />
-3、遥控器开机–&gt;menu–&gt;高级设置–&gt;对码。对码成功后接收机指示灯会熄灭。</p>
-
-<h2 id="section-5">失控设置</h2>
-<p>枪型3通道遥控器，接收机在接收不到遥控器信号时所有通道的信号会立马停止。而7通道遥控器可以设置当接收机接收不到信号时应该保持什么样的信号输出。<br />
-menu–&gt;高级设置–&gt;失控设置，在这个页面按一下ok键就会把当前遥控器的状态作为失控时的状态。</p>
-
-<h1 id="section-6">3、遥控器功能</h1>
-
-<p><img src="http://nicekwell.net/images/module-and-agreement/WFT07.jpg" alt="WFT07jpg" /></p>
-
-<h1 id="section-7">4、接收机引脚</h1>
-
-<p><img src="http://nicekwell.net/images/module-and-agreement/WFR07.jpg" alt="WFR07jpg" /></p>
-
-<p>电源正负极在接收机上有标识。</p>
-
-<h1 id="pwm">5、接收机输出PWM特性</h1>
-<p>PPM信号和接收机输出的PWM的详细文档跳转到：<a href="http://nicekwell.net/blog/20161223/ppmxin-hao-jie-shao.html">PPM信号介绍</a><br />
-周期：21.2ms，不是标准的20ms。<br />
-脉宽：中间值±500us，和标准相同。<br />
-精度：通道1、2、3、4、6是连续变化的，分辨率是20us。</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">时间精度</th>
-      <th style="text-align: center">调节范围1000us，分成份数</th>
-      <th style="text-align: center"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">20us</td>
-      <td style="text-align: center">50</td>
-      <td style="text-align: center">普通舵机500us~2500us对应角度180°，对应舵机角度分辨率：1.8°。占空比从 -100%到+100%，对应占空比分辨率：4%。</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>此接收机可设置遥控器信号丢失时的输出，所以遥控器信号丢失时的输出不确定，接近正常操作信号，单片机提取其信号时也无法判断当前是否信号丢失。</p>
 
 <hr />
 
