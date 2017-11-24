@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-23T20:22:29+08:00</updated>
+  <updated>2017-11-24T13:31:45+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,138 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-树莓派的i2c配置]]></title>
+    <link href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shu-mei-pai-de-i2cpei-zhi.html"/>
+    <updated>2017-11-23T20:35:11+08:00</updated>
+    <id>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shu-mei-pai-de-i2cpei-zhi</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#i2c" id="markdown-toc-i2c">1、开启树莓派i2c设备</a></li>
+  <li><a href="#i2c-1" id="markdown-toc-i2c-1">2、确认i2c模块加载成功</a></li>
+  <li><a href="#i2c-detecti2c" id="markdown-toc-i2c-detecti2c">3、i2c detect检测i2c设备</a></li>
+  <li><a href="#i2c-2" id="markdown-toc-i2c-2">4、i2c的波特率</a></li>
+</ul>
+<p>  </p>
+
+<p>介绍如何在树莓派上配置i2c，包括开关、波特率，以及i2cdetect的简单使用。</p>
+
+<!-- more -->
+
+<h3 id="i2c">1、开启树莓派i2c设备</h3>
+<p>树莓派的i2c默认是关闭的。网上找了很多打开i2c的方法，基本上都是：<br />
+1、修改 /etc/modules，添加i2c模块开机自动启动。<br />
+2、修改 /etc/modprobe.d/raspi-blacklist.conf 黑名单中去掉i2c模块。<br />
+但是怎么改都不行，可能是树莓派系统升级了，和以前的设置方法不一样了。<br />
+正确的方法是：<br />
+1、sudo raspi-config<br />
+2、Advanced Options –&gt; I2C –&gt; 开启i2c设备 –&gt; 重启。<br />
+加载成功的话会生成 <strong>/dev/i2c-x</strong> 文件，x是总线序号。</p>
+
+<h3 id="i2c-1">2、确认i2c模块加载成功</h3>
+<p><strong>lsmod</strong><br />
+会看到 i2c_dev 和 i2c_bcm2708 两项。</p>
+
+<h3 id="i2c-detecti2c">3、i2c detect检测i2c设备</h3>
+<p>linux下有个i2c工具程序可以方便地检测i2c设备。<br />
+1、 安装 i2c-tools<br />
+<strong>sudo apt-get install i2c-tools</strong><br />
+2、列出所有i2c总线<br />
+<strong>i2cdetect -l</strong><br />
+如果i2c设备成功打开，将会看到<br />
+i2c-1   i2c   3f804000.i2c    I2C adapter<br />
+3、列出i2c总线上的所有i2c设备<br />
+<strong>i2cdetect -y &lt;总线&gt;</strong><br />
+列出总线上所有地址上的设备，形如：</p>
+
+<p><code>
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+</code></p>
+
+<p><strong>这个功能会启动i2c检测电路，电路上实际连接了哪些设备这里就会显示哪些设备。电路上不连接设备的话在这里是不会显示的。</strong><br />
+<strong>检测到的是7位的i2c地址。</strong></p>
+
+<p>i2ctools的其他使用在linux里的工具使用中有专门介绍。</p>
+
+<h3 id="i2c-2">4、i2c的波特率</h3>
+<p>获取当前波特率：<br />
+<strong>sudo cat /sys/module/i2c_bcm2708/parameters/baudrate</strong><br />
+设置波特率：<br />
+<strong>sudo emacs /etc/modprobe.d/custom.conf</strong><br />
+添加一行设置：<br />
+<strong>options i2c_bcm2708 baudrate=100000</strong><br />
+设置后需要重启才能生效。</p>
+
+<p> </p>
+
+<p>实际测量clk引脚的结果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>设置的频率</td>
+      <td>示波器测量的脉宽</td>
+      <td>周期</td>
+      <td>示波器测量的频率</td>
+      <td>传输addr+cmd+20字节所需要的时间</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>32000(32k)</td>
+      <td>25us</td>
+      <td>50us</td>
+      <td>20kHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>100000(100k)</td>
+      <td>8us</td>
+      <td>16us</td>
+      <td>41.67kHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1000000(1M)</td>
+      <td>800ns</td>
+      <td>1600ns</td>
+      <td>417KHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2000000(2M)</td>
+      <td>400ns</td>
+      <td>800ns</td>
+      <td>833.4kHz</td>
+      <td> </td>
+      <td>波形略有失真，可能和外部电路设计也有关系。</td>
+    </tr>
+    <tr>
+      <td>3000000(3M)</td>
+      <td>250ns</td>
+      <td>500ns</td>
+      <td>1.894MHz</td>
+      <td> </td>
+      <td>波形已经失真严重，设备接收异常。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-UART串口]]></title>
@@ -424,43 +556,6 @@ value是占空比，范围是0~1023。<br />
 <hr />
 
 <p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-wiringPI-设置引脚编号模式]]></title>
-    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi.html"/>
-    <updated>2017-11-22T19:52:38+08:00</updated>
-    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi</id>
-    <content type="html"><![CDATA[<p>  </p>
-
-<p>前面说过树莓派在不同的库下对引脚的编号方式是不同的，wiringPi支持设置各种不同的引脚编号方式。</p>
-
-<!-- more -->
-
-<p>安装好wiringPi之后，不仅在系统中添加了头文件和库，同时也安装了命令行工具。<br />
-在shell中可以用 <strong>gpio readall</strong> 命令获取到以下信息：<br />
-<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-she-zhi-yin-jiao-bian-hao-mo-shi/1.png" alt="1.png" /></p>
-
-<p>wiringPi提供三种引脚排序方式：wPi、BCM、Phy。<br />
-必须在程序开始时指明使用哪种排序方式。</p>
-
-<ol>
-  <li>wiringPi排序方式<br />
-<strong>int wiringPiSetup (void) ;</strong><br />
-调用此函数即可设置为wiringPi排序。</li>
-  <li>BCM排序方式<br />
-<strong>int wiringPiSetupGpio (void) ;</strong><br />
-调用此函数即可。</li>
-  <li>物理排序方式（和 raspberry-gpio-python 的排序相同）<br />
-<strong>int wiringPiSetupPhys (void) ;</strong><br />
-按照引脚顺序排序，没有GPIO的引脚是无法控制的。</li>
-</ol>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
 ]]></content>
   </entry>
   

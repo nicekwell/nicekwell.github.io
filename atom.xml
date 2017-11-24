@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-23T20:22:29+08:00</updated>
+  <updated>2017-11-24T13:31:45+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,144 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-树莓派的i2c配置]]></title>
+    <link href="http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shu-mei-pai-de-i2cpei-zhi.html"/>
+    <updated>2017-11-23T20:35:11+08:00</updated>
+    <id>http://nicekwell.net/blog/20171123/shu-mei-pai-wiringpi-shu-mei-pai-de-i2cpei-zhi</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#i2c" id="markdown-toc-i2c">1、开启树莓派i2c设备</a></li>
+  <li><a href="#i2c-1" id="markdown-toc-i2c-1">2、确认i2c模块加载成功</a></li>
+  <li><a href="#i2c-detecti2c" id="markdown-toc-i2c-detecti2c">3、i2c detect检测i2c设备</a></li>
+  <li><a href="#i2c-2" id="markdown-toc-i2c-2">4、i2c的波特率</a></li>
+</ul>
+<p>  </p>
+
+<p>介绍如何在树莓派上配置i2c，包括开关、波特率，以及i2cdetect的简单使用。</p>
+
+<!-- more -->
+
+<h3 id="i2c">1、开启树莓派i2c设备</h3>
+<p>树莓派的i2c默认是关闭的。网上找了很多打开i2c的方法，基本上都是：<br />
+1、修改 /etc/modules，添加i2c模块开机自动启动。<br />
+2、修改 /etc/modprobe.d/raspi-blacklist.conf 黑名单中去掉i2c模块。<br />
+但是怎么改都不行，可能是树莓派系统升级了，和以前的设置方法不一样了。<br />
+正确的方法是：<br />
+1、sudo raspi-config<br />
+2、Advanced Options –&gt; I2C –&gt; 开启i2c设备 –&gt; 重启。<br />
+加载成功的话会生成 <strong>/dev/i2c-x</strong> 文件，x是总线序号。</p>
+
+<h3 id="i2c-1">2、确认i2c模块加载成功</h3>
+<p><strong>lsmod</strong><br />
+会看到 i2c_dev 和 i2c_bcm2708 两项。</p>
+
+<h3 id="i2c-detecti2c">3、i2c detect检测i2c设备</h3>
+<p>linux下有个i2c工具程序可以方便地检测i2c设备。<br />
+1、 安装 i2c-tools<br />
+<strong>sudo apt-get install i2c-tools</strong><br />
+2、列出所有i2c总线<br />
+<strong>i2cdetect -l</strong><br />
+如果i2c设备成功打开，将会看到<br />
+i2c-1   i2c   3f804000.i2c    I2C adapter<br />
+3、列出i2c总线上的所有i2c设备<br />
+<strong>i2cdetect -y &lt;总线&gt;</strong><br />
+列出总线上所有地址上的设备，形如：</p>
+
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+</span><span class="line">00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- -- 
+</span><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span></code></pre></td></tr></table></div></figure>
+
+<p><strong>这个功能会启动i2c检测电路，电路上实际连接了哪些设备这里就会显示哪些设备。电路上不连接设备的话在这里是不会显示的。</strong><br />
+<strong>检测到的是7位的i2c地址。</strong></p>
+
+<p>i2ctools的其他使用在linux里的工具使用中有专门介绍。</p>
+
+<h3 id="i2c-2">4、i2c的波特率</h3>
+<p>获取当前波特率：<br />
+<strong>sudo cat /sys/module/i2c_bcm2708/parameters/baudrate</strong><br />
+设置波特率：<br />
+<strong>sudo emacs /etc/modprobe.d/custom.conf</strong><br />
+添加一行设置：<br />
+<strong>options i2c_bcm2708 baudrate=100000</strong><br />
+设置后需要重启才能生效。</p>
+
+<p> </p>
+
+<p>实际测量clk引脚的结果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>设置的频率</td>
+      <td>示波器测量的脉宽</td>
+      <td>周期</td>
+      <td>示波器测量的频率</td>
+      <td>传输addr+cmd+20字节所需要的时间</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>32000(32k)</td>
+      <td>25us</td>
+      <td>50us</td>
+      <td>20kHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>100000(100k)</td>
+      <td>8us</td>
+      <td>16us</td>
+      <td>41.67kHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1000000(1M)</td>
+      <td>800ns</td>
+      <td>1600ns</td>
+      <td>417KHz</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2000000(2M)</td>
+      <td>400ns</td>
+      <td>800ns</td>
+      <td>833.4kHz</td>
+      <td> </td>
+      <td>波形略有失真，可能和外部电路设计也有关系。</td>
+    </tr>
+    <tr>
+      <td>3000000(3M)</td>
+      <td>250ns</td>
+      <td>500ns</td>
+      <td>1.894MHz</td>
+      <td> </td>
+      <td>波形已经失真严重，设备接收异常。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-UART串口]]></title>
@@ -2385,86 +2523,6 @@ TXD：P3.1</p>
 <hr />
 
 <p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[单片机提取GR3E接收机信号]]></title>
-    <link href="http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao.html"/>
-    <updated>2016-12-24T00:08:33+08:00</updated>
-    <id>http://nicekwell.net/blog/20161224/dan-pian-ji-ti-qu-gr3ejie-shou-ji-xin-hao</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">硬件</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">输出格式</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">程序结构介绍</a></li>
-</ul>
-
-<p>为什么要提取接收机信号？因为有时候航模那端想要按照自己的想法编程，同时又希望能够使用航模遥控器这个方便的工具。<br />
-总之如果能够把航模遥控器信号转换成数字信号，无论用它做什么也是极好的~</p>
-
-<!-- more -->
-
-<p>工程放在github上：<a href="https://github.com/nicekwell/GR3E_decode">https://github.com/nicekwell/GR3E_decode</a><br />
-也可以直接<a href="https://github.com/nicekwell/GR3E_decode/archive/master.zip">下载</a>此工程。</p>
-
-<p>完成后的效果视频：</p>
-
-<p><br /></p>
-<iframe style="margin:0 auto; display: block" height="480" width="640" src="http://player.youku.com/embed/XMTg3ODIxODc2MA?color=white&amp;theme=light"></iframe>
-
-<p>  </p>
-
-<p>  </p>
-
-<p>以下是一些重要的说明，在工程的README中有更详细的介绍。</p>
-
-<p>  </p>
-
-<h1 id="section">硬件</h1>
-<p>【单片机】STC12C5A60S2<br />
-【晶振】24MHz<br />
-注：此晶振可产生精确地定时器中断，方便监测各个通道，但串口波特率会有0.16%的误差，不会影响使用。<br />
-【引脚连接】<br />
-CH1：P1.2<br />
-CH2：P1.1<br />
-CH3：P1.0<br />
-TXD：P3.1</p>
-
-<h1 id="section-1">输出格式</h1>
-<p>【波特率】115200<br />
-实测发送一个字节大约需要13us，这样算的话一帧发送4字节大约需要50us。<br />
-这里测量的13us是程序把一字节数据送入缓存，并等待发送完成标志所用的时间，不是实际串口的工作时间。<br />
-【数据格式】<br />
-每个周期内，当采集完三个通道的高电平后（最长约6ms）会立刻通过串口发送3个通道的数据信息。<br />
-每个周期的数据为一帧，一帧数据有4个字节：<br />
-第一字节固定为0x01，标志一帧数据开始。（后面三个字节不可能为这个值）<br />
-后面三个字节依次表示CH1、CH2、CH3的脉宽，单位是10us。如输出150表示脉宽为1500us。<br />
-注：<br />
-1、接收机输出的脉宽范围大约在1000us~2000us之间，所以三个脉宽的数据范围大约在100~200之间。<br />
-2、解码后输出的数据单位是10us，但实际接收机输出的精度是20us，单片机程序也是按照20us的精度采样的。</p>
-
-<p>以上是接收机正常工作的数据输出格式，当接收机接收不到信号时，模块持续输出0x02。</p>
-
-<h1 id="section-2">程序结构介绍</h1>
-<p>两个进程：定时器中断和主循环。</p>
-
-<p>定时器20us一次中断，有两个状态：<br />
-1、信号采集中：<br />
-  1、采集各个通道高电平时间。<br />
-  2、判断当前所有通道是否采集完成（所有通道信号结束后，所有通道都会输出低电平。<br />
-    如果连续100us（5个周期）检测到所有通道都是低电平，则认为一帧信号结束，此时对采集到的信号进行判断：<br />
-      如果所有通道脉宽大于500us，则认为数据有效，通知主进程发送数据，并进入状态2。<br />
-      否则认为数据有问题，通知主循环发送“信号丢失”信号，并进入状2。<br />
-2、本周期信号已结束，等待下一周期：<br />
-  任意通道采集到高电平则进入状态1。</p>
-
-<p>主循环进程只干一件事，等待定时器进程发送指令，接收到指令后发送数据。<br />
-但主循环会忽略第一帧数据，因为第一帧数据可能采集不完整。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
 ]]></content>
   </entry>
   
