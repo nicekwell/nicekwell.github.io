@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-24T13:34:13+08:00</updated>
+  <updated>2017-11-24T13:47:14+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[树莓派-wiringPi-wiringPi-C的i2c库使用]]></title>
+    <link href="http://nicekwell.net/blog/20171124/shu-mei-pai-wiringpi-wiringpi-cde-i2cku-shi-yong.html"/>
+    <updated>2017-11-24T13:36:14+08:00</updated>
+    <id>http://nicekwell.net/blog/20171124/shu-mei-pai-wiringpi-wiringpi-cde-i2cku-shi-yong</id>
+    <content type="html"><![CDATA[<p>  </p>
+
+<p>在linux上层有一个操作i2c的通用接口——smbus，在这里我们不介绍smbus的使用，但要知道wiringPi的i2c接口就是在linux上层基于smbus封装的。<br />
+wiringPi封装的函数中，有byte和word的读写，但是没有封装block的读写。也就是说，没有提供一次写大块数据的方法。</p>
+
+<!-- more -->
+
+<p> </p>
+
+<p><strong>&lt;file&gt; = wiringPiI2CSetup(int &lt;从机地址&gt;);</strong><br />
+打开i2c设备。<br />
+输入的是7位的从机地址，不需要输入i2c设备节点路径。<br />
+返回的是linux标准的设备文件描述符。</p>
+
+<p>实际的处理过程是这样的：<br />
+wiringPi自动检测i2c设备文件路径（/dev/i2c-0或/dev/i2c-1）；<br />
+然后打开文件，获取到了标准文件描述符；<br />
+然后通过ioctl设置从机地址。</p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CWrite(int fd,int data);</strong><br />
+往从机写一个字节。<br />
+也就是从机地址后的一个字节，通常是command。<br />
+<em>&lt;起始&gt; + &lt;从机地址W&gt; + &lt;data&gt; + &lt;结束&gt;</em></p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CWriteReg8(int fd, int reg, int data);</strong><br />
+往从机指定的reg写入1个字节。<br />
+<em>&lt;起始&gt; + &lt;从机地址W&gt; + &lt;reg&gt; + &lt;data&gt; + &lt;结束&gt;</em></p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CWriteReg16(int fd, int reg, int data);</strong><br />
+往从机指定的reg写2个字节，<strong>先传输低8位，后传输高8位。</strong><br />
+<em>&lt;起始&gt; + &lt;从机地址W&gt; + &lt;reg&gt; + &lt;data低8位&gt; + &lt;data高8位&gt; + &lt;结束&gt;</em></p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CRead(int fd);</strong><br />
+从从机直接读取一个字节，不写入任何cmd。<br />
+<em>&lt;起始&gt; + &lt;从机地址R&gt; + &lt;读1个字节&gt; + &lt;结束&gt;</em></p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CReadReg8(int fd, int reg);</strong><br />
+读取从机指定reg的一个字节。<br />
+<em>&lt;起始&gt; + &lt;从机地址W&gt; + &lt;reg&gt; + &lt;起始&gt; + &lt;从机地址R&gt; + &lt;读1个字节&gt; + &lt;结束&gt;</em></p>
+
+<p> </p>
+
+<p><strong>int wiringPiI2CReadReg16(int fd, int reg);</strong><br />
+读取从机指定reg的两个字节，<strong>先传输低8位，后传输高8位。</strong><br />
+<em>&lt;起始&gt; + &lt;从机地址W&gt; + &lt;reg&gt; + &lt;起始&gt; + &lt;从机地址R&gt; + &lt;读低8位&gt; + &lt;读高8位&gt; + &lt;结束&gt;</em></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[树莓派-wiringPi-树莓派的i2c配置]]></title>
@@ -419,139 +487,6 @@ int main(int argc, char *argv[])
     return 0;
 }
 </code></p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-wiringPi-GPIO]]></title>
-    <link href="http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio.html"/>
-    <updated>2017-11-22T20:07:42+08:00</updated>
-    <id>http://nicekwell.net/blog/20171122/shu-mei-pai-wiringpi-gpio</id>
-    <content type="html"><![CDATA[<p>  </p>
-
-<!-- more -->
-
-<p>GPIO接口在官网有详细的说明：<a href="http://wiringpi.com/reference/core-functions/">http://wiringpi.com/reference/core-functions/</a></p>
-
-<p>wiringPi的GPIO序号如下：<br />
-<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/1.jpg" alt="1.jpg" /></p>
-
-<p> </p>
-
-<p><strong>void pinMode (int pin, int mode) ;</strong><br />
-设置GPIO模式。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-mode可以设置为：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>INPUT</td>
-    </tr>
-    <tr>
-      <td>OUTPUT</td>
-    </tr>
-    <tr>
-      <td>PWM_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>GPIO_CLOCK</td>
-    </tr>
-    <tr>
-      <td>SOFT_PWM_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>SOFT_TONE_OUTPUT</td>
-    </tr>
-    <tr>
-      <td>PWM_TONE_OUTPUT</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>只有具有相应功能的引脚才能设置为该功能。</p>
-
-<p> </p>
-
-<p><strong>void pullUpDnControl (int pin, int pud) ;</strong><br />
-设置上下拉。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-pud是上下拉配置，可设置为：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>PUD_OFF</td>
-      <td>无上下拉</td>
-    </tr>
-    <tr>
-      <td>PUD_UP</td>
-      <td>上拉，3.3v，50kΩ</td>
-    </tr>
-    <tr>
-      <td>PUD_DOWN</td>
-      <td>下拉，50kΩ</td>
-    </tr>
-  </tbody>
-</table>
-
-<p> </p>
-
-<p><strong>void digitalWrite (int pin, int value) ;</strong><br />
-设置指定引脚的输出。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-value是输出值，可以设置为：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>HIGH 或 非0</td>
-      <td>高电平（3.3v）</td>
-    </tr>
-    <tr>
-      <td>LOW 或 0</td>
-      <td>低电平</td>
-    </tr>
-  </tbody>
-</table>
-
-<p> </p>
-
-<p>void digitalWriteByte (int value) ;</p>
-
-<p> </p>
-
-<p><strong>int digitalRead (int pin) ;</strong><br />
-读取指定引脚。<br />
-pin是引脚序号，以何种方式编号在前面决定。<br />
-返回的是该引脚的电平，返回HIGH或LOW。</p>
-
-<p> </p>
-
-<p><strong>void pwmWrite (int pin, int value) ;</strong><br />
-设置pwn输出占空比。<br />
-pin是引脚序号，以何种方式编号在前面决定。（最新的树莓派里面好像把pwm功能去掉了）<br />
-value是占空比，范围是0~1023。<br />
-？？？在哪设置pwm的周期呢？</p>
-
-<p> </p>
-
-<p><strong>analogRead (int pin) ;</strong><br />
-读入模拟量（AD）。<br />
-<strong>analogWrite (int pin, int value) ;</strong><br />
-输出模拟量（DA）。<br />
-<em>以上两个功能需要外加芯片</em>，这里略去。</p>
-
-<p> </p>
-
-<p><strong>wiringPi-C控制GPIO的速度</strong><br />
-<img src="/images/raspberrypi/2017-11-22-shu-mei-pai-wiringpi-gpio/2.png" alt="2.png" /><br />
-高低电平变化响应速度大约是80ns。（raspberry-gpio-python的速度大约是2us，大约是它的25倍）<br />
-注意，wiringPi-C也是在上层的程序，输出的波形同样是不稳定的。</p>
 
 <hr />
 
