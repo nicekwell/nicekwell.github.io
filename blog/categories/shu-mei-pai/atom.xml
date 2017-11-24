@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 树莓派 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/shu-mei-pai/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-24T13:31:45+08:00</updated>
+  <updated>2017-11-24T13:34:13+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -57,7 +57,7 @@ i2c-1   i2c   3f804000.i2c    I2C adapter<br />
 列出总线上所有地址上的设备，形如：</p>
 
 <p><code>
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+.    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 

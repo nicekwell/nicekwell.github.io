@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2017-11-24T13:31:45+08:00</updated>
+  <updated>2017-11-24T13:34:13+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -64,7 +64,7 @@ i2c-1   i2c   3f804000.i2c    I2C adapter<br />
 <span class="line-number">6</span>
 <span class="line-number">7</span>
 <span class="line-number">8</span>
-</pre></td><td class="code"><pre><code class=""><span class="line"> 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+</pre></td><td class="code"><pre><code class=""><span class="line">.    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 </span><span class="line">00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
 </span><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 </span><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
