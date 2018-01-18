@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20180118/stm32chuan-kou-isp.html</loc>
+<lastmod>2018-01-18T10:59:36+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20171124/shu-mei-pai-wiringpi-wiringpi-cde-i2cku-shi-yong.html</loc>
 <lastmod>2017-11-24T13:36:14+08:00</lastmod>
 </url>

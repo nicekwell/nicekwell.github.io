@@ -167,6 +167,81 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2018-01-18T10:59:36+08:00"  data-updated="true" itemprop="datePublished dateCreated">2018年1月18日</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20180118/stm32chuan-kou-isp.html" itemprop="url">Stm32串口isp</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">概述</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">广告</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">下载协议</a>    <ul>
+      <li><a href="#section-3" id="markdown-toc-section-3">1、硬件</a></li>
+      <li><a href="#sync" id="markdown-toc-sync">2、sync</a></li>
+      <li><a href="#get-command" id="markdown-toc-get-command">3、get command</a></li>
+      <li><a href="#get-version--read-protection" id="markdown-toc-get-version--read-protection">4、get version &amp; read protection</a></li>
+      <li><a href="#get-id-command" id="markdown-toc-get-id-command">5、get ID command</a></li>
+      <li><a href="#erase-memory-command" id="markdown-toc-erase-memory-command">6、Erase Memory command</a></li>
+      <li><a href="#write-memory-command" id="markdown-toc-write-memory-command">7、Write Memory command</a></li>
+      <li><a href="#read-memory-command" id="markdown-toc-read-memory-command">8、Read Memory command</a></li>
+      <li><a href="#go-command" id="markdown-toc-go-command">9、Go command</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-4" id="markdown-toc-section-4">代码说明</a>    <ul>
+      <li><a href="#section-5" id="markdown-toc-section-5">程序结构</a></li>
+      <li><a href="#stm32isp" id="markdown-toc-stm32isp">stm32isp接口</a>        <ul>
+          <li><a href="#stm32ispinit" id="markdown-toc-stm32ispinit">stm32isp_init</a></li>
+          <li><a href="#stm32ispclose" id="markdown-toc-stm32ispclose">stm32isp_close</a></li>
+          <li><a href="#stm32ispsync" id="markdown-toc-stm32ispsync">stm32isp_sync</a></li>
+          <li><a href="#stm32ispgetcommand" id="markdown-toc-stm32ispgetcommand">stm32isp_get_command</a></li>
+          <li><a href="#stm32ispgetidcommand" id="markdown-toc-stm32ispgetidcommand">stm32isp_get_ID_command</a></li>
+          <li><a href="#stm32isperaseall" id="markdown-toc-stm32isperaseall">stm32isp_erase_all</a></li>
+          <li><a href="#stm32ispwritebin" id="markdown-toc-stm32ispwritebin">stm32isp_write_bin</a></li>
+          <li><a href="#stm32ispverify" id="markdown-toc-stm32ispverify">stm32isp_verify</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>  </p>
+
+<p>这里介绍stm32串口isp实现方法，包含st官方协议整理和实现代码。</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="read-more btn btn-default" href="/blog/20180118/stm32chuan-kou-isp.html">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-24T13:36:14+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月24日</time>
         
       </p>
@@ -568,67 +643,6 @@ wiringpi已经不局限于C语言了，也提供了其他各种语言的接口�
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-20T19:37:15+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月20日</time>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html" itemprop="url">树莓派-pypi-UART串口</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">概述</a></li>
-  <li><a href="#pythonpyserial" id="markdown-toc-pythonpyserial">python通用串口库——pyserial</a>    <ul>
-      <li><a href="#section-1" id="markdown-toc-section-1">一、安装</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">二、使用</a>        <ul>
-          <li><a href="#section-3" id="markdown-toc-section-3">1、打开串口并创建对象</a></li>
-          <li><a href="#section-4" id="markdown-toc-section-4">2、缓冲区操作</a></li>
-          <li><a href="#section-5" id="markdown-toc-section-5">3、波特率设置</a></li>
-          <li><a href="#section-6" id="markdown-toc-section-6">4、从串口发送数据</a></li>
-          <li><a href="#section-7" id="markdown-toc-section-7">5、从串口接收数据</a></li>
-          <li><a href="#section-8" id="markdown-toc-section-8">6、关闭串口</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<p>  </p>
-
-<p>树莓派在linux上层支持通用的串口接口，用linux上通用的串口编程即可操作。<br />
-树莓派3B的板载串口被蓝牙占用，但可以方便地使用USB串口模块。</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -666,6 +680,8 @@ wiringpi已经不局限于C语言了，也提供了其他各种语言的接口�
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/20180118/stm32chuan-kou-isp.html">Stm32串口isp</a>
+    
     <a class="list-group-item " href="/blog/20171124/shu-mei-pai-wiringpi-wiringpi-cde-i2cku-shi-yong.html">树莓派-wiringPi-wiringPi-C的i2c库使用</a>
     
     <a class="list-group-item " href="/blog/20171123/shu-mei-pai-wiringpi-shu-mei-pai-de-i2cpei-zhi.html">树莓派-wiringPi-树莓派的i2c配置</a>
@@ -693,8 +709,6 @@ wiringpi已经不局限于C语言了，也提供了其他各种语言的接口�
     <a class="list-group-item " href="/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-gong-hao.html">树莓派-硬件和功能-功耗</a>
     
     <a class="list-group-item " href="/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html">树莓派-硬件和功能-硬件和功能</a>
-    
-    <a class="list-group-item " href="/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html">树莓派-概述和使用-配置和使用</a>
     
   </div>
 </section>
@@ -728,7 +742,7 @@ wiringpi已经不局限于C语言了，也提供了其他各种语言的接口�
     </div>
     <footer role="contentinfo"><div class="container">
     <p class="text-muted credits">
-  Copyright &copy; 2017 - nicekwell<br>
+  Copyright &copy; 2018 - nicekwell<br>
   <small>
       <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
       <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
