@@ -4,7 +4,7 @@
   <title><![CDATA[生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2018-01-18T19:06:13+08:00</updated>
+  <updated>2018-01-22T00:33:45+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,167 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[平衡自行车-理论篇]]></title>
+    <link href="http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html"/>
+    <updated>2018-01-21T21:52:31+08:00</updated>
+    <id>http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">一、模型分析</a>    <ul>
+      <li><a href="#section-1" id="markdown-toc-section-1">1、倒立摆</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">2、自行车的平衡控制</a>        <ul>
+          <li><a href="#section-3" id="markdown-toc-section-3">2.1 怎样的状态才叫平衡</a></li>
+          <li><a href="#section-4" id="markdown-toc-section-4">2.2 我们能控制的是什么</a></li>
+          <li><a href="#section-5" id="markdown-toc-section-5">2.3 如何控制才能平衡</a></li>
+        </ul>
+      </li>
+      <li><a href="#section-6" id="markdown-toc-section-6">3、自行车平衡需要解决的基本问题</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-7" id="markdown-toc-section-7">二、姿态检测</a>    <ul>
+      <li><a href="#section-8" id="markdown-toc-section-8">1、检测的是什么</a></li>
+      <li><a href="#section-9" id="markdown-toc-section-9">2、怎么检测</a></li>
+    </ul>
+  </li>
+  <li><a href="#pid" id="markdown-toc-pid">三、PID算法</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">四、广告</a></li>
+</ul>
+<p>  </p>
+
+<p>这是平衡自行车三篇教程中的第二篇，这一篇对平衡自行车的算法进行理论分析，包括模型分析、姿态检测方法、PID算法，控制算法。</p>
+
+<!-- more -->
+
+<h1 id="section">一、模型分析</h1>
+
+<h2 id="section-1">1、倒立摆</h2>
+
+<p>很显然我们知道自行车在左右方向上不稳定，这是一个很常见的物理模型——倒立摆。</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/1.jpg" alt="1.jpg" /></p>
+
+<p>顾名思义，倒立摆的意思就是倒着的摆，比如一个倒着的杆，</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/2.jpg" alt="2.jpg" /></p>
+
+<p>倒立摆的特性：不稳定，只要偏离平衡位置，就会有一个力(重力的分力)使系统更加偏离平衡位置，这样偏差就会越来越大。</p>
+
+<p>一般倒立的杆在前后左右方向都有可能倒下，在二维的平面上不稳定；而自行车仅在左右方向上可能倒下，是一维的倒立摆，这要简单一些。</p>
+
+<p>以下是几个生活中常见的倒立摆例子：</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/3.jpg" alt="3.jpg" /></p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/4.jpg" alt="4.jpg" /></p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/5.jpg" alt="5.jpg" /></p>
+
+<h2 id="section-2">2、自行车的平衡控制</h2>
+
+<p>自行车属于倒立摆模型，倒立摆是不稳定的，那么倒立摆应该如何控制才能平衡呢？</p>
+
+<p>我们把问题拆分一下：</p>
+
+<ol>
+  <li>怎样的状态才叫平衡？</li>
+  <li>我们能控制的是什么？</li>
+  <li>如何控制才能稳定平衡？</li>
+</ol>
+
+<h3 id="section-3">2.1 怎样的状态才叫平衡</h3>
+<p>我们要对”平衡”进行数学描述，所谓的平衡其实就是倒立摆的倾角稳定在一个我们想要的值。</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/2.jpg" alt="2.jpg" /></p>
+
+<p>通常我们想要平衡在θ = 0处。</p>
+
+<h3 id="section-4">2.2 我们能控制的是什么</h3>
+<p>对于倒立摆模型，通常我们能控制的是底端的 力 或 速度 或 位置，不同的控制量对应的控制方法不同。</p>
+
+<p>对于自行车来说，它的控制方式不像通常的倒立摆那样直接控制底部，而是间接地通过转向来控制，当自行车以一个固定的速度前进时，自行车把手以一定角度进行转向(设为α)，自行车会做相应半径的圆周运动，产生相应大小的”离心力”。</p>
+
+<p>在自行车这个费惯性系里看来，只要对把手进行一定角度的转向(α)，就会产生一个相应大小的横向力:</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/6.jpeg" alt="6.jpg" /></p>
+
+<p>这就是我们进行平衡控制时的实际控制量——把手转角α，只要控制它就能控制回复力。</p>
+
+<h3 id="section-5">2.3 如何控制才能平衡</h3>
+<p>上面我们已经能够通过转向产生回复力，这个回复力可以把倒立摆”掰回”平衡位置，有往回掰的回复力就能稳定平衡了吗？<br />
+并不是这样，我们再来回顾一下中学物理: <br />
+过阻尼状态的摆会以较慢的速度回到平衡位置；<br />
+欠阻尼状态的摆会很快回到平衡位置，但会在平衡位置来回摆动；<br />
+临界阻尼状态的摆会以最快的速度稳定在平衡位置。</p>
+
+<p>结合到实际的自行车平衡中就是：<br />
+如果回复力不够大，就无法矫正，或者矫正速度很慢，这会导致系统不稳定；<br />
+如果回复力过大，就会导致矫正过度，这也会导致系统不稳定；
+我们最希望的状态就是回复力刚刚好，刚好使倒立摆快速回到平衡位置，又不至于矫正过度。</p>
+
+<p>这是一个复杂的数学计算过程，回复力大小会在系统运行时不断地计算(本平衡自行车是20ms计算一次)，用到的是PID算法，会在后面详细介绍。</p>
+
+<h2 id="section-6">3、自行车平衡需要解决的基本问题</h2>
+
+<ol>
+  <li>获取左右方向倾角θ</li>
+  <li>以合适的算法控制转角α使系统稳定平衡</li>
+</ol>
+
+<p>这将会在下面详细讨论。</p>
+
+<h1 id="section-7">二、姿态检测</h1>
+
+<h2 id="section-8">1、检测的是什么</h2>
+<p>检测的是自行车左右倾斜的角度。</p>
+
+<h2 id="section-9">2、怎么检测</h2>
+<p>用一个叫gy521的模块，里面用的是mpu6050芯片，带有陀螺仪和加速度传感器。
+gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
+注意哦，我们不能直接得到倾斜角度，我们的到的是各个方向的加速度和角速度，需要进行一些复杂的计算才能得到正确的倾斜角度。</p>
+
+<p>常用的算法有互补平衡滤波、卡尔曼滤波，由于篇幅和精力问题这部分暂不介绍，网上有大量资源，也可以查看本工程源码，以后有时间再写详细教程。</p>
+
+<h1 id="pid">三、PID算法</h1>
+
+<p>前面已经分析了，我们通过控制把手转角来控制回复力，我们需要实时计算一个合适的回复力使系统稳定平衡。</p>
+
+<p>这部分内容也不做详细介绍了，网上有大量资源，也可以查看本工程源码。</p>
+
+<p>在这里引用<a href="http://www.diy-robots.com/">动力老男孩</a>举的一个例子，帮大家简单理解一下需要解决的问题，以及PID算法是如何解决的。</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/7.jpg" alt="7.jpg" /></p>
+
+<p>有一个小球在光滑球面上，小球的位置是x，光滑球面顶端在L处，我们可以控制小球水平方向力F，现在要求让小球稳定平衡在x0处。</p>
+
+<p>先看简单情况 x0=L，此时偏差为 x-L，</p>
+
+<p>我们给出一个比例项(P) F = kp*(L-x)，这样就会有一个回复力，当偏差存在时就会有一个力把小球拉回L处。<br />
+这存在的问题是，小球接近L时是会有一定速度的，小球越来越接近L，此时的力仍然是在把小球往L处拉，这会导致小球到达L时(我们想要的位置)速度很大，小球无法立刻停下来，而是会冲过去。<br />
+这样小球就会在L附近来回摆动，这是不稳定的状态，属于欠阻尼状态。</p>
+
+<p>为了解决上述问题需要加一个微分项(D) F = kd*dx/dt = kd*v，所谓”微分”指的是位置x对时间的微分，说白了就是速度。<br />
+意思就是当速度越大，就产生一个反向的力使速度减小，这样就可以防止出现上面小球冲过去的。<br />
+可以认为这一项具有”预测”功能，预测小球下一时刻的状态从而提前做出反应(预测小球将要到达L处，提前减速)，<br />
+也可以认为这一项具有阻尼作用，相当于系统中有一个和速度成比例的阻尼力。<br />
+这个”阻尼力”调得过小会导致欠阻尼状态，调得过大会导致过阻尼状态。</p>
+
+<p>积分项此时可以不用，积分项是当平衡位置x0不等于L时使用的，<br />
+当平衡位置不是L处，那么当小球静止在平衡位置x0时，由于在坡道上会有一个恒定的横向偏移力，此时比例调节作用为0(Δx=0)，微分调节作用也是0(v=0)，所以小球在该处无法平衡，会在更远离平衡位置处达到平衡，那么就会有一个长时间存在的偏差。<br />
+积分作用就是检测偏差进行累积，对于上面这个长时间存在的偏差进行积分(累积叠加)，使系统在长时间范围可以稳定在要求的平衡位置。</p>
+
+<h1 id="section-10">四、广告</h1>
+
+<p>老婆做毕业设计，给我下了死命令，一定要找300个程序员研究一下，请各位同行做个调查问卷，可扫描下面二维码或者直接点击此链接：<a href="https://www.wjx.cn/jq/17710478.aspx">https://www.wjx.cn/jq/17710478.aspx</a>，多谢！</p>
+
+<p><img src="http://nicekwell.net/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/ad.jpg" alt="ad.jpg" /></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[自行车平衡原理]]></title>
@@ -2244,282 +2405,6 @@ full desktop版本有图形界面；Minimal版本没有图形界面，是精简�
 
 <p>  找一个干净的地方，用 <strong>repo init -u [服务端manifest.git地址]</strong>，<br />
   然后 <strong>repo sync</strong>，此时应该可以同步所有git子工程。</p>
-
-<hr />
-
-<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[树莓派-内核开发-说明 下载代码 编译 替换内核]]></title>
-    <link href="http://nicekwell.net/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he.html"/>
-    <updated>2017-11-08T19:21:11+08:00</updated>
-    <id>http://nicekwell.net/blog/20171108/shu-mei-pai-nei-he-kai-fa-shuo-ming-xia-zai-dai-ma-bian-yi-ti-huan-nei-he</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">一、概述</a></li>
-  <li><a href="#ubuntu" id="markdown-toc-ubuntu">二、ubuntu里交叉编译</a>    <ul>
-      <li><a href="#section-1" id="markdown-toc-section-1">1、获取交叉编译工具和源码</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">2、配置编译环境变量</a>        <ul>
-          <li><a href="#section-3" id="markdown-toc-section-3">2.1 手动配置环境变量</a></li>
-          <li><a href="#section-4" id="markdown-toc-section-4">2.2 自动配置环境变量</a></li>
-        </ul>
-      </li>
-      <li><a href="#config" id="markdown-toc-config">3、配置config</a>        <ul>
-          <li><a href="#config-1" id="markdown-toc-config-1">3.1 使用源码里自带的config</a></li>
-          <li><a href="#config-2" id="markdown-toc-config-2">3.2 获取当前树莓派的config</a></li>
-        </ul>
-      </li>
-      <li><a href="#section-5" id="markdown-toc-section-5">4、编译</a></li>
-      <li><a href="#sddirectly-sd" id="markdown-toc-sddirectly-sd">5、挂载树莓派sd卡，并安装编译出的DIRECTLY 到sd卡</a></li>
-    </ul>
-  </li>
-  <li><a href="#section-6" id="markdown-toc-section-6">三、树莓派本地编译</a>    <ul>
-      <li><a href="#section-7" id="markdown-toc-section-7">1、获取源码</a></li>
-      <li><a href="#section-8" id="markdown-toc-section-8">2、配置编译环境</a></li>
-      <li><a href="#config-3" id="markdown-toc-config-3">3、配置config</a></li>
-      <li><a href="#section-9" id="markdown-toc-section-9">4、编译</a></li>
-      <li><a href="#section-10" id="markdown-toc-section-10">5、更新系统</a></li>
-    </ul>
-  </li>
-</ul>
-<p>  </p>
-
-<p>树莓派运行linux系统，内核代码开源，我们可以自己修改内核代码、编写驱动。</p>
-
-<p>本文介绍如何获取linux内核代码，并完成编译、内核替换。</p>
-
-<!-- more -->
-
-<h1 id="section">一、概述</h1>
-
-<p>树莓派的github主页：<a href="https://github.com/raspberrypi">https://github.com/raspberrypi</a>，里面包含了linux源码、交叉编译工具链等内容。</p>
-
-<p>对于我们要用到的有两个仓库：</p>
-
-<p><a href="https://github.com/raspberrypi/linux">https://github.com/raspberrypi/linux</a> 内核源码</p>
-
-<p><a href="https://github.com/raspberrypi/tools">https://github.com/raspberrypi/tools</a> 交叉编译工具链（仅在交叉编译时用到）</p>
-
-<p>注：<br />
-1、树莓派里安装的系统镜像版本要和kernel代码对应。因为树莓派系统是在不断开发和升级的，如果你的树莓派使用的是某个时间的系统镜像，那么最好也使用当时的kernel代码。<br />
-2、关于内核编译方法，官网有很详细的介绍：<a href="https://www.raspberrypi.org/documentation/linux/kernel/building.md">https://www.raspberrypi.org/documentation/linux/kernel/building.md</a>，这里算是翻译和补充。<br />
-3、以下编译过程在树莓派1和树莓派3B上测试ok。</p>
-
-<h1 id="ubuntu">二、ubuntu里交叉编译</h1>
-
-<h2 id="section-1">1、获取交叉编译工具和源码</h2>
-
-<p>源码：<strong>git clone git@github.com:raspberrypi/linux</strong></p>
-
-<p>交叉编译工具：<strong>git clone git@github.com:raspberrypi/tools</strong></p>
-
-<h2 id="section-2">2、配置编译环境变量</h2>
-
-<h3 id="section-3">2.1 手动配置环境变量</h3>
-
-<p>编译工具下载后，在64位ubuntu上编译我们需要的编译工具bin文件在：tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin 目录下，将此目录添加到环境变量PATH中，添加方法：</p>
-
-<p><strong>PATH=$PATH:/home/nicek/githubProjects/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin</strong></p>
-
-<p>如果是在32位系统中编译则要选择32位的交叉编译工具。</p>
-
-<p>配置完成之后可以用编译工具命令查看到版本号：<br />
-arm-linux-gnueabihf-gcc -v</p>
-
-<p>之后，所有的make命令都要指明一些环境变量：<br />
-<strong>ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7</strong></p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>ARCH=arm</td>
-      <td>指明当前要编译arm，虽然树莓派是64位的，这里仍然选择arm，而不是arm64。</td>
-    </tr>
-    <tr>
-      <td>CROSS_COMPILE</td>
-      <td>指明交叉工具链名称。</td>
-    </tr>
-    <tr>
-      <td>KERNEL</td>
-      <td>指明kernel类型，<strong>树莓派1设置为kernel，树莓派2、3设置为kernel7。</strong></td>
-    </tr>
-  </tbody>
-</table>
-
-<p>每次make都需要指明这些环境变量，如：<br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make menuconfig<br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make -j4 zImage</p>
-
-<h3 id="section-4">2.2 自动配置环境变量</h3>
-
-<p>上面这些环境变量每次命令都要写很麻烦，可以通过export一次设置：<br />
- export PATH=$PATH:/home/nicek/githubProjects/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7<br />
-之后在本终端里执行的所有命令都带有这些环境变量信息。</p>
-
-<p>此 export 命令可以写成一个脚本，然后在编译前在终端里source一下这个脚本即可设置好所有的环境变量。就像android编译前也要先source一下envsetup.sh一样。</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#!/bin/bash</span>
-</span><span class="line"><span class="nv">DIR</span><span class="o">=</span><span class="s2">&quot;$( cd &quot;</span><span class="k">$(</span> dirname <span class="s2">&quot;${BASH_SOURCE[0]}&quot;</span> <span class="k">)</span><span class="s2">&quot; &amp;&amp; pwd )&quot;</span>
-</span><span class="line"><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;$PATH:$DIR/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/&quot;</span>
-</span><span class="line"><span class="nb">export </span><span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-linux-gnueabihf- <span class="nv">KERNEL</span><span class="o">=</span>kernel7
-</span></code></pre></td></tr></table></div></figure>
-
-<p>上述命令中的路径可能和你实际不同，注意修改。</p>
-
-<p>export环境变量后，在本终端里的后续命令都可以不用再指明这些环境变量，如：<br />
-配置之前的命令：ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make menuconfig<br />
-配置之后的命令：make menuconfig</p>
-
-<h2 id="config">3、配置config</h2>
-
-<p>linux源码中有很多工程：<br />
-树莓派1的工程是<strong>bcmrpi_defconfig</strong>；<br />
-树莓派2、3的工程是<strong>bcm2709_defconfig</strong>。</p>
-
-<h3 id="config-1">3.1 使用源码里自带的config</h3>
-
-<p>ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make bcm2709_defconfig</p>
-
-<p>此命令功能是获取bcm2709_defconfig的配置到 .config里。<br />
-我们可以直接用工程里的配置，但这样的话可能会丢失原来使用的树莓派的配置，这里提供一个方法可以获取当前正在使用的树莓派的config。</p>
-
-<h3 id="config-2">3.2 获取当前树莓派的config</h3>
-
-<p>已经开机的树莓派上会有这个节点：<strong>/proc/config.gz</strong>，从这个节点可以获取本树莓派的config。<br />
-如果没有这个节点的话则需要先加载模块：<strong>sudo modprobe configs</strong></p>
-
-<p>把 config.gz 内容复制到要编译的电脑上：<br />
-scp pi@[ip]:/proc/config.gz .</p>
-
-<p>解压，保存为.confg文件。<br />
-zcat config.gz &gt; .config<br />
-注：必须在linux环境下解压，在mac下会乱码。</p>
-
-<p>把此config文件复制到linux源码的根目录。</p>
-
-<h2 id="section-5">4、编译</h2>
-
-<p>安装必要的库：<br />
-sudo apt-get install bc<br />
-sudo apt-get install libncurses5-dev libncursesw5-dev<br />
-sudo apt-get install zlib1g:i386<br />
-sudo apt-get install libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5</p>
-
-<p><strong>1、执行menuconfig</strong><br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 <strong>make menuconfig</strong><br />
-如果没什么改的就不用执行这一步。</p>
-
-<p><strong>2、编译</strong><br />
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 <strong>make -j4 zImage modules dtbs</strong> 2&gt;&amp;1 | tee build.log<br />
-以n进程编译。不指明几进程的话则默认以单进程编译。</p>
-
-<p><strong>3、打包zImage文件</strong><br />
-直接用linux源码包里的工具：<br />
-./scripts/mkknlimg arch/arm/boot/zImage ./kernel_new.img<br />
-在本目录生成一个kernel_new.img文件，这个文件就是要放到sd卡中的文件。<br />
-注：网上很多地方说的用 tools/mkimage/imagetool-uncompressd.py 的方法不行！！</p>
-
-<h2 id="sddirectly-sd">5、挂载树莓派sd卡，并安装编译出的DIRECTLY 到sd卡</h2>
-
-<p>把树莓派的sd卡插入ubuntu系统电脑，树莓派的sd卡有两个分区：<br />
-一个fat分区，是boot相关的内容，kernel的img文件就放在这个分区里；<br />
-一个是ext4分区，也就是系统的根目录分区。</p>
-
-<p>我们生成的文件涉及到这两个分区的内容，一般插入ubuntu后会自动挂载，fat分区可以不用root权限操作，ext4分区需要root权限操作。<br />
-两个分区具体挂载在什么地方可以自己决定，以下用[fat]表示boot挂载的路径，[ext4]表示ext4挂载的路径。</p>
-
-<p><strong>1、安装modules</strong><br />
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KERNEL=kernel7 make INSTALL_MOD_PATH=[ext4] modules_install<br />
-操作ext4分区，需要root权限。</p>
-
-<p><strong>2、更新 kernel.img 文件</strong><br />
-前面已经用 mkknlimg 工具打包了kernel_new.img文件了，把它复制到boot分区并配置使用即可：<br />
-cp kernel_new.img [fat]/<br />
-编辑 [fat]/config.txt 文件，在最后加入一行：<br />
-kernel=kernel_new.img</p>
-
-<p><strong>3、复制其他相关文件</strong><br />
-cp arch/arm/boot/dts/<em>.dtb [fat]/<br />
-cp arch/arm/boot/dts/overlays/</em>.dtb* [fat]/overlays/<br />
-cp arch/arm/boot/dts/overlays/README [fat]/overlays/</p>
-
-<p>更新完成后插回树莓派即可开机，开机后可以用 uname -a 命令查看kernel信息已经改变。</p>
-
-<h1 id="section-6">三、树莓派本地编译</h1>
-
-<p>树莓派上本地编译和上面交叉编译原理基本相同，由于是本地编译，在编译工具和环境变量配置方面还简单一些。<br />
-树莓派上编一次内核花了将近2小时。</p>
-
-<h2 id="section-7">1、获取源码</h2>
-
-<p>git clone git@github.com:raspberrypi/linux</p>
-
-<h2 id="section-8">2、配置编译环境</h2>
-
-<p>在ubuntu里交叉编译时需要配置的环境变量有：</p>
-
-<ul>
-  <li>PATH: 添加交叉工具链的目录</li>
-  <li>ARCH: 配置成arm</li>
-  <li>CROSS_COMPILE: 配置成ubuntu上使用的交叉工具链arm-linux-gnueabihf- KERNEL=kernel7</li>
-  <li>KERNEL: 配置成kernel7</li>
-</ul>
-
-<p>而在树莓派本地编译：<br />
-关于交叉工具链，本身的编译工具就可以编译给自己使用，所以不用配置；<br />
-只需要配置 KERNEL=kernel7 即可。</p>
-
-<p>和上面相同，可以用 export KERNEL=kernel7，一次设置之后此终端里所有命令都带有此环境变量。<br />
-也可以更进一步写成脚本，不过这里这一行命令很简单，不写脚本也可以。</p>
-
-<h2 id="config-3">3、配置config</h2>
-<p>和上面一样，<br />
-树莓派1使用的是 <strong>bcmrpi_defconfig</strong>，<br />
-树莓派2、3使用的是 <strong>bcm2709_defconfig</strong>。<br />
-例：KERNEL=kernel7 make bcm2709_defconfig</p>
-
-<p>如果要使用树莓派自带的config的话：<br />
-<strong>sudo modprobe configs</strong>    # 加载模块<br />
-<strong>zcat config.gz &gt; .config</strong>      # 获取配置</p>
-
-<h2 id="section-9">4、编译</h2>
-<p>安装必要的库：<br />
-sudo apt-get install bc<br />
-sudo apt-get install libncurses5-dev libncursesw5-dev<br />
-sudo apt-get install zlib1g<br />
-sudo apt-get install libc6</p>
-
-<p>1、执行menuconfig<br />
-<strong>KERNEL=kernel7 make menuconfig</strong><br />
-没什么要改的话就不用执行这一步。</p>
-
-<p>2、编译<br />
-<strong>KERNEL=kernel7 make -j4 zImage modules dtbs 2&gt;&amp;1 | tee build.log</strong><br />
-以n进程编译。不指明几进程的话则默认以单进程编译。</p>
-
-<p>3、打包zImage文件<br />
-直接用linux源码包里的工具：<br />
-<strong>./scripts/mkknlimg arch/arm/boot/zImage ./kernel_new.img</strong><br />
-在本目录生成一个kernel_new.img文件，这个文件就是要放到sd卡中的文件。</p>
-
-<h2 id="section-10">5、更新系统</h2>
-
-<p>1、安装模块<br />
-<strong>sudo make modules_install</strong></p>
-
-<p>2、复制dtb文件<br />
-<strong>sudo cp arch/arm/boot/dts/<em>.dtb /boot/
-sudo cp arch/arm/boot/dts/overlays/</em>.dtb* /boot/overlays/
-sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/</strong></p>
-
-<p>3、更新kernel.img文件<br />
-<strong>sudo cp arch/arm/boot/zImage /boot/$KERNEL.img</strong></p>
 
 <hr />
 

@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>树莓派-概述和使用-配置和使用 - 生命不息 折腾不止</title>
+  <title>平衡自行车-理论篇 - 生命不息 折腾不止</title>
   <meta name="author" content="nicekwell">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html">
+  <link rel="canonical" href="http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="生命不息 折腾不止" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html">
-  <meta property="og:title" content="树莓派-概述和使用-配置和使用 - 生命不息 折腾不止">
+  <meta property="og:url" content="http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html">
+  <meta property="og:title" content="平衡自行车-理论篇 - 生命不息 折腾不止">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -165,13 +165,13 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-15T19:52:47+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月15日</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2018-01-21T21:52:31+08:00"  data-updated="true" itemprop="datePublished dateCreated">2018年1月21日</time>
         
       </p>
     
     
     <h1 class="entry-title" itemprop="name headline">
-        树莓派-概述和使用-配置和使用
+        平衡自行车-理论篇
         
     </h1>
     
@@ -179,100 +179,153 @@
 
 
 <div class="entry-content clearfix" itemprop="articleBody description"><ul id="markdown-toc">
-  <li><a href="#ssh" id="markdown-toc-ssh">打开ssh</a></li>
-  <li><a href="#section" id="markdown-toc-section">树莓派配置命令</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">默认用户</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">修改主机名</a></li>
-  <li><a href="#sd" id="markdown-toc-sd">扩展sd卡空间</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">更新源</a></li>
-  <li><a href="#section-4" id="markdown-toc-section-4">设置时区</a></li>
-  <li><a href="#section-5" id="markdown-toc-section-5">支持中文</a></li>
+  <li><a href="#section" id="markdown-toc-section">一、模型分析</a>    <ul>
+      <li><a href="#section-1" id="markdown-toc-section-1">1、倒立摆</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">2、自行车的平衡控制</a>        <ul>
+          <li><a href="#section-3" id="markdown-toc-section-3">2.1 怎样的状态才叫平衡</a></li>
+          <li><a href="#section-4" id="markdown-toc-section-4">2.2 我们能控制的是什么</a></li>
+          <li><a href="#section-5" id="markdown-toc-section-5">2.3 如何控制才能平衡</a></li>
+        </ul>
+      </li>
+      <li><a href="#section-6" id="markdown-toc-section-6">3、自行车平衡需要解决的基本问题</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-7" id="markdown-toc-section-7">二、姿态检测</a>    <ul>
+      <li><a href="#section-8" id="markdown-toc-section-8">1、检测的是什么</a></li>
+      <li><a href="#section-9" id="markdown-toc-section-9">2、怎么检测</a></li>
+    </ul>
+  </li>
+  <li><a href="#pid" id="markdown-toc-pid">三、PID算法</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">四、广告</a></li>
 </ul>
 <p>  </p>
 
-<p>本文介绍树莓派的常用设置，经常是一些开机后必须设置的项目。</p>
+<p>这是平衡自行车三篇教程中的第二篇，这一篇对平衡自行车的算法进行理论分析，包括模型分析、姿态检测方法、PID算法，控制算法。</p>
 
 <!-- more -->
 
-<h3 id="ssh">打开ssh</h3>
+<h1 id="section">一、模型分析</h1>
 
-<p>第一次开机网络都没配置，这一步肯定要连接显示器才能配置的。</p>
+<h2 id="section-1">1、倒立摆</h2>
 
-<p>从2016.11.25开始，树莓派默认关闭ssh，导致不能远程登陆，需要手动开启ssh功能，方法是在 /boot/ 分区下建立一个名为“ssh的空文件。<br />
-方法1：在树莓派上直接打开ssh：<strong>sudo touch /boot/ssh</strong><br />
-方法2：在电脑上打开ssh：插入sd卡后有个boot分区，在里面创建一个名为“ssh”的文件<br />
-树莓派重启后会删掉此文件，但已经可以使用ssh登陆了。</p>
+<p>很显然我们知道自行车在左右方向上不稳定，这是一个很常见的物理模型——倒立摆。</p>
 
-<h3 id="section">树莓派配置命令</h3>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/1.jpg" alt="1.jpg" /></p>
 
-<p>打开命令行，用 <strong>sudo raspi-config</strong> 命令可开启树莓派配置程序。</p>
+<p>顾名思义，倒立摆的意思就是倒着的摆，比如一个倒着的杆，</p>
 
-<h3 id="section-1">默认用户</h3>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/2.jpg" alt="2.jpg" /></p>
 
-<p>pi@raspberrypi，密码 raspberry。</p>
+<p>倒立摆的特性：不稳定，只要偏离平衡位置，就会有一个力(重力的分力)使系统更加偏离平衡位置，这样偏差就会越来越大。</p>
 
-<h3 id="section-2">修改主机名</h3>
+<p>一般倒立的杆在前后左右方向都有可能倒下，在二维的平面上不稳定；而自行车仅在左右方向上可能倒下，是一维的倒立摆，这要简单一些。</p>
 
-<p>多个树莓派分不清，可以修改主机名称区分。<br />
-sudo raspi-config –&gt; 9 Advanced Options –&gt; A2 Hostname<br />
-2017年stretch新版设置路径是：<br />
-sudo raspi-config –&gt;2 Hostname</p>
+<p>以下是几个生活中常见的倒立摆例子：</p>
 
-<h3 id="sd">扩展sd卡空间</h3>
-<p>2017年stretch已经不需要此步骤了，老的版本需要执行以下操作后才能使用全部sd卡空间。</p>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/3.jpg" alt="3.jpg" /></p>
 
-<p>安装好系统后默认的系统空间很小，几乎仅能放下系统，而sd卡有很多空间没有用到：
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/1.png" alt="1.png" /><br />
-使用 raspi-config 的“Expand Filesystem”功能可以把sd卡的全部空间用起：
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/2.png" alt="2.png" /><br />
-此修改需要重启树莓派，重启之后：
-<img src="/images/raspberrypi/2017-11-15-shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong/3.png" alt="3.png" /></p>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/4.jpg" alt="4.jpg" /></p>
 
-<h3 id="section-3">更新源</h3>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/5.jpg" alt="5.jpg" /></p>
 
-<p>使用不同的 raspbian 版本，对应的更新源是不一样的，可以从网上查找。<br />
-stretch版本的源：</p>
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi  
-</span><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi</span></code></pre></td></tr></table></div></figure>
+<h2 id="section-2">2、自行车的平衡控制</h2>
 
-<p>修改方法和ubuntu、debian相同：<br />
-1、修改 /etc/source.list 文件<br />
-2、sudo apt-get update</p>
+<p>自行车属于倒立摆模型，倒立摆是不稳定的，那么倒立摆应该如何控制才能平衡呢？</p>
 
-<h3 id="section-4">设置时区</h3>
+<p>我们把问题拆分一下：</p>
 
-<p>网上找到的linux下通用设置方法 tzselect 设置无效，最后用 raspi-config 设置完成：<br />
-sudo raspi-config –&gt; 5 Internationalisation … –&gt; I2 Change Timezone –&gt; Asia –&gt; ShangHai –&gt; OK<br />
-2017年stretch版本设置路径：<br />
-sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&gt; Asia –&gt; ShangHai –&gt; OK</p>
+<ol>
+  <li>怎样的状态才叫平衡？</li>
+  <li>我们能控制的是什么？</li>
+  <li>如何控制才能稳定平衡？</li>
+</ol>
 
-<h3 id="section-5">支持中文</h3>
+<h3 id="section-3">2.1 怎样的状态才叫平衡</h3>
+<p>我们要对”平衡”进行数学描述，所谓的平衡其实就是倒立摆的倾角稳定在一个我们想要的值。</p>
 
-<p>2017年stretch版本已经不需要设置了。</p>
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/2.jpg" alt="2.jpg" /></p>
 
-<p>默认的命令行不支持中文，git log查看提交记录都不能显示中文。修改方法：</p>
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">pi@raspberrypi:~$ sudo apt-get install ttf-wqy-zenhei  #安装字体
-</span><span class="line">pi@raspberrypi:~$ sudo fc-cache       #刷新字库缓存
-</span><span class="line">pi@raspberrypi:~$ sudo dpkg-reconfigure locales        #字体配置</span></code></pre></td></tr></table></div></figure>
-<p>然后用上下方向键选中以下5项：</p>
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">en-GB.UTF-8 UTF-8
-</span><span class="line">zh_CN.GB2312
-</span><span class="line">zh.CN.GB18030 GB18030
-</span><span class="line">zh_CN.GBK GBK
-</span><span class="line">zh_CN.UTF-8 UTF-8</span></code></pre></td></tr></table></div></figure>
-<p>选中后回车，会让你选择默认的字体，<br />
-  如果想要系统语言是中文，则选择“zh_CN.UTF-8 UTF-8 ”回车<br />
-  如果想要系统语言是英文，则选择“en_GB.UTF-8”回车。</p>
+<p>通常我们想要平衡在θ = 0处。</p>
+
+<h3 id="section-4">2.2 我们能控制的是什么</h3>
+<p>对于倒立摆模型，通常我们能控制的是底端的 力 或 速度 或 位置，不同的控制量对应的控制方法不同。</p>
+
+<p>对于自行车来说，它的控制方式不像通常的倒立摆那样直接控制底部，而是间接地通过转向来控制，当自行车以一个固定的速度前进时，自行车把手以一定角度进行转向(设为α)，自行车会做相应半径的圆周运动，产生相应大小的”离心力”。</p>
+
+<p>在自行车这个费惯性系里看来，只要对把手进行一定角度的转向(α)，就会产生一个相应大小的横向力:</p>
+
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/6.jpeg" alt="6.jpg" /></p>
+
+<p>这就是我们进行平衡控制时的实际控制量——把手转角α，只要控制它就能控制回复力。</p>
+
+<h3 id="section-5">2.3 如何控制才能平衡</h3>
+<p>上面我们已经能够通过转向产生回复力，这个回复力可以把倒立摆”掰回”平衡位置，有往回掰的回复力就能稳定平衡了吗？<br />
+并不是这样，我们再来回顾一下中学物理: <br />
+过阻尼状态的摆会以较慢的速度回到平衡位置；<br />
+欠阻尼状态的摆会很快回到平衡位置，但会在平衡位置来回摆动；<br />
+临界阻尼状态的摆会以最快的速度稳定在平衡位置。</p>
+
+<p>结合到实际的自行车平衡中就是：<br />
+如果回复力不够大，就无法矫正，或者矫正速度很慢，这会导致系统不稳定；<br />
+如果回复力过大，就会导致矫正过度，这也会导致系统不稳定；
+我们最希望的状态就是回复力刚刚好，刚好使倒立摆快速回到平衡位置，又不至于矫正过度。</p>
+
+<p>这是一个复杂的数学计算过程，回复力大小会在系统运行时不断地计算(本平衡自行车是20ms计算一次)，用到的是PID算法，会在后面详细介绍。</p>
+
+<h2 id="section-6">3、自行车平衡需要解决的基本问题</h2>
+
+<ol>
+  <li>获取左右方向倾角θ</li>
+  <li>以合适的算法控制转角α使系统稳定平衡</li>
+</ol>
+
+<p>这将会在下面详细讨论。</p>
+
+<h1 id="section-7">二、姿态检测</h1>
+
+<h2 id="section-8">1、检测的是什么</h2>
+<p>检测的是自行车左右倾斜的角度。</p>
+
+<h2 id="section-9">2、怎么检测</h2>
+<p>用一个叫gy521的模块，里面用的是mpu6050芯片，带有陀螺仪和加速度传感器。
+gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
+注意哦，我们不能直接得到倾斜角度，我们的到的是各个方向的加速度和角速度，需要进行一些复杂的计算才能得到正确的倾斜角度。</p>
+
+<p>常用的算法有互补平衡滤波、卡尔曼滤波，由于篇幅和精力问题这部分暂不介绍，网上有大量资源，也可以查看本工程源码，以后有时间再写详细教程。</p>
+
+<h1 id="pid">三、PID算法</h1>
+
+<p>前面已经分析了，我们通过控制把手转角来控制回复力，我们需要实时计算一个合适的回复力使系统稳定平衡。</p>
+
+<p>这部分内容也不做详细介绍了，网上有大量资源，也可以查看本工程源码。</p>
+
+<p>在这里引用<a href="http://www.diy-robots.com/">动力老男孩</a>举的一个例子，帮大家简单理解一下需要解决的问题，以及PID算法是如何解决的。</p>
+
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/7.jpg" alt="7.jpg" /></p>
+
+<p>有一个小球在光滑球面上，小球的位置是x，光滑球面顶端在L处，我们可以控制小球水平方向力F，现在要求让小球稳定平衡在x0处。</p>
+
+<p>先看简单情况 x0=L，此时偏差为 x-L，</p>
+
+<p>我们给出一个比例项(P) F = kp*(L-x)，这样就会有一个回复力，当偏差存在时就会有一个力把小球拉回L处。<br />
+这存在的问题是，小球接近L时是会有一定速度的，小球越来越接近L，此时的力仍然是在把小球往L处拉，这会导致小球到达L时(我们想要的位置)速度很大，小球无法立刻停下来，而是会冲过去。<br />
+这样小球就会在L附近来回摆动，这是不稳定的状态，属于欠阻尼状态。</p>
+
+<p>为了解决上述问题需要加一个微分项(D) F = kd*dx/dt = kd*v，所谓”微分”指的是位置x对时间的微分，说白了就是速度。<br />
+意思就是当速度越大，就产生一个反向的力使速度减小，这样就可以防止出现上面小球冲过去的。<br />
+可以认为这一项具有”预测”功能，预测小球下一时刻的状态从而提前做出反应(预测小球将要到达L处，提前减速)，<br />
+也可以认为这一项具有阻尼作用，相当于系统中有一个和速度成比例的阻尼力。<br />
+这个”阻尼力”调得过小会导致欠阻尼状态，调得过大会导致过阻尼状态。</p>
+
+<p>积分项此时可以不用，积分项是当平衡位置x0不等于L时使用的，<br />
+当平衡位置不是L处，那么当小球静止在平衡位置x0时，由于在坡道上会有一个恒定的横向偏移力，此时比例调节作用为0(Δx=0)，微分调节作用也是0(v=0)，所以小球在该处无法平衡，会在更远离平衡位置处达到平衡，那么就会有一个长时间存在的偏差。<br />
+积分作用就是检测偏差进行累积，对于上面这个长时间存在的偏差进行积分(累积叠加)，使系统在长时间范围可以稳定在要求的平衡位置。</p>
+
+<h1 id="section-10">四、广告</h1>
+
+<p>老婆做毕业设计，给我下了死命令，一定要找300个程序员研究一下，请各位同行做个调查问卷，可扫描下面二维码或者直接点击此链接：<a href="https://www.wjx.cn/jq/17710478.aspx">https://www.wjx.cn/jq/17710478.aspx</a>，多谢！</p>
+
+<p><img src="/images/diy/2018-01-21-ping-heng-zi-xing-che-li-lun-pian/ad.jpg" alt="ad.jpg" /></p>
 
 <hr />
 
@@ -301,13 +354,13 @@ sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2017-11-15T19:52:47+08:00"  data-updated="true" itemprop="datePublished dateCreated">2017年11月15日</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2018-01-21T21:52:31+08:00"  data-updated="true" itemprop="datePublished dateCreated">2018年1月21日</time>
           
 
 <span class="glyphicon glyphicon-tags"></span>&nbsp;
 <span class="categories">
   
-    <a class='category' href='/blog/categories/shu-mei-pai/'>树莓派</a>
+    <a class='category' href='/blog/categories/diy/'>diy</a>, <a class='category' href='/blog/categories/ping-heng-de-shi-jie/'>平衡的世界</a>
   
 </span>
 
@@ -324,10 +377,8 @@ sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&
         
           <ul class="meta text-muted pager">
             
-            <li class="previous"><a href="/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-xia-zai-he-an-zhuang.html" title="Previous Post: 树莓派-概述和使用-下载和安装">&laquo; 树莓派-概述和使用-下载和安装</a></li>
+            <li class="previous"><a href="/blog/20180118/zi-xing-che-ping-heng-yuan-li.html" title="Previous Post: 自行车平衡原理">&laquo; 自行车平衡原理</a></li>
             
-            
-            <li class="next"><a href="/blog/20171115/shu-mei-pai-ying-jian-he-gong-neng-ying-jian-he-gong-neng.html" title="Next Post: 树莓派-硬件和功能-硬件和功能">树莓派-硬件和功能-硬件和功能 &raquo;</a></li>
             
           </ul>
         
@@ -366,7 +417,7 @@ sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html">平衡自行车-理论篇</a>
+    <a class="list-group-item active" href="/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html">平衡自行车-理论篇</a>
     
     <a class="list-group-item " href="/blog/20180118/zi-xing-che-ping-heng-yuan-li.html">自行车平衡原理</a>
     
@@ -444,8 +495,8 @@ sudo raspi-config –&gt; 4 Localisation Options –&gt; I2 Change Timezone –&
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html';
-        var disqus_url = 'http://nicekwell.net/blog/20171115/shu-mei-pai-gai-shu-he-shi-yong-pei-zhi-he-shi-yong.html';
+        var disqus_identifier = 'http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html';
+        var disqus_url = 'http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html';
         var disqus_script = 'embed.js';
       
     (function () {
