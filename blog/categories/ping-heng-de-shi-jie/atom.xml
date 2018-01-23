@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 平衡的世界 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/ping-heng-de-shi-jie/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2018-01-23T16:59:37+08:00</updated>
+  <updated>2018-01-23T21:02:17+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -19,15 +19,15 @@
     <updated>2018-01-23T09:20:38+08:00</updated>
     <id>http://nicekwell.net/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian</id>
     <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">材料</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">动力部分</a>    <ul>
+  <li><a href="#section" id="markdown-toc-section">一、材料</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">二、动力部分</a>    <ul>
       <li><a href="#section-2" id="markdown-toc-section-2">传动方式</a></li>
       <li><a href="#section-3" id="markdown-toc-section-3">电机选择</a></li>
       <li><a href="#section-4" id="markdown-toc-section-4">电机供电</a></li>
     </ul>
   </li>
-  <li><a href="#section-5" id="markdown-toc-section-5">转向部分</a></li>
-  <li><a href="#section-6" id="markdown-toc-section-6">电路</a>    <ul>
+  <li><a href="#section-5" id="markdown-toc-section-5">三、转向部分</a></li>
+  <li><a href="#section-6" id="markdown-toc-section-6">四、电路</a>    <ul>
       <li><a href="#section-7" id="markdown-toc-section-7">供电</a></li>
       <li><a href="#section-8" id="markdown-toc-section-8">下载</a></li>
       <li><a href="#gy521" id="markdown-toc-gy521">GY521</a></li>
@@ -36,13 +36,13 @@
       <li><a href="#section-11" id="markdown-toc-section-11">蓝牙模块通信</a></li>
     </ul>
   </li>
-  <li><a href="#section-12" id="markdown-toc-section-12">代码结构</a>    <ul>
+  <li><a href="#section-12" id="markdown-toc-section-12">五、代码结构</a>    <ul>
       <li><a href="#section-13" id="markdown-toc-section-13">驱动</a></li>
       <li><a href="#section-14" id="markdown-toc-section-14">平衡控制</a></li>
       <li><a href="#section-15" id="markdown-toc-section-15">遥控和调试</a></li>
     </ul>
   </li>
-  <li><a href="#section-16" id="markdown-toc-section-16">四、广告</a></li>
+  <li><a href="#section-16" id="markdown-toc-section-16">六、广告</a></li>
 </ul>
 <p>  </p>
 
@@ -53,7 +53,7 @@
 
 <!-- more -->
 
-<h1 id="section">材料</h1>
+<h1 id="section">一、材料</h1>
 
 <p><strong>机械</strong></p>
 
@@ -158,7 +158,7 @@
   </tbody>
 </table>
 
-<h1 id="section-1">动力部分</h1>
+<h1 id="section-1">二、动力部分</h1>
 
 <h3 id="section-2">传动方式</h3>
 <p>如图，我用的是皮带传送的方式，因为比较好实现。</p>
@@ -180,13 +180,13 @@
 
 <p>另外，电机通过三极管受stm32控制，通过控制占空比也可以限制电机输出的功率。</p>
 
-<h1 id="section-5">转向部分</h1>
+<h1 id="section-5">三、转向部分</h1>
 
 <p>转向部分用一个舵机带动把手转动即可。</p>
 
 <p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/3.jpg" alt="3.jpg" /></p>
 
-<h1 id="section-6">电路</h1>
+<h1 id="section-6">四、电路</h1>
 
 <p>在github工程里有详细的引脚连接表 <a href="https://github.com/nicekwell/balance_bike">https://github.com/nicekwell/balance_bike</a>。</p>
 
@@ -281,7 +281,7 @@
 <p>蓝牙模块是用来调试和遥控的，没有它也能跑。建议还是加上这个模块，在调试PID擦数时会非常方便。<br />
 关于调试方面的内容可以参考我写的另一片文章：<a href="/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html">谈一谈单片机开发的几种调试方案</a></p>
 
-<h1 id="section-12">代码结构</h1>
+<h1 id="section-12">五、代码结构</h1>
 
 <p>代码提交在github <a href="https://github.com/nicekwell/balance_bike">https://github.com/nicekwell/balance_bike</a>。</p>
 
@@ -343,7 +343,7 @@
 <p><strong>指令接收</strong><br />
 串口接收到的数据会传给main/control.c，该文件分析串口数据，解释成相应的操作。主要是PID参数调节。</p>
 
-<h1 id="section-16">四、广告</h1>
+<h1 id="section-16">六、广告</h1>
 
 <p>老婆做毕业设计，给我下了死命令，一定要找300个程序员研究一下，请各位同行做个调查问卷，可扫描下面二维码或者直接点击此链接：<a href="https://www.wjx.cn/jq/17710478.aspx">https://www.wjx.cn/jq/17710478.aspx</a>，多谢！</p>
 
