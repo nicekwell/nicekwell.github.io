@@ -288,7 +288,7 @@
 
 <h2 id="section-9">2、怎么检测</h2>
 <p>用一个叫gy521的模块，里面用的是mpu6050芯片，带有陀螺仪和加速度传感器。
-gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
+gy521的具体使用会在第三篇-实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
 注意哦，我们不能直接得到倾斜角度，我们的到的是各个方向的加速度和角速度，需要进行一些复杂的计算才能得到正确的倾斜角度。</p>
 
 <p>常用的算法有互补平衡滤波、卡尔曼滤波，由于篇幅和精力问题这部分暂不介绍，网上有大量资源，也可以查看本工程源码，以后有时间再写详细教程。</p>
@@ -305,7 +305,7 @@ gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过�
 
 <p>有一个小球在光滑球面上，小球的位置是x，光滑球面顶端在L处，我们可以控制小球水平方向力F，现在要求让小球稳定平衡在x0处。</p>
 
-<p>先看简单情况 x0=L，此时偏差为 x-L，</p>
+<p>先看简单情况 x0=L，此时偏差为 L-x，</p>
 
 <p>我们给出一个比例项(P) F = kp*(L-x)，这样就会有一个回复力，当偏差存在时就会有一个力把小球拉回L处。<br />
 这存在的问题是，小球接近L时是会有一定速度的，小球越来越接近L，此时的力仍然是在把小球往L处拉，这会导致小球到达L时(我们想要的位置)速度很大，小球无法立刻停下来，而是会冲过去。<br />
@@ -380,6 +380,8 @@ gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过�
             <li class="previous"><a href="/blog/20180118/zi-xing-che-ping-heng-yuan-li.html" title="Previous Post: 自行车平衡原理">&laquo; 自行车平衡原理</a></li>
             
             
+            <li class="next"><a href="/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian.html" title="Next Post: 平衡自行车-实践篇">平衡自行车-实践篇 &raquo;</a></li>
+            
           </ul>
         
       </footer>
@@ -417,6 +419,8 @@ gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过�
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian.html">平衡自行车-实践篇</a>
+    
     <a class="list-group-item active" href="/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html">平衡自行车-理论篇</a>
     
     <a class="list-group-item " href="/blog/20180118/zi-xing-che-ping-heng-yuan-li.html">自行车平衡原理</a>
@@ -444,8 +448,6 @@ gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过�
     <a class="list-group-item " href="/blog/20171120/shu-mei-pai-pypi-uartchuan-kou.html">树莓派-pypi-UART串口</a>
     
     <a class="list-group-item " href="/blog/20171119/shu-mei-pai-pypi-gpio.html">树莓派-pypi-GPIO</a>
-    
-    <a class="list-group-item " href="/blog/20171116/shu-mei-pai-pypi-shuo-ming-he-an-zhuang.html">树莓派-pypi-说明和安装</a>
     
   </div>
 </section>

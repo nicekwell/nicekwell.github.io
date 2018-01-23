@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 平衡的世界 | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/ping-heng-de-shi-jie/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2018-01-22T08:45:11+08:00</updated>
+  <updated>2018-01-23T16:59:37+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -12,6 +12,349 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[平衡自行车-实践篇]]></title>
+    <link href="http://nicekwell.net/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian.html"/>
+    <updated>2018-01-23T09:20:38+08:00</updated>
+    <id>http://nicekwell.net/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">材料</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">动力部分</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">传动方式</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">电机选择</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">电机供电</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-5" id="markdown-toc-section-5">转向部分</a></li>
+  <li><a href="#section-6" id="markdown-toc-section-6">电路</a>    <ul>
+      <li><a href="#section-7" id="markdown-toc-section-7">供电</a></li>
+      <li><a href="#section-8" id="markdown-toc-section-8">下载</a></li>
+      <li><a href="#gy521" id="markdown-toc-gy521">GY521</a></li>
+      <li><a href="#section-9" id="markdown-toc-section-9">电机</a></li>
+      <li><a href="#section-10" id="markdown-toc-section-10">舵机</a></li>
+      <li><a href="#section-11" id="markdown-toc-section-11">蓝牙模块通信</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-12" id="markdown-toc-section-12">代码结构</a>    <ul>
+      <li><a href="#section-13" id="markdown-toc-section-13">驱动</a></li>
+      <li><a href="#section-14" id="markdown-toc-section-14">平衡控制</a></li>
+      <li><a href="#section-15" id="markdown-toc-section-15">遥控和调试</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-16" id="markdown-toc-section-16">四、广告</a></li>
+</ul>
+<p>  </p>
+
+<p>在本文将会介绍平衡自行车的具体制作过程，包括机械、电路和代码。<br />
+平衡自行车完整的代码托管在 <a href="https://github.com/nicekwell/balance_bike">https://github.com/nicekwell/balance_bike</a>。</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/balance_bike.jpg" alt="balance_bile.jpg" /></p>
+
+<!-- more -->
+
+<h1 id="section">材料</h1>
+
+<p><strong>机械</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">名称</th>
+      <th style="text-align: center">数量</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">铜柱、铁丝、胶枪等基础材料和工具</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">自行车架</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">自己做车架是很麻烦的，我是直接买的车架，淘宝上搜”自行车 拼装 DIY”能搜到很多</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">舵机</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">转向用的，对于我用的1:6车架，普通舵机有点大，我用的是9g舵机</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">N20电机</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">选扭力大一点，这样转速会比较稳定</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">皮带轮和皮带</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">如上面的图片，我是用皮带来传输动力的</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>电路</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">名称</th>
+      <th style="text-align: center">数量</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">电池、电池盒</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">洞洞板</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">lm1117-3.3</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">降压芯片给控制系统供电</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">stm32f103c8t6核心板</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">gy521模块</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">加速度传感器 + 陀螺仪</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">升压模块</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">升到12v给电机供电，根据电机特性选择是否使用升压模块</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8050三极管</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">驱动电机，由于自行车不需要反转，所以不需要使用电机驱动芯片，用三极管就能方便地实现。我用了两个三极管并联提高功率。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">自锁开关</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">整个系统开关</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">led指示灯</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">配合1k限流电阻</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">蓝牙模块</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">可选，如果想要遥控的话就使用蓝牙</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section-1">动力部分</h1>
+
+<h3 id="section-2">传动方式</h3>
+<p>如图，我用的是皮带传送的方式，因为比较好实现。</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/1.jpg" alt="1.jpg" /></p>
+
+<h3 id="section-3">电机选择</h3>
+<p>这个DIY是不考虑变速情况的，平衡的参数都是按照一个固定速度调的。<br />
+所以动力部分的作用就是提供一个恒定的速度，并且这个速度尽可能稳定，尽可能不受外部影响。<br />
+电机应选择扭力大一些、转速稳定的减速电机。</p>
+
+<h3 id="section-4">电机供电</h3>
+
+<p>电机是直接供电还是使用升压模块供电要根据电机特性，有些电机用升压模块可以提高功率，有些大电流电机用升压模块反而可能限制了电流。</p>
+
+<p>我这里用升压模块升到12v给N20电机供电的。</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/2.jpg" alt="2.jpg" /></p>
+
+<p>另外，电机通过三极管受stm32控制，通过控制占空比也可以限制电机输出的功率。</p>
+
+<h1 id="section-5">转向部分</h1>
+
+<p>转向部分用一个舵机带动把手转动即可。</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/3.jpg" alt="3.jpg" /></p>
+
+<h1 id="section-6">电路</h1>
+
+<p>在github工程里有详细的引脚连接表 <a href="https://github.com/nicekwell/balance_bike">https://github.com/nicekwell/balance_bike</a>。</p>
+
+<h3 id="section-7">供电</h3>
+
+<p>用3.3v稳压芯片给整个控制系统供电，包括单片机、GY521模块、蓝牙模块。<br />
+用5v稳压芯片给舵机供电。<br />
+用12v升压模块给电机供电。</p>
+
+<h3 id="section-8">下载</h3>
+
+<p>我是用串口给stm32下载程序的。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">引脚</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">PA9</td>
+      <td style="text-align: center">下载TXD</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PA10</td>
+      <td style="text-align: center">下载RXD</td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="gy521">GY521</h3>
+
+<p>这个模块通过i2c通信，只需要连接4根线。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">引脚</th>
+      <th style="text-align: center">功能</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">3.3v</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">GND</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PB0</td>
+      <td style="text-align: center">GY521 I2C SCL</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PB1</td>
+      <td style="text-align: center">GY521 I2C SDA</td>
+      <td style="text-align: center">用的是IO模拟i2c</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-9">电机</h3>
+
+<p>点击用12v升压模块供电，由于不需要反转，用三极管即可直接驱动，电路图如下：</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/4.jpg" alt="4.jpg" /></p>
+
+<p>加三极管的目的是为了可以通过调节PWM占空比来限制输出功率，但我的实际情况是100%输出时动力才勉强足够。所以如果你不需要限制电机输出功率，或者通过其他方式限制输出功率，也可以不要三极管，不通过单片机控制。</p>
+
+<h3 id="section-10">舵机</h3>
+
+<p>舵机是用5v供电的，而单片机是3.3v电平，对于pwm控制脚可以通过2个三极管实现同相的电平转换：</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/5.jpg" alt="5.jpg" /></p>
+
+<h3 id="section-11">蓝牙模块通信</h3>
+
+<p>下图是我使用的蓝牙串口模块，可以实现串口透传，只需要4根线连接：vcc、gnd、txd、rxd。</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/6.jpg" alt="6.jpg" /></p>
+
+<p>蓝牙模块是用来调试和遥控的，没有它也能跑。建议还是加上这个模块，在调试PID擦数时会非常方便。<br />
+关于调试方面的内容可以参考我写的另一片文章：<a href="/blog/20170411/tan-%5B%3F%5D-tan-dan-pian-ji-kai-fa-de-ji-chong-diao-shi-fang-an.html">谈一谈单片机开发的几种调试方案</a></p>
+
+<h1 id="section-12">代码结构</h1>
+
+<p>代码提交在github <a href="https://github.com/nicekwell/balance_bike">https://github.com/nicekwell/balance_bike</a>。</p>
+
+<p>主要分为3个部分：1、基础的驱动程序，实现电机、舵机、gy521数据读取；2、平衡控制系统，核心是一个20ms定时器，每20ms进行一次数据采集、计算和响应；3、遥控和调试系统，实现log输出、接收遥控信息。</p>
+
+<h3 id="section-13">驱动</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">名称</th>
+      <th style="text-align: center">文件</th>
+      <th style="text-align: center">功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">i2c</td>
+      <td style="text-align: center">i2c/i2c.c, include/i2c.h</td>
+      <td style="text-align: center">IO 模拟i2c驱动，提供i2c基础操作</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">gy521</td>
+      <td style="text-align: center">gy521/gy521.c, include/gy521.h</td>
+      <td style="text-align: center">gy521模块驱动，基于i2c驱动，提供加速度和角速度的读取接口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">motor</td>
+      <td style="text-align: center">motor/motor.c, include/motor.h</td>
+      <td style="text-align: center">电机驱动，提供占空比控制接口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">angle</td>
+      <td style="text-align: center">angle/angle.c, include/angle.h</td>
+      <td style="text-align: center">舵机驱动，提供角度控制接口</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-14">平衡控制</h3>
+
+<p>main函数会初始化一个定时器20ms中断一次，调用 main/balance.c 里的 balance_tick 函数，平衡算法在 main/balance.c 实现。</p>
+
+<p>每20ms到来会执行一次：</p>
+
+<ol>
+  <li>读取传感器加速度和角速度信息。</li>
+  <li>互补平衡滤波计算当前姿态。</li>
+  <li>用PID算法计算出前轮转角。</li>
+</ol>
+
+<h3 id="section-15">遥控和调试</h3>
+
+<p>两部分：状态输出和指令接收。</p>
+
+<p><strong>状态输出</strong><br />
+在main函数的while循环里，利用串口中断构建一个简单的界面显示状态。</p>
+
+<p><strong>指令接收</strong><br />
+串口接收到的数据会传给main/control.c，该文件分析串口数据，解释成相应的操作。主要是PID参数调节。</p>
+
+<h1 id="section-16">四、广告</h1>
+
+<p>老婆做毕业设计，给我下了死命令，一定要找300个程序员研究一下，请各位同行做个调查问卷，可扫描下面二维码或者直接点击此链接：<a href="https://www.wjx.cn/jq/17710478.aspx">https://www.wjx.cn/jq/17710478.aspx</a>，多谢！</p>
+
+<p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/ad.jpg" alt="ad.jpg" /></p>
+
+<hr />
+
+<p>本站所有文章欢迎转载，但请保留作者信息和原文地址。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[平衡自行车-理论篇]]></title>
@@ -128,7 +471,7 @@
 
 <h2 id="section-9">2、怎么检测</h2>
 <p>用一个叫gy521的模块，里面用的是mpu6050芯片，带有陀螺仪和加速度传感器。
-gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
+gy521的具体使用会在第三篇-实践篇介绍，这里我们知道通过这个模块我们可以得到自行车各个方向的加速度和角速度。
 注意哦，我们不能直接得到倾斜角度，我们的到的是各个方向的加速度和角速度，需要进行一些复杂的计算才能得到正确的倾斜角度。</p>
 
 <p>常用的算法有互补平衡滤波、卡尔曼滤波，由于篇幅和精力问题这部分暂不介绍，网上有大量资源，也可以查看本工程源码，以后有时间再写详细教程。</p>
@@ -145,7 +488,7 @@ gy521的具体使用会在第三篇 实践篇介绍，这里我们知道通过�
 
 <p>有一个小球在光滑球面上，小球的位置是x，光滑球面顶端在L处，我们可以控制小球水平方向力F，现在要求让小球稳定平衡在x0处。</p>
 
-<p>先看简单情况 x0=L，此时偏差为 x-L，</p>
+<p>先看简单情况 x0=L，此时偏差为 L-x，</p>
 
 <p>我们给出一个比例项(P) F = kp*(L-x)，这样就会有一个回复力，当偏差存在时就会有一个力把小球拉回L处。<br />
 这存在的问题是，小球接近L时是会有一定速度的，小球越来越接近L，此时的力仍然是在把小球往L处拉，这会导致小球到达L时(我们想要的位置)速度很大，小球无法立刻停下来，而是会冲过去。<br />

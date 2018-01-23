@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://nicekwell.net/blog/20180123/ping-heng-zi-xing-che-shi-jian-pian.html</loc>
+<lastmod>2018-01-23T09:20:38+08:00</lastmod>
+</url>
+<url>
 <loc>http://nicekwell.net/blog/20180121/ping-heng-zi-xing-che-li-lun-pian.html</loc>
 <lastmod>2018-01-21T21:52:31+08:00</lastmod>
 </url>
@@ -188,14 +192,5 @@
 </url>
 <url>
 <loc>http://nicekwell.net/blog/categories/ping-heng-de-shi-jie/</loc>
-</url>
-<url>
-<loc>http://nicekwell.net/posts/2/</loc>
-</url>
-<url>
-<loc>http://nicekwell.net/posts/3/</loc>
-</url>
-<url>
-<loc>http://nicekwell.net/posts/4/</loc>
 </url>
 </urlset>
