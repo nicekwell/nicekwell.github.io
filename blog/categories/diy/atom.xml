@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Diy | 生命不息 折腾不止]]></title>
   <link href="http://nicekwell.net/blog/categories/diy/atom.xml" rel="self"/>
   <link href="http://nicekwell.net/"/>
-  <updated>2018-01-23T21:02:17+08:00</updated>
+  <updated>2018-01-23T21:28:50+08:00</updated>
   <id>http://nicekwell.net/</id>
   <author>
     <name><![CDATA[nicekwell]]></name>
@@ -33,7 +33,7 @@
       <li><a href="#gy521" id="markdown-toc-gy521">GY521</a></li>
       <li><a href="#section-9" id="markdown-toc-section-9">电机</a></li>
       <li><a href="#section-10" id="markdown-toc-section-10">舵机</a></li>
-      <li><a href="#section-11" id="markdown-toc-section-11">蓝牙模块通信</a></li>
+      <li><a href="#section-11" id="markdown-toc-section-11">蓝牙模块</a></li>
     </ul>
   </li>
   <li><a href="#section-12" id="markdown-toc-section-12">五、代码结构</a>    <ul>
@@ -272,7 +272,7 @@
 
 <p><img src="/images/diy/2018-01-23-ping-heng-zi-xing-che-shi-jian-pian/5.jpg" alt="5.jpg" /></p>
 
-<h3 id="section-11">蓝牙模块通信</h3>
+<h3 id="section-11">蓝牙模块</h3>
 
 <p>下图是我使用的蓝牙串口模块，可以实现串口透传，只需要4根线连接：vcc、gnd、txd、rxd。</p>
 
